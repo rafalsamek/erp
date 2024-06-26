@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.rotate-y-180 {
+  @apply [transform:rotateY(180deg)];
+}
+
+.rotate-y-0 {
+  @apply [transform:rotateY(0deg)];
+}
+
+ng-icon {
+  @apply cursor-pointer;
+}
+
+input {
+  @apply w-full rounded px-3 py-1;
+}
+
+button {
+  @apply flex items-center gap-1;
+}
+
+.white-list-item {
+  @apply w-full rounded bg-white px-3 py-1;
+}
