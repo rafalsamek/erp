@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: mysql
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
