@@ -1,0 +1,112 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: erp_backend
+    build:
+      context: ./backend
+      dockerfile: ../.docker/backend/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_PROFILES_ACTIVE: ${ENV}
+    volumes:
+      - ./backend/src:/app/src  # Mount only the source directory
+    networks:
+      - network
+
+  frontend:
+    container_name: erp_frontend
+    build:
+      context: ./frontend
+      dockerfile: ../.docker/frontend/Dockerfile
+    ports:
+      - "4200:4200"
+    command: ng serve --host 0.0.0.0
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+    networks:
+      - network
+
+  mysql:
+    container_name: erp_mysql
+    build:
+      context: .
+      dockerfile: ./.docker/mysql/Dockerfile
+    restart: always
+    ports:
+      - "3306:3306"
+    hostname: mysql
+    env_file:
+      - .env
+    volumes:
+      - erp_db_data:/var/lib/mysql
+      - ./.docker/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./.docker/mysql/dump:/docker-entrypoint-initdb.d
+    networks:
+      - network
+
+  phpmyadmin:
+    container_name: erp_phpmyadmin
+    build:
+      context: .
+      dockerfile: ./.docker/phpmyadmin/Dockerfile
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    env_file:
+      - .env
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - network
+
+#  nginx:
+#    container_name: erp_nginx
+#    build:
+#      context: .
+#      dockerfile: ./.docker/nginx/Dockerfile
+#    volumes:
+#      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+#      - ./.docker/certbot/conf:/etc/letsencrypt
+#      - ./.docker/certbot/www:/var/www/certbot
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    depends_on:
+#      - backend
+#      - frontend
+#    networks:
+#      - network
+
+#  certbot:
+#    container_name: erp_certbot
+#    build:
+#      context: .
+#      dockerfile: ./.docker/certbot/Dockerfile
+#    volumes:
+#      - ./.docker/certbot/conf:/etc/letsencrypt
+#      - ./.docker/certbot/www:/var/www/certbot
+#    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+#    depends_on:
+#      - nginx
+#    networks:
+#      - network
+
+networks:
+  network:
+
+volumes:
+  erp_db_data:
+    name: erp_db_data
