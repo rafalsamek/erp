@@ -12,15 +12,14 @@ import java.time.Instant;
 
 public class DocumentEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
-    @Column(nullable = false)
-    @Max(100)
+    @Column(nullable = false, length = 100)
     private String title;
 
-    @Max(1000)
+    @Column(nullable = true, length = 1000)
     private String description;
 
     @Column(nullable = false)
