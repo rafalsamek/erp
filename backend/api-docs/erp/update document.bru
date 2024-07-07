@@ -1,0 +1,18 @@
+meta {
+  name: update document
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:8080/api/documents/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "komornik",
+    "description": "Prośba o doręczenie korespondencji"
+  }
+}

@@ -47,19 +47,19 @@ public class DocumentEntity {
         this.id = id;
     }
 
-    public @Max(100) String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(@Max(100) String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public @Max(1000) String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(@Max(1000) String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

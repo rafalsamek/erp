@@ -25,6 +25,13 @@ public class DocumentController {
         return ResponseEntity.ok(categories);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<DocumentResponse> get(@PathVariable Long id) {
+        DocumentResponse document = documentService.fetchOne(id);
+
+        return ResponseEntity.ok(document);
+    }
+
     @PostMapping
     public ResponseEntity<DocumentResponse> create(@RequestBody DocumentRequest request) {
         DocumentResponse createdDocument = documentService.create(request);
@@ -32,23 +39,16 @@ public class DocumentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDocument);
     }
 
-    @PutMapping
-    public ResponseEntity<DocumentResponse> update(@RequestBody DocumentRequest request) {
-        DocumentResponse updatedDocument = documentService.update(request);
+    @PutMapping("{id}")
+    public ResponseEntity<DocumentResponse> update(@PathVariable Long id, @RequestBody DocumentRequest request) {
+        DocumentResponse updatedDocument = documentService.update(id, request);
 
         return ResponseEntity.ok(updatedDocument);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<DocumentResponse> get(@PathVariable Long Id) {
-        DocumentResponse document = documentService.fetchOne(Id);
-
-        return ResponseEntity.ok(document);
-    }
-
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long Id) {
-        documentService.delete(Id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        documentService.delete(id);
 
         return ResponseEntity.noContent().build();
     }

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "erp",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

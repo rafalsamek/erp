@@ -1,0 +1,18 @@
+meta {
+  name: create document
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/api/documents
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "komornik",
+    "description": "Prośba o doręczenie korespondencji"
+  }
+}
