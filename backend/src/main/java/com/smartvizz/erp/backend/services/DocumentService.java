@@ -2,10 +2,16 @@ package com.smartvizz.erp.backend.services;
 
 import com.smartvizz.erp.backend.data.entities.DocumentEntity;
 import com.smartvizz.erp.backend.data.repositories.DocumentRepository;
+import com.smartvizz.erp.backend.data.specifications.DocumentSpecifications;
 import com.smartvizz.erp.backend.web.models.DocumentRequest;
 import com.smartvizz.erp.backend.web.models.DocumentResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,11 +23,31 @@ public class DocumentService {
         this.documentRepository = documentRepository;
     }
 
-    public List<DocumentResponse> fetchAll() {
-        return documentRepository.findAll()
-                .stream()
-                .map(DocumentResponse::new)
-                .toList();
+    public Page<DocumentResponse> fetchAll(
+            int page,
+            int size,
+            String[] sortColumns,
+            String[] sortDirections,
+            String searchBy
+    ) {
+        ArrayList<Sort.Order> sortOrders = new ArrayList<>();
+
+        for (int i = 0; i < sortColumns.length; i++) {
+
+            String sortColumn = sortColumns[i];
+            Sort.Direction sortDirection =
+                    sortDirections.length > i && sortDirections[i].equalsIgnoreCase("desc")
+                            ? Sort.Direction.DESC
+                            : Sort.Direction.ASC;
+
+
+            sortOrders.add(new Sort.Order(sortDirection, sortColumn));
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrders));
+
+        return documentRepository.findAll(DocumentSpecifications.searchDocument(searchBy), pageable)
+                .map(DocumentResponse::new);
     }
 
     public DocumentResponse fetchOne(Long id) {
@@ -40,7 +66,7 @@ public class DocumentService {
 
     public DocumentResponse update(Long id, DocumentRequest request) {
         DocumentEntity documentEntity = documentRepository.getReferenceById(id);
-//        documentEntity.setTitle(request.title());
+        documentEntity.setTitle(request.title());
         documentEntity.setDescription(request.description());
 
         DocumentEntity updatedDocument = documentRepository.save(documentEntity);
