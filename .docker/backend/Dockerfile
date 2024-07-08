@@ -1,5 +1,5 @@
 # Use Gradle with OpenJDK 17 for both build and runtime
-FROM gradle:8.8-jdk17
+FROM gradle:7.4.2-jdk17
 
 # Set the working directory
 WORKDIR /app
