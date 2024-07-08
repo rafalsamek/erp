@@ -1,5 +1,5 @@
 # Use Gradle with OpenJDK 17 for both build and runtime
-FROM gradle:7.4.2-jdk17
+FROM gradle:8.8-jdk17
 
 # Set the working directory
 WORKDIR /app
@@ -19,7 +19,7 @@ RUN chmod +x gradlew
 COPY src ./src
 
 # Clean and build the project (without running tests) as the root user
-RUN ./gradlew clean build --no-daemon --stacktrace
+RUN ./gradlew clean build --no-daemon --stacktrace --info
 
 # Expose the application port
 EXPOSE 8080
