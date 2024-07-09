@@ -7,7 +7,7 @@ spring:
     url: ${SPRING_DATASOURCE_URL}
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect

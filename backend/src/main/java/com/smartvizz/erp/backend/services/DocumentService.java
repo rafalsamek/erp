@@ -5,6 +5,8 @@ import com.smartvizz.erp.backend.data.repositories.DocumentRepository;
 import com.smartvizz.erp.backend.data.specifications.DocumentSpecifications;
 import com.smartvizz.erp.backend.web.models.DocumentRequest;
 import com.smartvizz.erp.backend.web.models.DocumentResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,12 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class DocumentService {
-
     private final DocumentRepository documentRepository;
+    private static final Logger logger = LoggerFactory.getLogger(DocumentService.class);
 
     public DocumentService(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
@@ -30,6 +33,7 @@ public class DocumentService {
             String[] sortDirections,
             String searchBy
     ) {
+        logger.debug("sortColumns: " + Arrays.toString(sortColumns) + ", sortDirections: " + Arrays.toString(sortDirections));
         ArrayList<Sort.Order> sortOrders = new ArrayList<>();
 
         for (int i = 0; i < sortColumns.length; i++) {

@@ -22,12 +22,12 @@ public class DocumentEntity {
     @Column(nullable = true, length = 1000)
     private String description;
 
-    @Column(nullable = false)
     @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;
 
-    @Column(nullable = false)
     @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Instant updatedAt;
 
     public Long getId() {

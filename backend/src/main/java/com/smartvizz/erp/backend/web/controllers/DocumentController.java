@@ -3,6 +3,7 @@ package com.smartvizz.erp.backend.web.controllers;
 import com.smartvizz.erp.backend.services.DocumentService;
 import com.smartvizz.erp.backend.web.models.DocumentRequest;
 import com.smartvizz.erp.backend.web.models.DocumentResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,16 @@ public class DocumentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DocumentResponse>> list() {
-        List<DocumentResponse> categories = documentService.fetchAll();
+    public ResponseEntity<Page<DocumentResponse>> list(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "25") int size,
+            @RequestParam(defaultValue = "updatedAt,title") String[] sortColumns,
+            @RequestParam(defaultValue = "asc,asc") String[] sortDirections,
+            @RequestParam(defaultValue = "") String searchBy
+    ) {
+        Page<DocumentResponse> documents = documentService.fetchAll(page, size, sortColumns, sortDirections, searchBy);
 
-        return ResponseEntity.ok(categories);
+        return ResponseEntity.ok(documents);
     }
 
     @GetMapping("{id}")
