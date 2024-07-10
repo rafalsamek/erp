@@ -1,7 +1,6 @@
 package com.smartvizz.erp.backend.data.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
