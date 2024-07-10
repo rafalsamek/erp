@@ -24,6 +24,10 @@ dependencies {
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
 	runtimeOnly 'mysql:mysql-connector-java:8.0.29'
 
+	// Add Flyway dependency
+	implementation 'org.flywaydb:flyway-core'
+	implementation "org.flywaydb:flyway-mysql"
+
 	// Add H2 database dependency for tests
 	testImplementation 'com.h2database:h2'
 
