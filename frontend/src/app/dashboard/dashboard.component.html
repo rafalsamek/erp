@@ -1,0 +1,17 @@
+<h3>Document list: </h3>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Title</th>
+    <th scope="col">Created at</th>
+    <th scope="col">Updated at</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let todo of todos" routerLink="/detail/{{todo.id}}">
+    <td>{{todo.title}}</td>
+    <td>{{todo.status}}</td>
+    <td>{{todo.dueDate}}</td>
+  </tr>
+  </tbody>
+</table>
