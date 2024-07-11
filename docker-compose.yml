@@ -7,7 +7,7 @@ services:
       context: ./backend
       dockerfile: ../.docker/backend/Dockerfile
     ports:
-      - "8080:8080"
+      - "8880:8080"
     depends_on:
       - mysql
     env_file:
@@ -28,7 +28,7 @@ services:
       context: ./frontend
       dockerfile: ../.docker/frontend/Dockerfile
     ports:
-      - "4200:4200"
+      - "8888:4200"
     command: ng serve --host 0.0.0.0
     depends_on:
       - backend
