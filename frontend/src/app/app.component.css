@@ -1,69 +1,65 @@
-/* Reset basic styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
+#app {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   min-height: 100vh; /* Minimalna wysokość ekranu, aby stopka była przyklejona na dole */
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* Header styles */
-.banner {
+#header {
   background-color: #255283;
   color: #fff;
   padding: 10px 20px;
   text-align: center;
 }
 
-.banner h1 {
+#header h1 {
   margin: 0;
 }
 
-.banner h3 {
+#header h3 {
   margin: 5px 0 0;
 }
 
 /* Top menu styles */
-.top-menu {
+#top-menu {
   background-color: #34495e;
   padding: 10px;
 }
 
-.top-menu ul {
+#top-menu ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   text-align: center;
 }
 
-.top-menu ul li {
+#top-menu ul li {
   display: inline;
   margin-right: 10px;
 }
 
-.top-menu ul li a {
+#top-menu ul li a {
   color: #fff;
   text-decoration: none;
   padding: 5px 10px;
 }
 
-.top-menu ul li a:hover {
+#top-menu ul li a:hover {
   background-color: #4a6271;
 }
 
-.top-menu ul li.selected a {
+#top-menu ul li.selected a {
   background-color: #3449aa; /* Kolor tła dla wybranego elementu */
   color: #fff; /* Kolor tekstu dla wybranego elementu */
 }
 
 /* CRUD section styles */
-.crud-section {
+#crud-section {
   margin: 20px auto;
   padding: 20px;
   background-color: rgba(174, 197, 237, 0.75);
@@ -73,27 +69,27 @@ body {
   overflow-x: auto;
 }
 
-.crud-header {
+#crud-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.crud-header h2 {
+#crud-header h2 {
   margin: 0;
 }
 
-.search-form {
+#search-form {
   display: flex;
 }
 
-.search-form input[type="text"] {
+#search-form input[type="text"] {
   padding: 5px;
   width: 200px;
 }
 
-.search-form button {
+#search-form button {
   padding: 5px 10px;
   margin-left: 5px;
 }
@@ -143,7 +139,7 @@ body {
   border: none;
 }
 
-.pagination {
+#pagination {
   margin-top: 20px;
   text-align: center;
   display: flex;
@@ -151,7 +147,7 @@ body {
   align-items: center;
 }
 
-.pagination .page-btn {
+#pagination .page-btn {
   padding: 5px 10px;
   margin: 0 2px;
   background-color: #34495e;
@@ -160,17 +156,17 @@ body {
   cursor: pointer;
 }
 
-.pagination .current-page-input {
+#pagination .current-page-input {
   width: 30px;
   text-align: center;
 }
 
-.pagination .total-pages {
+#pagination .total-pages {
   font-weight: bold;
 }
 
 /* Footer styles */
-.footer {
+#footer {
   background-color: #255283;
   color: #fff;
   text-align: center;
