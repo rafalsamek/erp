@@ -9,55 +9,6 @@
   padding: 0;
 }
 
-/* Header styles */
-#header {
-  background-color: #255283;
-  color: #fff;
-  padding: 10px 20px;
-  text-align: center;
-}
-
-#header h1 {
-  margin: 0;
-}
-
-#header h3 {
-  margin: 5px 0 0;
-}
-
-/* Top menu styles */
-#top-menu {
-  background-color: #34495e;
-  padding: 10px;
-}
-
-#top-menu ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
-
-#top-menu ul li {
-  display: inline;
-  margin-right: 10px;
-}
-
-#top-menu ul li a {
-  color: #fff;
-  text-decoration: none;
-  padding: 5px 10px;
-}
-
-#top-menu ul li a:hover {
-  background-color: #4a6271;
-}
-
-#top-menu ul li.selected a {
-  background-color: #3449aa; /* Kolor tła dla wybranego elementu */
-  color: #fff; /* Kolor tekstu dla wybranego elementu */
-}
-
 /* CRUD section styles */
 #crud-section {
   margin: 20px auto;
