@@ -1,0 +1,7 @@
+#footer {
+  background-color: #255283;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  flex-shrink: 0; /* Zapobiega ściąganiu stopki do góry, kiedy jest mało treści */
+}

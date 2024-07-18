@@ -1,0 +1,105 @@
+#crud-section {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(174, 197, 237, 0.75);
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  width: 80%;
+  overflow-x: auto;
+}
+
+#crud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#crud-header h2 {
+  margin: 0;
+}
+
+#search-form {
+  display: flex;
+}
+
+#search-form input[type="text"] {
+  padding: 5px;
+  width: 200px;
+}
+
+#search-form button {
+  padding: 5px 10px;
+  margin-left: 5px;
+}
+
+.crud-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.crud-table th, .crud-table td {
+  border: 1px solid #255283;
+  padding: 8px;
+  text-align: left;
+}
+
+.crud-table th {
+  background-color: #255283;
+  color: #fff;
+}
+
+.crud-table td {
+  vertical-align: top;
+}
+
+.crud-table .action-btn {
+  margin-right: 5px;
+  padding: 5px 10px;
+}
+
+.crud-table .action-btn.view-btn {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+}
+
+.crud-table .action-btn.edit-btn {
+  background-color: #f39c12;
+  color: #333;
+  border: none;
+}
+
+.crud-table .action-btn.delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+}
+
+#pagination {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#pagination .page-btn {
+  padding: 5px 10px;
+  margin: 0 2px;
+  background-color: #34495e;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#pagination .current-page-input {
+  width: 30px;
+  text-align: center;
+}
+
+#pagination .total-pages {
+  font-weight: bold;
+}
