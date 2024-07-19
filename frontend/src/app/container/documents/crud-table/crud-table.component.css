@@ -1,0 +1,44 @@
+.crud-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.crud-table th, .crud-table td {
+  border: 1px solid #255283;
+  padding: 8px;
+  text-align: left;
+}
+
+.crud-table th {
+  background-color: #255283;
+  color: #fff;
+}
+
+.crud-table td {
+  vertical-align: top;
+}
+
+.crud-table .action-btn {
+  margin-right: 5px;
+  padding: 5px 10px;
+}
+
+.crud-table .action-btn.view-btn {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+}
+
+.crud-table .action-btn.edit-btn {
+  background-color: #f39c12;
+  color: #333;
+  border: none;
+}
+
+.crud-table .action-btn.delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+}
