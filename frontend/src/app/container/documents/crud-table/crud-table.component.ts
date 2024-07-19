@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import {DocumentEntity} from "../../../models";
 import {NgForOf, NgIf} from "@angular/common";
+import {DocumentEntity} from "../document-entity.model";
 
 @Component({
   selector: 'app-crud-table',
