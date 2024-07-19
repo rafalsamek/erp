@@ -1,0 +1,24 @@
+#crud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#crud-header h2 {
+  margin: 0;
+}
+
+#search-form {
+  display: flex;
+}
+
+#search-form input[type="text"] {
+  padding: 5px;
+  width: 200px;
+}
+
+#search-form button {
+  padding: 5px 10px;
+  margin-left: 5px;
+}
