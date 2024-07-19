@@ -12,125 +12,23 @@
   <tbody>
   <!-- Dynamic content for CRUD rows -->
   <!-- Example row -->
-  <tr>
-    <td>1</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>7</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>8</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>9</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
-  <tr>
-    <td>10</td>
-    <td>Document Title</td>
-    <td>Document Description</td>
-    <td>2024-07-13 10:00 AM</td>
-    <td>2024-07-13 12:30 PM</td>
-    <td>
-      <button class="action-btn view-btn">View</button>
-      <button class="action-btn edit-btn">Edit</button>
-      <button class="action-btn delete-btn">Delete</button>
-    </td>
-  </tr>
+  <ng-container *ngIf="documentsList.length; else noDocuments">
+    <tr *ngFor="let entity of documentsList; let i = index">
+      <td>{{ entity.id }}</td>
+      <td>{{ entity.title }}</td>
+      <td>{{ entity.description }}</td>
+      <td>{{ entity.createdAt }}</td>
+      <td>{{ entity.updatedAt }}</td>
+      <td>
+        <button class="action-btn view-btn">View</button>
+        <button class="action-btn edit-btn">Edit</button>
+        <button class="action-btn delete-btn">Delete</button>
+      </td>
+    </tr>
+  </ng-container>
+
+  <ng-template #noDocuments>
+    <tr><td colspan="6" style="text-align: center;">No Documents</td></tr>
+  </ng-template>
   </tbody>
 </table>
