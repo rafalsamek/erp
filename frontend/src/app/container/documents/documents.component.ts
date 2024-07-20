@@ -3,6 +3,7 @@ import {CrudHeaderComponent} from "./crud-header/crud-header.component";
 import {CrudTableComponent} from "./crud-table/crud-table.component";
 import {PaginationComponent} from "./pagination/pagination.component";
 import {DocumentEntity} from "./document-entity.model";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-documents',
@@ -23,6 +24,7 @@ export class DocumentsComponent {
   documentsList: DocumentEntity[] = [];
 
   fetchDocuments() {
+    console.log(`${environment.apiUrl}`)
     this.documentsList = [
       {
         id: 1,

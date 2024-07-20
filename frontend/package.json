@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "start": "node start.js",
+    "build": "node build.js",
+    "watch": "node watch.js",
     "test": "ng test",
     "prettier-fix": "npx prettier . --write"
   },
@@ -21,6 +21,7 @@
     "@angular/router": "^17.1.0",
     "@ng-icons/core": "^28.0.0",
     "@ng-icons/heroicons": "^28.0.0",
+    "dotenv": "^16.4.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
