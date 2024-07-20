@@ -11,11 +11,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/frontend",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "main": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
@@ -24,6 +24,19 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -35,13 +48,28 @@
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
                 }
+              ]
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
               ],
-              "outputHashing": "all"
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractLicenses": true,
+              "namedChunks": true,
+              "vendorChunk": true
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true,
+              "vendorChunk": true
             }
           },
           "defaultConfiguration": "production"
@@ -51,6 +79,9 @@
           "configurations": {
             "production": {
               "buildTarget": "frontend:build:production"
+            },
+            "staging": {
+              "buildTarget": "frontend:build:staging"
             },
             "development": {
               "buildTarget": "frontend:build:development"
@@ -67,8 +98,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "main": "src/test.ts",
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "./karma.conf.js",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css"],
             "scripts": []
@@ -78,6 +111,6 @@
     }
   },
   "cli": {
-    "analytics": "92416ef0-b929-4852-b6ba-a40907dc8b02"
+    "analytics": false
   }
 }
