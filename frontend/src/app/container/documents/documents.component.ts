@@ -4,6 +4,7 @@ import {CrudTableComponent} from "./crud-table/crud-table.component";
 import {PaginationComponent} from "./pagination/pagination.component";
 import {DocumentEntity} from "./document-entity.model";
 import {environment} from "../../../environments/environment";
+import {DocumentService} from "./document.service";
 
 @Component({
   selector: 'app-documents',
@@ -17,37 +18,18 @@ import {environment} from "../../../environments/environment";
   styleUrl: './documents.component.css'
 })
 export class DocumentsComponent {
+  documentsList: DocumentEntity[] = [];
+
+  constructor(private documentService: DocumentService) { }
+
   ngOnInit(): void {
     this.fetchDocuments();
   }
 
-  documentsList: DocumentEntity[] = [];
-
   fetchDocuments() {
-    console.log(`${environment.apiUrl}`)
-    this.documentsList = [
-      {
-        id: 1,
-        title: 'Document 1',
-        description: 'Description for document 1',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      },
-      {
-        id: 2,
-        title: 'Document 2',
-        description: 'Description for document 2',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      },
-      {
-        id: 3,
-        title: 'Document 3',
-        description: 'Description for document 3',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
-    ];
-    return this.documentsList;
+    console.log(`${environment.apiUrl}`);
+    this.documentService
+      .getDocuments()
+      .subscribe((documents) => (this.documentsList = documents));
   }
 }

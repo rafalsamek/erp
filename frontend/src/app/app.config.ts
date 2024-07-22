@@ -14,9 +14,11 @@ import {
   heroPlusCircle,
   heroRocketLaunch,
 } from '@ng-icons/heroicons/outline';
+import {provideHttpClient} from "@angular/common/http";
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(),
     provideRouter(routes),
     provideNgIconsConfig({ size: '1.5em' }),
     provideIcons({
