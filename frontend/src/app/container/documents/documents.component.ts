@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import {CrudHeaderComponent} from "./crud-header/crud-header.component";
-import {CrudTableComponent} from "./crud-table/crud-table.component";
-import {PaginationComponent} from "./pagination/pagination.component";
-import {DocumentEntity} from "./document-entity.model";
-import {environment} from "../../../environments/environment";
-import {DocumentService} from "./document.service";
+import { Component, OnInit } from '@angular/core';
+import { CrudHeaderComponent } from "./crud-header/crud-header.component";
+import { CrudTableComponent } from "./crud-table/crud-table.component";
+import { PaginationComponent } from "./pagination/pagination.component";
+import { DocumentEntity } from "./document-entity.model";
+import { DocumentService } from "./document.service";
 
 @Component({
   selector: 'app-documents',
@@ -17,19 +16,31 @@ import {DocumentService} from "./document.service";
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.css'
 })
-export class DocumentsComponent {
+export class DocumentsComponent implements OnInit {
   documentsList: DocumentEntity[] = [];
+  currentPage = 1;
+  totalElements = 0;
+  size = 25;
+  totalPages = 0;
 
   constructor(private documentService: DocumentService) { }
 
   ngOnInit(): void {
-    this.fetchDocuments();
+    this.fetchDocuments(this.currentPage, this.size);
   }
 
-  fetchDocuments() {
-    console.log(`${environment.apiUrl}`);
-    this.documentService
-      .getDocuments()
-      .subscribe((documents) => (this.documentsList = documents));
+  fetchDocuments(page: number, size: number): void {
+    this.documentService.getDocuments(page - 1, size)
+      .subscribe(response => {
+        this.documentsList = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+      });
+  }
+
+  onPageChanged(page: number): void {
+    console.log('Current page:', page);
+    this.currentPage = page;
+    this.fetchDocuments(this.currentPage, this.size);
   }
 }
