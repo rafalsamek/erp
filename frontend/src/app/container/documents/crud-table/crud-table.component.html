@@ -1,25 +1,23 @@
 <table class="crud-table">
   <thead>
   <tr>
-    <th>ID</th>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Created At</th>
-    <th>Updated At</th>
-    <th>Actions</th>
+    <th class="id sortable" (click)="changeSort('id')" [ngClass]="{'sortAsc': sortColumn === 'id' && sortDirection === 'asc', 'sortDesc': sortColumn === 'id' && sortDirection === 'desc'}">ID</th>
+    <th class="title sortable" (click)="changeSort('title')" [ngClass]="{'sortAsc': sortColumn === 'title' && sortDirection === 'asc', 'sortDesc': sortColumn === 'title' && sortDirection === 'desc'}">Title</th>
+    <th class="description sortable" (click)="changeSort('description')" [ngClass]="{'sortAsc': sortColumn === 'description' && sortDirection === 'asc', 'sortDesc': sortColumn === 'description' && sortDirection === 'desc'}">Description</th>
+    <th class="createdAt sortable" (click)="changeSort('createdAt')" [ngClass]="{'sortAsc': sortColumn === 'createdAt' && sortDirection === 'asc', 'sortDesc': sortColumn === 'createdAt' && sortDirection === 'desc'}">Created At</th>
+    <th class="updatedAt sortable" (click)="changeSort('updatedAt')" [ngClass]="{'sortAsc': sortColumn === 'updatedAt' && sortDirection === 'asc', 'sortDesc': sortColumn === 'updatedAt' && sortDirection === 'desc'}">Updated At</th>
+    <th class="actions">Actions</th>
   </tr>
   </thead>
   <tbody>
-  <!-- Dynamic content for CRUD rows -->
-  <!-- Example row -->
   <ng-container *ngIf="documentsList.length; else noDocuments">
-    <tr *ngFor="let entity of documentsList; let i = index">
-      <td>{{ entity.id }}</td>
-      <td>{{ entity.title }}</td>
-      <td>{{ entity.description }}</td>
-      <td>{{ entity.createdAt }}</td>
-      <td>{{ entity.updatedAt }}</td>
-      <td>
+    <tr *ngFor="let document of documentsList; let i = index">
+      <td class="id">{{ document.id }}</td>
+      <td class="title">{{ document.title }}</td>
+      <td class="description">{{ document.description }}</td>
+      <td class="createdAt">{{ document.createdAt }}</td>
+      <td class="updatedAt">{{ document.updatedAt }}</td>
+      <td class="actions">
         <button class="action-btn view-btn">View</button>
         <button class="action-btn edit-btn">Edit</button>
         <button class="action-btn delete-btn">Delete</button>

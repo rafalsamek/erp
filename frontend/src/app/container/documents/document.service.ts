@@ -43,7 +43,9 @@ export class DocumentService {
     console.log(`API URL: ${this.apiUrl}`);
   }
 
-  getDocuments(page: number, size: number): Observable<DocumentResponse> {
-    return this.httpClient.get<DocumentResponse>(`${this.apiUrl}?page=${page}&size=${size}`);
+  getDocuments(page: number, size: number, sortColumns: string, sortDirections: string): Observable<DocumentResponse> {
+    return this.httpClient.get<DocumentResponse>(
+        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}`
+    );
   }
 }

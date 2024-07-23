@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {DocumentEntity} from "../document-entity.model";
 
 @Component({
@@ -7,11 +7,26 @@ import {DocumentEntity} from "../document-entity.model";
   standalone: true,
   imports: [
     NgIf,
-    NgForOf
+    NgForOf,
+    NgClass
   ],
   templateUrl: './crud-table.component.html',
   styleUrl: './crud-table.component.css'
 })
 export class CrudTableComponent {
   @Input() documentsList: DocumentEntity[] = [];
+  @Output() sortChanged = new EventEmitter<{sortColumns: string, sortDirections: string}>();
+
+  sortColumn = 'id';
+  sortDirection = 'asc';
+
+  changeSort(column: string): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    this.sortChanged.emit({sortColumns: this.sortColumn, sortDirections: this.sortDirection});
+  }
 }
