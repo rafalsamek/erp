@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-crud-pagination',
+  selector: 'documents-crud-pagination',
   standalone: true,
   imports: [],
   templateUrl: './crud-pagination.component.html',
