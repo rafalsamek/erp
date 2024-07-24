@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { CrudHeaderComponent } from "./crud-header/crud-header.component";
-import { CrudTableComponent } from "./crud-table/crud-table.component";
-import { CrudPaginationComponent } from "./crud-pagination/crud-pagination.component";
-import { DocumentEntity } from "./document-entity.model";
-import { DocumentService } from "./document.service";
+import { CrudHeaderComponent } from './crud-header/crud-header.component';
+import { CrudTableComponent } from './crud-table/crud-table.component';
+import { CrudPaginationComponent } from './crud-pagination/crud-pagination.component';
+import { DocumentEntity } from './document-entity.model';
+import { DocumentService } from './document.service';
 
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [
-    CrudHeaderComponent,
-    CrudTableComponent,
-    CrudPaginationComponent
-  ],
+  imports: [CrudHeaderComponent, CrudTableComponent, CrudPaginationComponent],
   templateUrl: './documents.component.html',
-  styleUrl: './documents.component.css'
+  styleUrl: './documents.component.css',
 })
 export class DocumentsComponent implements OnInit {
   documentsList: DocumentEntity[] = [];
@@ -25,15 +21,26 @@ export class DocumentsComponent implements OnInit {
   sortColumns = 'id';
   sortDirections = 'asc';
 
-  constructor(private documentService: DocumentService) { }
+  constructor(private documentService: DocumentService) {}
 
   ngOnInit(): void {
-    this.fetchDocuments(this.currentPage, this.size, this.sortColumns, this.sortDirections);
+    this.fetchDocuments(
+      this.currentPage,
+      this.size,
+      this.sortColumns,
+      this.sortDirections
+    );
   }
 
-  fetchDocuments(page: number, size: number, sortColumns: string, sortDirections: string): void {
-    this.documentService.getDocuments(page - 1, size, sortColumns, sortDirections)
-      .subscribe(response => {
+  fetchDocuments(
+    page: number,
+    size: number,
+    sortColumns: string,
+    sortDirections: string
+  ): void {
+    this.documentService
+      .getDocuments(page - 1, size, sortColumns, sortDirections)
+      .subscribe((response) => {
         this.documentsList = response.content;
         this.totalElements = response.totalElements;
         this.totalPages = response.totalPages;
@@ -43,7 +50,12 @@ export class DocumentsComponent implements OnInit {
   onPageChanged(page: number): void {
     console.log('Current page:', page);
     this.currentPage = page;
-    this.fetchDocuments(this.currentPage, this.size, this.sortColumns, this.sortDirections);
+    this.fetchDocuments(
+      this.currentPage,
+      this.size,
+      this.sortColumns,
+      this.sortDirections
+    );
   }
 
   onSortChanged(sortColumns: string, sortDirections: string): void {
@@ -51,6 +63,11 @@ export class DocumentsComponent implements OnInit {
     console.log('Current sortDirections:', sortDirections);
     this.sortColumns = sortColumns;
     this.sortDirections = sortDirections;
-    this.fetchDocuments(this.currentPage, this.size, this.sortColumns, this.sortDirections);
+    this.fetchDocuments(
+      this.currentPage,
+      this.size,
+      this.sortColumns,
+      this.sortDirections
+    );
   }
 }

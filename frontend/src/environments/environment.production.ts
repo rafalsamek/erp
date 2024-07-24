@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://erp.smartvizz.com'
+  apiUrl: 'https://erp.smartvizz.com',
 };

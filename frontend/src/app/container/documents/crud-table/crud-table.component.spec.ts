@@ -8,10 +8,9 @@ describe('CrudTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CrudTableComponent]
-    })
-    .compileComponents();
-    
+      imports: [CrudTableComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CrudTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

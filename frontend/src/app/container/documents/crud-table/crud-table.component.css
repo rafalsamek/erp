@@ -5,7 +5,8 @@
   overflow-x: auto;
 }
 
-.crud-table th, .crud-table td {
+.crud-table th,
+.crud-table td {
   border: 1px solid #255283;
   padding: 8px;
   text-align: left;
@@ -33,27 +34,33 @@
 }
 
 /* Fixed widths for columns */
-.crud-table th.id, .crud-table td.id {
+.crud-table th.id,
+.crud-table td.id {
   width: 5%;
 }
 
-.crud-table th.title, .crud-table td.title {
+.crud-table th.title,
+.crud-table td.title {
   width: 20%;
 }
 
-.crud-table th.description, .crud-table td.description {
+.crud-table th.description,
+.crud-table td.description {
   width: 30%;
 }
 
-.crud-table th.createdAt, .crud-table td.createdAt {
+.crud-table th.createdAt,
+.crud-table td.createdAt {
   width: 15%;
 }
 
-.crud-table th.updatedAt, .crud-table td.updatedAt {
+.crud-table th.updatedAt,
+.crud-table td.updatedAt {
   width: 15%;
 }
 
-.crud-table th.actions, .crud-table td.actions {
+.crud-table th.actions,
+.crud-table td.actions {
   width: 15%;
 }
 

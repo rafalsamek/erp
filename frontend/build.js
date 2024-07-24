@@ -12,7 +12,7 @@ const env = process.env.ENV || 'dev'; // Default to 'development' if ENV is not 
 const envConfigMap = {
   prod: 'production',
   stag: 'staging',
-  dev: 'development'
+  dev: 'development',
 };
 
 // Get the corresponding Angular configuration

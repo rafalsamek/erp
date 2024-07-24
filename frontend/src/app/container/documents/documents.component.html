@@ -1,3 +1,10 @@
 <documents-crud-header></documents-crud-header>
-<documents-crud-table [documentsList]="documentsList" (sortChanged)="onSortChanged($event.sortColumns, $event.sortDirections)"></documents-crud-table>
-<documents-crud-pagination [totalElements]="totalElements" [size]="size" (pageChanged)="onPageChanged($event)"></documents-crud-pagination>
+<documents-crud-table
+  [documentsList]="documentsList"
+  (sortChanged)="onSortChanged($event.sortColumns, $event.sortDirections)"
+></documents-crud-table>
+<documents-crud-pagination
+  [totalElements]="totalElements"
+  [size]="size"
+  (pageChanged)="onPageChanged($event)"
+></documents-crud-pagination>

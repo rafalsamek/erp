@@ -8,10 +8,9 @@ describe('CrudHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CrudHeaderComponent]
-    })
-    .compileComponents();
-    
+      imports: [CrudHeaderComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CrudHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

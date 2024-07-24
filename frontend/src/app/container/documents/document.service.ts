@@ -34,7 +34,7 @@ export interface DocumentResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DocumentService {
   private apiUrl = `${environment.apiUrl}/api/documents`;
@@ -43,9 +43,14 @@ export class DocumentService {
     console.log(`API URL: ${this.apiUrl}`);
   }
 
-  getDocuments(page: number, size: number, sortColumns: string, sortDirections: string): Observable<DocumentResponse> {
+  getDocuments(
+    page: number,
+    size: number,
+    sortColumns: string,
+    sortDirections: string
+  ): Observable<DocumentResponse> {
     return this.httpClient.get<DocumentResponse>(
-        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}`
+      `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}`
     );
   }
 }

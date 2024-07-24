@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './crud-header.component.html',
-  styleUrl: './crud-header.component.css'
+  styleUrl: './crud-header.component.css',
 })
-export class CrudHeaderComponent {
-
-}
+export class CrudHeaderComponent {}

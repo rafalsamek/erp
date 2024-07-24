@@ -14,7 +14,7 @@ console.log(`Environment: ${env}`); // Log the environment to verify it's being 
 const envConfigMap = {
   prod: 'production',
   stag: 'staging',
-  dev: 'development'
+  dev: 'development',
 };
 
 // Get the corresponding Angular configuration

@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './crud-pagination.component.html',
-  styleUrl: './crud-pagination.component.css'
+  styleUrl: './crud-pagination.component.css',
 })
 export class CrudPaginationComponent {
   @Input() totalElements!: number;

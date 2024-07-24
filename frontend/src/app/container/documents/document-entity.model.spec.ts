@@ -7,7 +7,7 @@ describe('DocumentEntity', () => {
       title: 'Sample Document',
       description: 'This is a sample document description',
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
 
     expect(document).toBeTruthy();
