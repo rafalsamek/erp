@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CrudHeaderComponent } from "./crud-header/crud-header.component";
 import { CrudTableComponent } from "./crud-table/crud-table.component";
-import { PaginationComponent } from "./pagination/pagination.component";
+import { CrudPaginationComponent } from "./crud-pagination/crud-pagination.component";
 import { DocumentEntity } from "./document-entity.model";
 import { DocumentService } from "./document.service";
 
@@ -11,7 +11,7 @@ import { DocumentService } from "./document.service";
   imports: [
     CrudHeaderComponent,
     CrudTableComponent,
-    PaginationComponent
+    CrudPaginationComponent
   ],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.css'

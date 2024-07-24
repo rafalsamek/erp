@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-pagination',
+  selector: 'app-crud-pagination',
   standalone: true,
   imports: [],
-  templateUrl: './pagination.component.html',
-  styleUrl: './pagination.component.css'
+  templateUrl: './crud-pagination.component.html',
+  styleUrl: './crud-pagination.component.css'
 })
-export class PaginationComponent {
+export class CrudPaginationComponent {
   @Input() totalElements!: number;
   @Input() size!: number;
   @Output() pageChanged = new EventEmitter<number>();

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaginationComponent } from './pagination.component';
+import { CrudPaginationComponent } from './crud-pagination.component';
 
 describe('PaginationComponent', () => {
-  let component: PaginationComponent;
-  let fixture: ComponentFixture<PaginationComponent>;
+  let component: CrudPaginationComponent;
+  let fixture: ComponentFixture<CrudPaginationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaginationComponent]
+      imports: [CrudPaginationComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(PaginationComponent);
+
+    fixture = TestBed.createComponent(CrudPaginationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
