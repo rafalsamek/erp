@@ -20,6 +20,7 @@ export class DocumentsComponent implements OnInit {
   totalPages = 0;
   sortColumns = 'id';
   sortDirections = 'asc';
+  searchBy = '';
 
   constructor(private documentService: DocumentService) {}
 
@@ -28,7 +29,8 @@ export class DocumentsComponent implements OnInit {
       this.currentPage,
       this.size,
       this.sortColumns,
-      this.sortDirections
+      this.sortDirections,
+      this.searchBy
     );
   }
 
@@ -36,10 +38,11 @@ export class DocumentsComponent implements OnInit {
     page: number,
     size: number,
     sortColumns: string,
-    sortDirections: string
+    sortDirections: string,
+    searchBy: string
   ): void {
     this.documentService
-      .getDocuments(page - 1, size, sortColumns, sortDirections)
+      .getDocuments(page - 1, size, sortColumns, sortDirections, searchBy)
       .subscribe((response) => {
         this.documentsList = response.content;
         this.totalElements = response.totalElements;
@@ -54,7 +57,8 @@ export class DocumentsComponent implements OnInit {
       this.currentPage,
       this.size,
       this.sortColumns,
-      this.sortDirections
+      this.sortDirections,
+      this.searchBy
     );
   }
 
@@ -67,7 +71,20 @@ export class DocumentsComponent implements OnInit {
       this.currentPage,
       this.size,
       this.sortColumns,
-      this.sortDirections
+      this.sortDirections,
+      this.searchBy
+    );
+  }
+
+  onSearchChanged(searchBy: string) {
+    this.searchBy = searchBy;
+    this.currentPage = 1;
+    this.fetchDocuments(
+      this.currentPage,
+      this.size,
+      this.sortColumns,
+      this.sortDirections,
+      this.searchBy
     );
   }
 }

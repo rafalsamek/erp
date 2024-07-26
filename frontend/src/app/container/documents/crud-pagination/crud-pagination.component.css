@@ -1,4 +1,4 @@
-#crud-pagination {
+.crud-pagination {
   margin-top: 20px;
   text-align: center;
   display: flex;
@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-#crud-pagination .page-btn {
+.crud-pagination .page-btn {
   padding: 0 10px;
   margin: 0 2px;
   background-color: #34495e;
@@ -15,12 +15,12 @@
   cursor: pointer;
 }
 
-#crud-pagination .current-page-input {
+.crud-pagination .current-page-input {
   width: 30px;
   text-align: center;
   padding: 0;
 }
 
-#crud-pagination .total-pages {
+.crud-pagination .total-pages {
   font-weight: bold;
 }

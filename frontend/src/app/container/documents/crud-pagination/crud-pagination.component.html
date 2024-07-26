@@ -1,4 +1,4 @@
-<div id="crud-pagination">
+<div class="crud-pagination">
   <button class="page-btn first-page-btn" (click)="firstPage()">
     &laquo;&laquo;
   </button>
@@ -8,7 +8,7 @@
     <input
       type="number"
       class="current-page-input"
-      [value]="currentPage"
+      [(ngModel)]="currentPage"
       [min]="1"
       [max]="totalPages"
       (change)="onPageInputChange($event)"

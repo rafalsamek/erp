@@ -47,10 +47,11 @@ export class DocumentService {
     page: number,
     size: number,
     sortColumns: string,
-    sortDirections: string
+    sortDirections: string,
+    searchBy: string
   ): Observable<DocumentResponse> {
     return this.httpClient.get<DocumentResponse>(
-      `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}`
+      `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
     );
   }
 }

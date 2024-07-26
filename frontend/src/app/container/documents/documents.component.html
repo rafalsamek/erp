@@ -1,4 +1,6 @@
-<documents-crud-header></documents-crud-header>
+<documents-crud-header
+  (searchChanged)="onSearchChanged($event)"
+></documents-crud-header>
 <documents-crud-table
   [documentsList]="documentsList"
   (sortChanged)="onSortChanged($event.sortColumns, $event.sortDirections)"
@@ -6,5 +8,6 @@
 <documents-crud-pagination
   [totalElements]="totalElements"
   [size]="size"
+  [currentPage]="currentPage"
   (pageChanged)="onPageChanged($event)"
 ></documents-crud-pagination>
