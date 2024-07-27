@@ -54,4 +54,19 @@ export class DocumentService {
       `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
     );
   }
+
+  addDocument(document: DocumentEntity): Observable<DocumentEntity> {
+    return this.httpClient.post<DocumentEntity>(this.apiUrl, document);
+  }
+
+  updateDocument(document: DocumentEntity): Observable<DocumentEntity> {
+    return this.httpClient.put<DocumentEntity>(
+      `${this.apiUrl}/${document.id}`,
+      document
+    );
+  }
+
+  getDocument(id: number): Observable<DocumentEntity> {
+    return this.httpClient.get<DocumentEntity>(`${this.apiUrl}/${id}`);
+  }
 }

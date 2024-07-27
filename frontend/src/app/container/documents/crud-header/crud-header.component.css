@@ -24,3 +24,7 @@
   padding: 5px 10px;
   margin-left: 5px;
 }
+.search-form button:hover {
+  background-color: #255283;
+  color: #fff;
+}

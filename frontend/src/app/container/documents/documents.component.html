@@ -1,5 +1,6 @@
 <documents-crud-header
   (searchChanged)="onSearchChanged($event)"
+  (addDocument)="openModal('add')"
 ></documents-crud-header>
 <documents-crud-table
   [documentsList]="documentsList"
@@ -11,3 +12,11 @@
   [currentPage]="currentPage"
   (pageChanged)="onPageChanged($event)"
 ></documents-crud-pagination>
+<documents-crud-form
+  *ngIf="showModal"
+  [showModal]="showModal"
+  [mode]="modalMode"
+  [document]="selectedDocument"
+  (close)="closeModal()"
+  (save)="saveDocument($event)"
+></documents-crud-form>

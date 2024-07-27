@@ -4,9 +4,11 @@
     <input
       type="text"
       placeholder="Search..."
-      [value]="searchBy"
+      [(ngModel)]="searchBy"
+      name="searchBy"
       (input)="onSearchInputChange($event)"
     />
-    <button type="submit">Search</button>
+    <button>Search</button>
+    <button (click)="openModal('add')">Add</button>
   </form>
 </div>

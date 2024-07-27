@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 export class CrudHeaderComponent {
   @Input() searchBy = '';
   @Output() searchChanged = new EventEmitter<string>();
+  @Output() addDocument = new EventEmitter<void>();
 
   onSearchInputChange(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -21,5 +22,9 @@ export class CrudHeaderComponent {
   onSearch() {
     console.log('searchBy:', this.searchBy);
     this.searchChanged.emit(this.searchBy);
+  }
+
+  openModal(mode: string) {
+    this.addDocument.emit();
   }
 }
