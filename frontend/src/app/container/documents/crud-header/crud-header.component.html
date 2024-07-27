@@ -1,6 +1,7 @@
 <div class="crud-header">
   <h2>Documents</h2>
-  <form class="search-form" (ngSubmit)="onSearch()">
+  <div class="search-form">
+    <button (click)="openModal('add')">Add</button>
     <input
       type="text"
       placeholder="Search..."
@@ -8,7 +9,5 @@
       name="searchBy"
       (input)="onSearchInputChange($event)"
     />
-    <button>Search</button>
-    <button (click)="openModal('add')">Add</button>
-  </form>
+  </div>
 </div>

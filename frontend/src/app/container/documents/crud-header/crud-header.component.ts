@@ -19,11 +19,6 @@ export class CrudHeaderComponent {
     this.searchChanged.emit(this.searchBy);
   }
 
-  onSearch() {
-    console.log('searchBy:', this.searchBy);
-    this.searchChanged.emit(this.searchBy);
-  }
-
   openModal(mode: string) {
     this.addDocument.emit();
   }

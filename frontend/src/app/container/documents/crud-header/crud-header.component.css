@@ -16,6 +16,7 @@
 .search-form input[type='text'] {
   padding: 5px;
   width: 200px;
+  margin-left: 5px;
 }
 
 .search-form button {
