@@ -9,6 +9,12 @@
         </button>
       </div>
       <div class="modal-body">
+        <div
+          *ngIf="errorMessage && errorMessage.length"
+          class="alert alert-danger"
+        >
+          <div *ngFor="let error of errorMessage">{{ error }}</div>
+        </div>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="title">Title</label>
@@ -36,7 +42,6 @@
               class="form-control"
             ></textarea>
           </div>
-
           <div class="modal-footer">
             <button
               type="button"

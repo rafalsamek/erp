@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import { DocumentEntity } from './document-entity.model';
+import { catchError } from 'rxjs/operators';
 
 export interface DocumentResponse {
   totalPages: number;
@@ -52,21 +53,44 @@ export class DocumentService {
   ): Observable<DocumentResponse> {
     return this.httpClient.get<DocumentResponse>(
       `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
-    );
+    )
+      .pipe(catchError(this.handleError));
   }
 
   addDocument(document: DocumentEntity): Observable<DocumentEntity> {
-    return this.httpClient.post<DocumentEntity>(this.apiUrl, document);
+    return this.httpClient
+      .post<DocumentEntity>(this.apiUrl, document)
+      .pipe(catchError(this.handleError));
   }
 
   updateDocument(document: DocumentEntity): Observable<DocumentEntity> {
-    return this.httpClient.put<DocumentEntity>(
-      `${this.apiUrl}/${document.id}`,
-      document
-    );
+    return this.httpClient
+      .put<DocumentEntity>(`${this.apiUrl}/${document.id}`, document)
+      .pipe(catchError(this.handleError));
   }
 
   getDocument(id: number): Observable<DocumentEntity> {
-    return this.httpClient.get<DocumentEntity>(`${this.apiUrl}/${id}`);
+    return this.httpClient
+      .get<DocumentEntity>(`${this.apiUrl}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage: string[] = ['An unknown error occurred!'];
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred.
+      errorMessage = [`Error: ${error.error.message}`];
+    } else if (error.error && typeof error.error === 'object') {
+      // Handle validation errors
+      const validationErrors = error.error;
+      errorMessage = Object.entries(validationErrors).map(
+        ([field, msg]) => `${msg}`
+      );
+    } else {
+      errorMessage = [
+        `Server returned code: ${error.status}, error message is: ${error.message}`,
+      ];
+    }
+    return throwError(errorMessage);
   }
 }

@@ -26,7 +26,8 @@ export class DocumentsComponent implements OnInit {
 
   showModal = false;
   modalMode: 'add' | 'edit' | 'view' = 'view';
-  selectedDocument: any = {};
+  selectedDocument: DocumentEntity | null = null;
+  errorMessage: string[] | null = null;
 
   constructor(private documentService: DocumentService) {}
 
@@ -57,7 +58,6 @@ export class DocumentsComponent implements OnInit {
   }
 
   onPageChanged(page: number): void {
-    console.log('Current page:', page);
     this.pageNumber = page;
     this.fetchDocuments(
       this.pageNumber,
@@ -69,8 +69,6 @@ export class DocumentsComponent implements OnInit {
   }
 
   onSortChanged(sortColumns: string, sortDirections: string): void {
-    console.log('Current sortColumns:', sortColumns);
-    console.log('Current sortDirections:', sortDirections);
     this.sortColumns = sortColumns;
     this.sortDirections = sortDirections;
     this.fetchDocuments(
@@ -97,7 +95,9 @@ export class DocumentsComponent implements OnInit {
 
   openModal(mode: 'add' | 'edit' | 'view', document?: DocumentEntity) {
     this.modalMode = mode;
+    this.errorMessage = null; // Reset the error message when opening the modal
     if (mode === 'add') {
+      this.selectedDocument = null; // Clear selected expense for add mode
       this.showModal = true;
     } else if (document && document.id) {
       this.documentService.getDocument(document.id).subscribe(
@@ -126,7 +126,8 @@ export class DocumentsComponent implements OnInit {
         },
         (error) => {
           console.error('Error adding document', error);
-          // Handle error appropriately
+          this.errorMessage = error;
+          this.showModal = true; // Ensure the modal stays open
         }
       );
     } else if (this.modalMode === 'edit') {
@@ -140,7 +141,8 @@ export class DocumentsComponent implements OnInit {
         },
         (error) => {
           console.error('Error updating document', error);
-          // Handle error appropriately
+          this.errorMessage = error;
+          this.showModal = true; // Ensure the modal stays open
         }
       );
     }

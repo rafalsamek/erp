@@ -4,6 +4,8 @@ import {
   Input,
   Output,
   OnInit,
+  OnChanges,
+  SimpleChanges,
   HostListener,
 } from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
@@ -18,10 +20,11 @@ import {DocumentEntity} from "../document-entity.model";
   styleUrl: './crud-form.component.css'
 })
 
-export class CrudFormComponent implements OnInit {
+export class CrudFormComponent implements OnInit, OnChanges {
   @Input() showModal = false;
   @Input() mode: 'add' | 'edit' | 'view' = 'view';
   @Input() document: DocumentEntity | null = null;
+  @Input() errorMessage: string[] | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<DocumentEntity>();
 
@@ -35,14 +38,38 @@ export class CrudFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initializeForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['document'] && !changes['document'].firstChange) {
+      this.initializeForm();
+    }
+    if (changes['errorMessage'] && changes['errorMessage'].currentValue) {
+      console.log(
+        'Received Error Message:',
+        changes['errorMessage'].currentValue
+      );
+    }
+  }
+
+  initializeForm() {
     if (this.document) {
       this.form.setValue({
         title: this.document.title,
         description: this.document.description || '',
       });
+    } else {
+      this.form.reset({
+        title: '',
+        description: '',
+      });
     }
+
     if (this.mode === 'view') {
       this.form.disable();
+    } else {
+      this.form.enable();
     }
   }
 
@@ -63,7 +90,6 @@ export class CrudFormComponent implements OnInit {
           ...formValue,
         };
         this.save.emit(documentToSave);
-        this.closeModal();
       } else {
         this.form.markAllAsTouched();
       }
