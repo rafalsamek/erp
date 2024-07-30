@@ -3,6 +3,7 @@ package com.smartvizz.erp.backend.web.controllers;
 import com.smartvizz.erp.backend.services.DocumentService;
 import com.smartvizz.erp.backend.web.models.DocumentRequest;
 import com.smartvizz.erp.backend.web.models.DocumentResponse;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +40,14 @@ public class DocumentController {
     }
 
     @PostMapping
-    public ResponseEntity<DocumentResponse> create(@RequestBody DocumentRequest request) {
+    public ResponseEntity<DocumentResponse> create(@Valid @RequestBody DocumentRequest request) {
         DocumentResponse createdDocument = documentService.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDocument);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<DocumentResponse> update(@PathVariable Long id, @RequestBody DocumentRequest request) {
+    public ResponseEntity<DocumentResponse> update(@PathVariable Long id, @Valid @RequestBody DocumentRequest request) {
         DocumentResponse updatedDocument = documentService.update(id, request);
 
         return ResponseEntity.ok(updatedDocument);
