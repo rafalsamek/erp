@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 export class CrudPaginationComponent {
   @Input() totalElements!: number;
   @Input() size!: number;
-  @Input() currentPage!: number;
+  @Input() pageNumber!: number;
   @Output() pageChanged = new EventEmitter<number>();
 
   get totalPages(): number {
@@ -23,14 +23,14 @@ export class CrudPaginationComponent {
   }
 
   prevPage(): void {
-    if (this.currentPage > 1) {
-      this.changePage(this.currentPage - 1);
+    if (this.pageNumber > 1) {
+      this.changePage(this.pageNumber - 1);
     }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.changePage(this.currentPage + 1);
+    if (this.pageNumber < this.totalPages) {
+      this.changePage(this.pageNumber + 1);
     }
   }
 
@@ -40,8 +40,8 @@ export class CrudPaginationComponent {
 
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.pageChanged.emit(this.currentPage);
+      this.pageNumber = page;
+      this.pageChanged.emit(this.pageNumber);
     }
   }
 

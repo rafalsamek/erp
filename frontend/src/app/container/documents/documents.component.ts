@@ -16,7 +16,7 @@ import {NgIf} from "@angular/common";
 })
 export class DocumentsComponent implements OnInit {
   documentsList: DocumentEntity[] = [];
-  currentPage = 1;
+  pageNumber = 1;
   totalElements = 0;
   size = 25;
   totalPages = 0;
@@ -32,7 +32,7 @@ export class DocumentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchDocuments(
-      this.currentPage,
+      this.pageNumber,
       this.size,
       this.sortColumns,
       this.sortDirections,
@@ -58,9 +58,9 @@ export class DocumentsComponent implements OnInit {
 
   onPageChanged(page: number): void {
     console.log('Current page:', page);
-    this.currentPage = page;
+    this.pageNumber = page;
     this.fetchDocuments(
-      this.currentPage,
+      this.pageNumber,
       this.size,
       this.sortColumns,
       this.sortDirections,
@@ -74,7 +74,7 @@ export class DocumentsComponent implements OnInit {
     this.sortColumns = sortColumns;
     this.sortDirections = sortDirections;
     this.fetchDocuments(
-      this.currentPage,
+      this.pageNumber,
       this.size,
       this.sortColumns,
       this.sortDirections,
@@ -84,9 +84,9 @@ export class DocumentsComponent implements OnInit {
 
   onSearchChanged(searchBy: string) {
     this.searchBy = searchBy;
-    this.currentPage = 1;
+    this.pageNumber = 1;
     this.fetchDocuments(
-      this.currentPage,
+      this.pageNumber,
       this.size,
       this.sortColumns,
       this.sortDirections,
