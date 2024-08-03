@@ -1,13 +1,20 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { DocumentEntity } from '../document-entity.model';
+import { provideIcons, NgIconsModule } from '@ng-icons/core';
+import {
+  heroEye,
+  heroPencilSquare,
+  heroTrash,
+} from '@ng-icons/heroicons/outline';
 
 @Component({
   selector: 'documents-crud-table',
   standalone: true,
-  imports: [NgIf, NgForOf, NgClass],
+  imports: [NgIf, NgForOf, NgClass, NgIconsModule],
   templateUrl: './crud-table.component.html',
   styleUrl: './crud-table.component.css',
+  providers: [provideIcons({ heroEye, heroPencilSquare, heroTrash })],
 })
 export class CrudTableComponent {
   @Input() documentsList: DocumentEntity[] = [];
@@ -16,11 +23,12 @@ export class CrudTableComponent {
     sortDirections: string;
   }>();
 
-  sortColumn = 'id';
-  sortDirection = 'asc';
   @Output() editDocument = new EventEmitter<DocumentEntity>();
   @Output() viewDocument = new EventEmitter<DocumentEntity>();
   @Output() deleteDocument = new EventEmitter<DocumentEntity>();
+
+  sortColumn = 'id';
+  sortDirection = 'asc';
 
   changeSort(column: string): void {
     if (this.sortColumn === column) {

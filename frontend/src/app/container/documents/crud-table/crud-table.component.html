@@ -63,15 +63,29 @@
         <td class="createdAt">{{ document.createdAt }}</td>
         <td class="updatedAt">{{ document.updatedAt }}</td>
         <td class="actions">
-          <button class="action-btn view-btn" (click)="view(document)">
-            View
-          </button>
-          <button class="action-btn edit-btn" (click)="edit(document)">
-            Edit
-          </button>
-          <button class="action-btn delete-btn" (click)="delete(document)">
-            Delete
-          </button>
+          <div class="actions-container">
+            <button
+              (click)="view(document)"
+              class="btn btn-icon action-btn view-btn"
+              title="View"
+            >
+              <ng-icon name="heroEye"></ng-icon>
+            </button>
+            <button
+              (click)="edit(document)"
+              class="btn btn-icon action-btn edit-btn"
+              title="Edit"
+            >
+              <ng-icon name="heroPencilSquare"></ng-icon>
+            </button>
+            <button
+              (click)="delete(document)"
+              class="btn btn-icon action-btn delete-btn"
+              title="Delete"
+            >
+              <ng-icon name="heroTrash"></ng-icon>
+            </button>
+          </div>
         </td>
       </tr>
     </ng-container>

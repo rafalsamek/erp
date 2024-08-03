@@ -46,43 +46,57 @@
 
 .crud-table th.description,
 .crud-table td.description {
-  width: 30%;
+  width: 25%;
 }
 
 .crud-table th.createdAt,
 .crud-table td.createdAt {
-  width: 15%;
+  width: 20%;
 }
 
 .crud-table th.updatedAt,
 .crud-table td.updatedAt {
-  width: 15%;
+  width: 20%;
 }
 
 .crud-table th.actions,
 .crud-table td.actions {
-  width: 15%;
+  width: 10%;
+}
+
+.crud-table td.actions {
+  text-align: center;
+}
+
+.crud-table .actions-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
 }
 
 .crud-table .action-btn {
   margin-right: 5px;
   padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
-.crud-table .action-btn.view-btn {
+.crud-table .view-btn {
   background-color: #3498db;
   color: #fff;
-  border: none;
 }
 
-.crud-table .action-btn.edit-btn {
+.crud-table .edit-btn {
   background-color: #f39c12;
   color: #333;
-  border: none;
 }
 
-.crud-table .action-btn.delete-btn {
+.crud-table .delete-btn {
   background-color: #e74c3c;
   color: #fff;
-  border: none;
+}
+
+.crud-table .action-btn:last-child {
+  margin-right: 0;
 }
