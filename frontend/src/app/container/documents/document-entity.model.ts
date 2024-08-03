@@ -1,5 +1,5 @@
 export interface DocumentEntity {
-  id?: number;
+  id: number;
   title: string;
   description?: string;
   createdAt?: string;

@@ -18,6 +18,9 @@ export class CrudTableComponent {
 
   sortColumn = 'id';
   sortDirection = 'asc';
+  @Output() editDocument = new EventEmitter<DocumentEntity>();
+  @Output() viewDocument = new EventEmitter<DocumentEntity>();
+  @Output() deleteDocument = new EventEmitter<DocumentEntity>();
 
   changeSort(column: string): void {
     if (this.sortColumn === column) {
@@ -30,5 +33,17 @@ export class CrudTableComponent {
       sortColumns: this.sortColumn,
       sortDirections: this.sortDirection,
     });
+  }
+
+  view(document: DocumentEntity): void {
+    this.viewDocument.emit(document);
+  }
+
+  edit(document: DocumentEntity): void {
+    this.editDocument.emit(document);
+  }
+
+  delete(document: DocumentEntity): void {
+    this.deleteDocument.emit(document);
   }
 }

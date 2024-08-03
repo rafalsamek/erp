@@ -19,7 +19,7 @@ export class CrudHeaderComponent {
     this.searchChanged.emit(this.searchBy);
   }
 
-  openModal(mode: string) {
+  add() {
     this.addDocument.emit();
   }
 }

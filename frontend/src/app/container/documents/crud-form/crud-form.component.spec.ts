@@ -8,10 +8,9 @@ describe('CrudFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CrudFormComponent]
-    })
-    .compileComponents();
-    
+      imports: [CrudFormComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CrudFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

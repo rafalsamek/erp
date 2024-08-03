@@ -4,13 +4,19 @@ import { CrudTableComponent } from './crud-table/crud-table.component';
 import { CrudPaginationComponent } from './crud-pagination/crud-pagination.component';
 import { DocumentEntity } from './document-entity.model';
 import { DocumentService } from './document.service';
-import {CrudFormComponent} from "./crud-form/crud-form.component";
-import {NgIf} from "@angular/common";
+import { CrudFormComponent } from './crud-form/crud-form.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [CrudHeaderComponent, CrudTableComponent, CrudPaginationComponent, CrudFormComponent, NgIf],
+  imports: [
+    CrudHeaderComponent,
+    CrudTableComponent,
+    CrudPaginationComponent,
+    CrudFormComponent,
+    NgIf,
+  ],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.css',
 })
@@ -25,7 +31,7 @@ export class DocumentsComponent implements OnInit {
   searchBy = '';
 
   showModal = false;
-  modalMode: 'add' | 'edit' | 'view' = 'view';
+  modalMode: 'add' | 'edit' | 'view' | 'delete' = 'view';
   selectedDocument: DocumentEntity | null = null;
   errorMessage: string[] | null = null;
 
@@ -92,12 +98,14 @@ export class DocumentsComponent implements OnInit {
     );
   }
 
-
-  openModal(mode: 'add' | 'edit' | 'view', document?: DocumentEntity) {
+  openModal(
+    mode: 'add' | 'edit' | 'view' | 'delete',
+    document?: DocumentEntity
+  ) {
     this.modalMode = mode;
     this.errorMessage = null; // Reset the error message when opening the modal
     if (mode === 'add') {
-      this.selectedDocument = null; // Clear selected expense for add mode
+      this.selectedDocument = null; // Clear selected document for add mode
       this.showModal = true;
     } else if (document && document.id) {
       this.documentService.getDocument(document.id).subscribe(
@@ -133,7 +141,9 @@ export class DocumentsComponent implements OnInit {
     } else if (this.modalMode === 'edit') {
       this.documentService.updateDocument(document).subscribe(
         (updatedDocument) => {
-          const index = this.documentsList.findIndex((e) => e.id === document.id);
+          const index = this.documentsList.findIndex(
+            (e) => e.id === document.id
+          );
           if (index !== -1) {
             this.documentsList[index] = updatedDocument; // Update the existing document in the list
           }
@@ -146,5 +156,22 @@ export class DocumentsComponent implements OnInit {
         }
       );
     }
+  }
+
+  deleteDocument(document: DocumentEntity) {
+    let documentId = document.id;
+    this.documentService.deleteDocument(documentId).subscribe(
+      () => {
+        this.documentsList = this.documentsList.filter(
+          (e) => e.id !== documentId
+        );
+        this.closeModal();
+      },
+      (error) => {
+        console.error('Error deleting document', error);
+        this.errorMessage = error;
+        this.showModal = true;
+      }
+    );
   }
 }

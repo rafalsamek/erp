@@ -5,6 +5,9 @@
 <documents-crud-table
   [documentsList]="documentsList"
   (sortChanged)="onSortChanged($event.sortColumns, $event.sortDirections)"
+  (viewDocument)="openModal('view', $event)"
+  (editDocument)="openModal('edit', $event)"
+  (deleteDocument)="openModal('delete', $event)"
 ></documents-crud-table>
 <documents-crud-pagination
   [totalElements]="totalElements"
@@ -20,4 +23,5 @@
   [errorMessage]="errorMessage"
   (close)="closeModal()"
   (save)="saveDocument($event)"
+  (delete)="deleteDocument($event)"
 ></documents-crud-form>

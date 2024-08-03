@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import {Observable, throwError} from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { DocumentEntity } from './document-entity.model';
 import { catchError } from 'rxjs/operators';
 
@@ -51,9 +51,10 @@ export class DocumentService {
     sortDirections: string,
     searchBy: string
   ): Observable<DocumentResponse> {
-    return this.httpClient.get<DocumentResponse>(
-      `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
-    )
+    return this.httpClient
+      .get<DocumentResponse>(
+        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -72,6 +73,12 @@ export class DocumentService {
   getDocument(id: number): Observable<DocumentEntity> {
     return this.httpClient
       .get<DocumentEntity>(`${this.apiUrl}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteDocument(documentId: number): Observable<void> {
+    return this.httpClient
+      .delete<void>(`${this.apiUrl}/${documentId}`)
       .pipe(catchError(this.handleError));
   }
 
