@@ -129,7 +129,13 @@ export class DocumentsComponent implements OnInit {
     if (this.modalMode === 'add') {
       this.documentService.addDocument(document).subscribe(
         (newDocument) => {
-          this.documentsList.push(newDocument); // Add the new document to the list
+          this.fetchDocuments(
+            this.pageNumber,
+            this.size,
+            this.sortColumns,
+            this.sortDirections,
+            this.searchBy
+          );
           this.closeModal();
         },
         (error) => {
@@ -159,11 +165,14 @@ export class DocumentsComponent implements OnInit {
   }
 
   deleteDocument(document: DocumentEntity) {
-    let documentId = document.id;
-    this.documentService.deleteDocument(documentId).subscribe(
+    this.documentService.deleteDocument(document.id).subscribe(
       () => {
-        this.documentsList = this.documentsList.filter(
-          (e) => e.id !== documentId
+        this.fetchDocuments(
+          this.pageNumber,
+          this.size,
+          this.sortColumns,
+          this.sortDirections,
+          this.searchBy
         );
         this.closeModal();
       },
