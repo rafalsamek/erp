@@ -1,0 +1,18 @@
+meta {
+  name: create category
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:8880/api/categories
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "kategoria 5",
+    "description": "Utworzenie kategorii piątej"
+  }
+}

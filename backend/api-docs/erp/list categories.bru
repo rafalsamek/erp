@@ -1,0 +1,16 @@
+meta {
+  name: list categories
+  type: http
+  seq: 9
+}
+
+get {
+  url: http://localhost:8880/api/categories?sortColumns=description&sortDirections=asc
+  body: json
+  auth: none
+}
+
+params:query {
+  sortColumns: description
+  sortDirections: asc
+}

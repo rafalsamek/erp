@@ -1,0 +1,1 @@
+DELETE FROM documents WHERE id BETWEEN 1 AND 217;
