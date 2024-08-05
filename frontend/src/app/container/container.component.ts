@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CategoriesComponent } from './categories/categories.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { RouterOutlet } from '@angular/router';
 import { HomeComponent } from './home/home.component';
@@ -11,6 +12,7 @@ import { SettingsComponent } from './settings/settings.component';
   imports: [
     HomeComponent,
     DocumentsComponent,
+    CategoriesComponent,
     DocumentTemplatesComponent,
     SettingsComponent,
     RouterOutlet,
