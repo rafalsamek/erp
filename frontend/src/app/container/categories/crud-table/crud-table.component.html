@@ -1,0 +1,99 @@
+<table class="crud-table">
+  <thead>
+    <tr>
+      <th
+        class="id sortable"
+        (click)="changeSort('id')"
+        [ngClass]="{
+          sortAsc: sortColumn === 'id' && sortDirection === 'asc',
+          sortDesc: sortColumn === 'id' && sortDirection === 'desc',
+        }"
+      >
+        ID
+      </th>
+      <th
+        class="name sortable"
+        (click)="changeSort('name')"
+        [ngClass]="{
+          sortAsc: sortColumn === 'name' && sortDirection === 'asc',
+          sortDesc: sortColumn === 'name' && sortDirection === 'desc',
+        }"
+      >
+        Name
+      </th>
+      <th
+        class="description sortable"
+        (click)="changeSort('description')"
+        [ngClass]="{
+          sortAsc: sortColumn === 'description' && sortDirection === 'asc',
+          sortDesc: sortColumn === 'description' && sortDirection === 'desc',
+        }"
+      >
+        Description
+      </th>
+      <th
+        class="createdAt sortable"
+        (click)="changeSort('createdAt')"
+        [ngClass]="{
+          sortAsc: sortColumn === 'createdAt' && sortDirection === 'asc',
+          sortDesc: sortColumn === 'createdAt' && sortDirection === 'desc',
+        }"
+      >
+        Created At
+      </th>
+      <th
+        class="updatedAt sortable"
+        (click)="changeSort('updatedAt')"
+        [ngClass]="{
+          sortAsc: sortColumn === 'updatedAt' && sortDirection === 'asc',
+          sortDesc: sortColumn === 'updatedAt' && sortDirection === 'desc',
+        }"
+      >
+        Updated At
+      </th>
+      <th class="actions">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="categoriesList.length; else noCategories">
+      <tr *ngFor="let category of categoriesList; let i = index">
+        <td class="id">{{ category.id }}</td>
+        <td class="name">{{ category.name }}</td>
+        <td class="description">{{ category.description }}</td>
+        <td class="createdAt">{{ category.createdAt }}</td>
+        <td class="updatedAt">{{ category.updatedAt }}</td>
+        <td class="actions">
+          <div class="actions-container">
+            <button
+              (click)="view(category)"
+              class="btn btn-icon action-btn view-btn"
+              title="View"
+            >
+              <ng-icon name="heroEye"></ng-icon>
+            </button>
+            <button
+              (click)="edit(category)"
+              class="btn btn-icon action-btn edit-btn"
+              title="Edit"
+            >
+              <ng-icon name="heroPencilSquare"></ng-icon>
+            </button>
+            <button
+              (click)="delete(category)"
+              class="btn btn-icon action-btn delete-btn"
+              title="Delete"
+            >
+              <ng-icon name="heroTrash"></ng-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+
+    <ng-template #noCategories>
+      <tr>
+        <td colspan="6" style="text-align: center">No Categories</td>
+      </tr>
+    </ng-template>
+  </tbody>
+</table>

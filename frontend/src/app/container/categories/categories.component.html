@@ -1,1 +1,27 @@
-<p>categories works!</p>
+<categories-crud-header
+  (searchChanged)="onSearchChanged($event)"
+  (addCategory)="openModal('add')"
+></categories-crud-header>
+<categories-crud-table
+  [categoriesList]="categoriesList"
+  (sortChanged)="onSortChanged($event.sortColumns, $event.sortDirections)"
+  (viewCategory)="openModal('view', $event)"
+  (editCategory)="openModal('edit', $event)"
+  (deleteCategory)="openModal('delete', $event)"
+></categories-crud-table>
+<categories-crud-pagination
+  [totalElements]="totalElements"
+  [size]="size"
+  [pageNumber]="pageNumber"
+  (pageChanged)="onPageChanged($event)"
+></categories-crud-pagination>
+<categories-crud-form
+  *ngIf="showModal"
+  [showModal]="showModal"
+  [mode]="modalMode"
+  [category]="selectedCategory"
+  [errorMessage]="errorMessage"
+  (close)="closeModal()"
+  (save)="saveCategory($event)"
+  (delete)="deleteCategory($event)"
+></categories-crud-form>

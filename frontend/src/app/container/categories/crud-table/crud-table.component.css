@@ -1,0 +1,102 @@
+.crud-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.crud-table th,
+.crud-table td {
+  border: 1px solid #255283;
+  padding: 8px;
+  text-align: left;
+}
+
+.crud-table th {
+  background-color: #255283;
+  color: #fff;
+}
+
+.crud-table th.sortable {
+  cursor: pointer;
+}
+
+.crud-table th.sortAsc::after {
+  content: ' \25B2'; /* Unicode for up arrow */
+}
+
+.crud-table th.sortDesc::after {
+  content: ' \25BC'; /* Unicode for down arrow */
+}
+
+.crud-table td {
+  vertical-align: top;
+}
+
+/* Fixed widths for columns */
+.crud-table th.id,
+.crud-table td.id {
+  width: 5%;
+}
+
+.crud-table th.title,
+.crud-table td.title {
+  width: 20%;
+}
+
+.crud-table th.description,
+.crud-table td.description {
+  width: 25%;
+}
+
+.crud-table th.createdAt,
+.crud-table td.createdAt {
+  width: 20%;
+}
+
+.crud-table th.updatedAt,
+.crud-table td.updatedAt {
+  width: 20%;
+}
+
+.crud-table th.actions,
+.crud-table td.actions {
+  width: 10%;
+}
+
+.crud-table td.actions {
+  text-align: center;
+}
+
+.crud-table .actions-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.crud-table .action-btn {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.crud-table .view-btn {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.crud-table .edit-btn {
+  background-color: #f39c12;
+  color: #333;
+}
+
+.crud-table .delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.crud-table .action-btn:last-child {
+  margin-right: 0;
+}
