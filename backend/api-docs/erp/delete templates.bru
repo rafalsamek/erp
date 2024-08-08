@@ -1,0 +1,21 @@
+meta {
+  name: delete templates
+  type: http
+  seq: 15
+}
+
+delete {
+  url: http://localhost:8880/api/documents/64
+  body: json
+  auth: none
+}
+
+body:json {
+      {
+        "id": 64,
+        "title": "komornikUpdate",
+        "description": "Prośba o doręczenie korespondencji",
+        "createdAt": "2024-08-08T17:24:28Z",
+        "updatedAt": "2024-08-08T17:25:39Z"
+      }
+}

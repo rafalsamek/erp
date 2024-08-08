@@ -1,0 +1,18 @@
+meta {
+  name: create template
+  type: http
+  seq: 12
+}
+
+post {
+  url: http://localhost:8880/api/templates
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "komornik",
+    "description": "Prośba o doręczenie korespondencji"
+  }
+}

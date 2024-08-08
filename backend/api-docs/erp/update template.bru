@@ -1,0 +1,18 @@
+meta {
+  name: update template
+  type: http
+  seq: 13
+}
+
+put {
+  url: http://localhost:8880/api/templates/64
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "komornikUpdate",
+    "description": "Prośba o doręczenie korespondencji"
+  }
+}
