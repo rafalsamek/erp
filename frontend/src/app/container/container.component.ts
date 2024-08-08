@@ -3,7 +3,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { RouterOutlet } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { DocumentTemplatesComponent } from './document-templates/document-templates.component';
+import { TemplatesComponent } from './templates/templates.component';
 import { SettingsComponent } from './settings/settings.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { SettingsComponent } from './settings/settings.component';
     HomeComponent,
     DocumentsComponent,
     CategoriesComponent,
-    DocumentTemplatesComponent,
+    TemplatesComponent,
     SettingsComponent,
     RouterOutlet,
   ],

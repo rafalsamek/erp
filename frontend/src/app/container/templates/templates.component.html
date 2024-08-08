@@ -1,0 +1,27 @@
+<templates-crud-header
+  (searchChanged)="onSearchChanged($event)"
+  (addTemplate)="openModal('add')"
+></templates-crud-header>
+<templates-crud-table
+  [templatesList]="templatesList"
+  (sortChanged)="onSortChanged($event.sortColumns, $event.sortDirections)"
+  (viewTemplate)="openModal('view', $event)"
+  (editTemplate)="openModal('edit', $event)"
+  (deleteTemplate)="openModal('delete', $event)"
+></templates-crud-table>
+<templates-crud-pagination
+  [totalElements]="totalElements"
+  [size]="size"
+  [pageNumber]="pageNumber"
+  (pageChanged)="onPageChanged($event)"
+></templates-crud-pagination>
+<templates-crud-form
+  *ngIf="showModal"
+  [showModal]="showModal"
+  [mode]="modalMode"
+  [template]="selectedTemplate"
+  [errorMessage]="errorMessage"
+  (close)="closeModal()"
+  (save)="saveTemplate($event)"
+  (delete)="deleteTemplate($event)"
+></templates-crud-form>

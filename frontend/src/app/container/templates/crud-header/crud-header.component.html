@@ -1,0 +1,15 @@
+<div class="crud-header">
+  <h2>Templates</h2>
+  <div class="search-form">
+    <button (click)="add()" class="btn btn-icon" title="Add">
+      <ng-icon name="heroPlus"></ng-icon>
+    </button>
+    <input
+      type="text"
+      placeholder="Search..."
+      [(ngModel)]="searchBy"
+      name="searchBy"
+      (input)="onSearchInputChange($event)"
+    />
+  </div>
+</div>
