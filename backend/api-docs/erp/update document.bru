@@ -5,8 +5,8 @@ meta {
 }
 
 put {
-  url: http://localhost:8880/api/documents/1
-  body: json
+  url: http://localhost:8880/api/documents/65
+  body: multipartForm
   auth: none
 }
 
@@ -15,4 +15,9 @@ body:json {
     "title": "komornik",
     "description": "Prośba o doręczenie korespondencji"
   }
+}
+
+body:multipart-form {
+  file: @file(C:\Users\ewa48\Documents\onetwothree.docx)
+  title: one two three
 }

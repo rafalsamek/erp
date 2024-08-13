@@ -39,15 +39,15 @@ public class TemplateController {
         return ResponseEntity.ok(template);
     }
 
-    @PostMapping
-    public ResponseEntity<TemplateResponse> create(@Valid @RequestBody TemplateRequest request) {
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<TemplateResponse> create(@Valid @ModelAttribute TemplateRequest request) {
         TemplateResponse createdTemplate = templateService.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTemplate);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<TemplateResponse> update(@PathVariable Long id, @Valid @RequestBody TemplateRequest request) {
+    @PutMapping(value = "{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<TemplateResponse> update(@PathVariable Long id, @Valid @ModelAttribute TemplateRequest request) {
         TemplateResponse updatedTemplate = templateService.update(id, request);
 
         return ResponseEntity.ok(updatedTemplate);

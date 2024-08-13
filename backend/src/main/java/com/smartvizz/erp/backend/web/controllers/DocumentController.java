@@ -45,8 +45,8 @@ public class DocumentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDocument);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<DocumentResponse> update(@PathVariable Long id, @Valid @RequestBody DocumentRequest request) {
+    @PutMapping(value = "{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<DocumentResponse> update(@PathVariable Long id, @Valid @ModelAttribute DocumentRequest request) {
         DocumentResponse updatedDocument = documentService.update(id, request);
 
         return ResponseEntity.ok(updatedDocument);

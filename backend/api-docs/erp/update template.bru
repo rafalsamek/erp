@@ -6,7 +6,7 @@ meta {
 
 put {
   url: http://localhost:8880/api/templates/64
-  body: json
+  body: multipartForm
   auth: none
 }
 
@@ -15,4 +15,9 @@ body:json {
     "title": "komornikUpdate",
     "description": "Prośba o doręczenie korespondencji"
   }
+}
+
+body:multipart-form {
+  file: @file(C:\Users\ewa48\Documents\onetwothree.docx)
+  title: one two three
 }

@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private static final Logger logger = LoggerFactory.getLogger(DocumentService.class);
-    private final String uploadDir = "uploads/";
+    private final String uploadDir = "uploads/documents";
 
     public DocumentService(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;

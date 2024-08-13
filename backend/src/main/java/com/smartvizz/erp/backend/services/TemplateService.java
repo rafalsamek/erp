@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,6 +23,7 @@ import java.util.Arrays;
 public class TemplateService {
     private final TemplateRepository templateRepository;
     private static final Logger logger = LoggerFactory.getLogger(TemplateService.class);
+    private final String uploadDir = "uploads/templates";
 
     public TemplateService(TemplateRepository templateRepository) {
         this.templateRepository = templateRepository;
@@ -36,13 +40,11 @@ public class TemplateService {
         ArrayList<Sort.Order> sortOrders = new ArrayList<>();
 
         for (int i = 0; i < sortColumns.length; i++) {
-
             String sortColumn = sortColumns[i];
             Sort.Direction sortDirection =
                     sortDirections.length > i && sortDirections[i].equalsIgnoreCase("desc")
                             ? Sort.Direction.DESC
                             : Sort.Direction.ASC;
-
 
             sortOrders.add(new Sort.Order(sortDirection, sortColumn));
         }
@@ -62,23 +64,54 @@ public class TemplateService {
 
     public TemplateResponse create(TemplateRequest request) {
         TemplateEntity templateEntity = new TemplateEntity(request.title(), request.description());
-        TemplateEntity savedTemplate = templateRepository.save(templateEntity);
 
-        return new TemplateResponse(savedTemplate);
+        return getTemplateResponse(request, templateEntity);
     }
 
     public TemplateResponse update(Long id, TemplateRequest request) {
         TemplateEntity templateEntity = templateRepository.getReferenceById(id);
         templateEntity.setTitle(request.title());
         templateEntity.setDescription(request.description());
+        
+
+        return getTemplateResponse(request, templateEntity);
+    }
+
+
+    public void delete(Long id) {
+        templateRepository.deleteById(id);
+    }
+
+    private TemplateResponse getTemplateResponse(TemplateRequest request, TemplateEntity templateEntity) {
+        if (request.hasFile()) {
+            String filePath = saveFile(request);
+            templateEntity.setFilePath(filePath);
+            templateEntity.setFileName(request.getFileName());
+            templateEntity.setFileType(request.getFileType());
+            templateEntity.setFileSize(request.getFileSize());
+        }
 
         TemplateEntity updatedTemplate = templateRepository.save(templateEntity);
 
         return new TemplateResponse(updatedTemplate);
     }
 
+    private String saveFile(TemplateRequest request) {
+        try {
+            Path targetLocation = null;
+            if (request.hasFile() && request.getFileInputStream() != null) {
+                Path fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
+                Files.createDirectories(fileStorageLocation);
+                String fileName = System.currentTimeMillis() + "_" + request.getFileName();
+                targetLocation = fileStorageLocation.resolve(fileName);
+                Files.copy(request.getFileInputStream(), targetLocation);
 
-    public void delete(Long id) {
-        templateRepository.deleteById(id);
+                return targetLocation.toString();
+            }
+
+            return null;
+        } catch (Exception ex) {
+            throw new RuntimeException("Could not store file " + request.getFileName() + ". Please try again!", ex);
+        }
     }
 }
