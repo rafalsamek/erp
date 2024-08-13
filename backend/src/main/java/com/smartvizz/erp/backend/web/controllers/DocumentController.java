@@ -39,10 +39,9 @@ public class DocumentController {
         return ResponseEntity.ok(document);
     }
 
-    @PostMapping
-    public ResponseEntity<DocumentResponse> create(@Valid @RequestBody DocumentRequest request) {
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<DocumentResponse> create(@Valid @ModelAttribute DocumentRequest request) {
         DocumentResponse createdDocument = documentService.create(request);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDocument);
     }
 

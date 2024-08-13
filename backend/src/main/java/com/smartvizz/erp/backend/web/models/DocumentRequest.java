@@ -2,6 +2,10 @@ package com.smartvizz.erp.backend.web.models;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public record DocumentRequest(
         @NotNull(message = "Title is required")
@@ -9,6 +13,27 @@ public record DocumentRequest(
         String title,
 
         @Size(max = 1000, message = "Description must be up to 1000 characters")
-        String description
+        String description,
+
+        MultipartFile file
 ) {
+        public boolean hasFile() {
+                return file != null && !file.isEmpty();
+        }
+
+        public String getFileName() {
+                return hasFile() ? file.getOriginalFilename() : null;
+        }
+
+        public String getFileType() {
+                return hasFile() ? file.getContentType() : null;
+        }
+
+        public long getFileSize() {
+                return hasFile() ? file.getSize() : 0;
+        }
+
+        public InputStream getFileInputStream() throws IOException {
+            return hasFile() ? file.getInputStream() : null;
+        }
 }
