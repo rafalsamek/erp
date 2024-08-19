@@ -4,4 +4,5 @@ export interface DocumentEntity {
   description?: string;
   createdAt?: string;
   updatedAt?: string;
+  file?: File;
 }
