@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { DocumentEntity } from './document-entity.model';
@@ -104,7 +108,11 @@ export class DocumentService {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred.
       errorMessage = [`Client-side error: ${error.error.message}`];
-    } else if (error.status === 400 && error.error && typeof error.error === 'object') {
+    } else if (
+      error.status === 400 &&
+      error.error &&
+      typeof error.error === 'object'
+    ) {
       // Handle validation errors for 400 Bad Request
       const validationErrors = error.error;
       errorMessage = Object.entries(validationErrors).map(
