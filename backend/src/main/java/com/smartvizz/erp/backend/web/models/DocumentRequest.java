@@ -1,6 +1,7 @@
 package com.smartvizz.erp.backend.web.models;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +16,11 @@ public record DocumentRequest(
         @Size(max = 1000, message = "Description must be up to 1000 characters")
         String description,
 
-        MultipartFile file
+        MultipartFile file,
+
+        @NotNull(message = "Template ID is required")
+        @Min(value = 1, message = "Template ID must be greater than 0")
+                Long templateId
 ) {
         public boolean hasFile() {
                 return file != null && !file.isEmpty();

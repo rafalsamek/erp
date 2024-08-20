@@ -32,6 +32,10 @@ public class DocumentEntity {
     @Column(nullable = true)
     private Long fileSize;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "template_id", nullable = false, columnDefinition = "BIGINT DEFAULT 1")
+    private TemplateEntity template;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;
@@ -40,9 +44,10 @@ public class DocumentEntity {
     @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Instant updatedAt;
 
-    public DocumentEntity(String title, String description) {
+    public DocumentEntity(String title, String description, TemplateEntity template) {
         this.title = title;
         this.description = description;
+        this.template = template;
     }
 
     public DocumentEntity() {
@@ -103,6 +108,14 @@ public class DocumentEntity {
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
+    public TemplateEntity getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(TemplateEntity template) {
+        this.template = template;
+    }
+
 
     public Instant getCreatedAt() {
         return createdAt;

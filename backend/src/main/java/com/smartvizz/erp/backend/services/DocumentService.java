@@ -1,7 +1,9 @@
 package com.smartvizz.erp.backend.services;
 
 import com.smartvizz.erp.backend.data.entities.DocumentEntity;
+import com.smartvizz.erp.backend.data.entities.TemplateEntity;
 import com.smartvizz.erp.backend.data.repositories.DocumentRepository;
+import com.smartvizz.erp.backend.data.repositories.TemplateRepository;
 import com.smartvizz.erp.backend.data.specifications.DocumentSpecifications;
 import com.smartvizz.erp.backend.web.models.DocumentRequest;
 import com.smartvizz.erp.backend.web.models.DocumentResponse;
@@ -22,11 +24,13 @@ import java.util.Arrays;
 @Service
 public class DocumentService {
     private final DocumentRepository documentRepository;
+    private final TemplateRepository templateRepository;
     private static final Logger logger = LoggerFactory.getLogger(DocumentService.class);
     private final String uploadDir = "uploads/documents";
 
-    public DocumentService(DocumentRepository documentRepository) {
+    public DocumentService(DocumentRepository documentRepository, TemplateRepository templateRepository) {
         this.documentRepository = documentRepository;
+        this.templateRepository = templateRepository;
     }
 
     public Page<DocumentResponse> fetchAll(
@@ -62,15 +66,22 @@ public class DocumentService {
     }
 
     public DocumentResponse create(DocumentRequest request) {
-        DocumentEntity documentEntity = new DocumentEntity(request.title(), request.description());
+        TemplateEntity templateEntity = templateRepository.findById(request.templateId())
+                .orElseThrow(() -> new NotFoundException("Template not found with id: " + request.templateId()));
+        DocumentEntity documentEntity = new DocumentEntity(request.title(), request.description(), templateEntity);
 
         return getDocumentResponse(request, documentEntity);
     }
 
     public DocumentResponse update(Long id, DocumentRequest request) {
         DocumentEntity documentEntity = documentRepository.getReferenceById(id);
+
+        TemplateEntity templateEntity = templateRepository.findById(request.templateId())
+                .orElseThrow(() -> new NotFoundException("Template not found with id: " + request.templateId()));
+
         documentEntity.setTitle(request.title());
         documentEntity.setDescription(request.description());
+        documentEntity.setTemplate(templateEntity);
 
         return getDocumentResponse(request, documentEntity);
     }

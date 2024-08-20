@@ -12,6 +12,7 @@ public record DocumentResponse (
         String filePath,
         String fileType,
         Long fileSize,
+        TemplateResponse template,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -24,6 +25,7 @@ public record DocumentResponse (
                 entity.getFilePath(),
                 entity.getFileType(),
                 entity.getFileSize(),
+                new TemplateResponse(entity.getTemplate()),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

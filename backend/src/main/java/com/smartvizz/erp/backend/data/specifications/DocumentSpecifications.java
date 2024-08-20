@@ -1,6 +1,7 @@
 package com.smartvizz.erp.backend.data.specifications;
 
 import com.smartvizz.erp.backend.data.entities.DocumentEntity;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -34,6 +35,13 @@ public class DocumentSpecifications {
             );
             predicateList.add(
                     builder.like(builder.toString(root.get("updatedAt")), "%" + searchBy + "%")
+            );
+            Join<?, ?> walletJoin = root.join("template");
+            predicateList.add(
+                    builder.like(builder.lower(walletJoin.get("name")), "%" + searchBy.toLowerCase() + "%")
+            );
+            predicateList.add(
+                    builder.like(builder.lower(walletJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
 
             return builder.or(predicateList.toArray(new Predicate[]{}));
