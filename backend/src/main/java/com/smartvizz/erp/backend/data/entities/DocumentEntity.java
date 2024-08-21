@@ -33,7 +33,7 @@ public class DocumentEntity {
     private Long fileSize;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "template_id", nullable = false, columnDefinition = "BIGINT DEFAULT 1")
+    @JoinColumn(name = "template_id", nullable = true)
     private TemplateEntity template;
 
     @CreationTimestamp

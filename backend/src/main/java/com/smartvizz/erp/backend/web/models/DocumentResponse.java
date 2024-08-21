@@ -25,7 +25,7 @@ public record DocumentResponse (
                 entity.getFilePath(),
                 entity.getFileType(),
                 entity.getFileSize(),
-                new TemplateResponse(entity.getTemplate()),
+                entity.getTemplate() != null ? new TemplateResponse(entity.getTemplate()) : null,
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

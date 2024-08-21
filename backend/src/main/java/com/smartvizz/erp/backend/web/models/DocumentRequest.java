@@ -18,7 +18,6 @@ public record DocumentRequest(
 
         MultipartFile file,
 
-        @NotNull(message = "Template ID is required")
         @Min(value = 1, message = "Template ID must be greater than 0")
                 Long templateId
 ) {

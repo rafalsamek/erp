@@ -36,12 +36,12 @@ public class DocumentSpecifications {
             predicateList.add(
                     builder.like(builder.toString(root.get("updatedAt")), "%" + searchBy + "%")
             );
-            Join<?, ?> walletJoin = root.join("template");
+            Join<?, ?> templateJoin = root.join("template");
             predicateList.add(
-                    builder.like(builder.lower(walletJoin.get("name")), "%" + searchBy.toLowerCase() + "%")
+                    builder.like(builder.lower(templateJoin.get("name")), "%" + searchBy.toLowerCase() + "%")
             );
             predicateList.add(
-                    builder.like(builder.lower(walletJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
+                    builder.like(builder.lower(templateJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
 
             return builder.or(predicateList.toArray(new Predicate[]{}));

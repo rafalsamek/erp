@@ -66,18 +66,28 @@ public class DocumentService {
     }
 
     public DocumentResponse create(DocumentRequest request) {
-        TemplateEntity templateEntity = templateRepository.findById(request.templateId())
-                .orElseThrow(() -> new NotFoundException("Template not found with id: " + request.templateId()));
+        // Handle nullable templateId
+        TemplateEntity templateEntity = null;
+        if (request.templateId() != null) {
+            templateEntity = templateRepository.findById(request.templateId())
+                    .orElseThrow(() -> new NotFoundException("Template not found with id: " + request.templateId()));
+        }
+
         DocumentEntity documentEntity = new DocumentEntity(request.title(), request.description(), templateEntity);
 
         return getDocumentResponse(request, documentEntity);
     }
 
     public DocumentResponse update(Long id, DocumentRequest request) {
-        DocumentEntity documentEntity = documentRepository.getReferenceById(id);
+        DocumentEntity documentEntity = documentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Document not found with id: " + id));
 
-        TemplateEntity templateEntity = templateRepository.findById(request.templateId())
-                .orElseThrow(() -> new NotFoundException("Template not found with id: " + request.templateId()));
+        // Handle nullable templateId
+        TemplateEntity templateEntity = null;
+        if (request.templateId() != null) {
+            templateEntity = templateRepository.findById(request.templateId())
+                    .orElseThrow(() -> new NotFoundException("Template not found with id: " + request.templateId()));
+        }
 
         documentEntity.setTitle(request.title());
         documentEntity.setDescription(request.description());
