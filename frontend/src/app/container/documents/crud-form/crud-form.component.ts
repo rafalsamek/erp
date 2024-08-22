@@ -16,6 +16,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DocumentEntity } from '../document-entity.model';
+import { TemplateEntity } from '../template-entity.model';
+import { TemplateService } from '../template.service';
 
 @Component({
   selector: 'documents-crud-form',
@@ -34,23 +36,30 @@ export class CrudFormComponent implements OnInit, OnChanges {
   @Output() delete = new EventEmitter<DocumentEntity>();
 
   form: FormGroup;
+  templates: TemplateEntity[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private templateService: TemplateService
+  ) {
     this.form = this.fb.group({
       id: [0, Validators.required],
       title: ['', Validators.required],
       description: [''],
       file: [null],
+      template: [null, Validators.required],
     });
   }
 
   ngOnInit() {
-    this.initializeForm();
+    this.loadTemplates();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['document'] && changes['document'].currentValue) {
-      this.initializeForm();
+      if (this.templates.length > 0) {
+        this.patchFormWithDocument(); // Patch the form with the document data once templates are loaded
+      }
     }
     if (changes['errorMessage'] && changes['errorMessage'].currentValue) {
       console.log(
@@ -60,13 +69,26 @@ export class CrudFormComponent implements OnInit, OnChanges {
     }
   }
 
-  initializeForm() {
+  loadTemplates() {
+    this.templateService.getTemplates(0, 1000, 'id', 'asc', '').subscribe({
+      next: (response) => {
+        this.templates = response.content;
+
+        // After templates are loaded, patch the form with document data
+        this.patchFormWithDocument();
+      },
+      error: (err) => console.error('Failed to load templates', err),
+    });
+  }
+
+  patchFormWithDocument() {
     if (this.document) {
-      this.form.setValue({
+      this.form.patchValue({
         id: this.document.id,
         title: this.document.title,
         description: this.document.description || '',
         file: null,
+        template: this.document.template?.id || null,
       });
     } else {
       this.form.reset({
@@ -74,6 +96,7 @@ export class CrudFormComponent implements OnInit, OnChanges {
         title: '',
         description: '',
         file: null,
+        template: null,
       });
     }
 
@@ -112,7 +135,10 @@ export class CrudFormComponent implements OnInit, OnChanges {
     if (this.form.valid) {
       const formValue = this.form.value;
       const documentToSave: DocumentEntity = {
-        ...formValue,
+        id: formValue.id,
+        title: formValue.title,
+        description: formValue.description || '',
+        templateId: formValue.template,
         file: formValue.file,
       };
       this.save.emit(documentToSave);

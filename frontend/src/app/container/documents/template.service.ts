@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, throwError } from 'rxjs';
-import { DocumentEntity } from './document-entity.model';
 import { catchError } from 'rxjs/operators';
+import { TemplateEntity } from './template-entity.model';
 
-export interface DocumentResponse {
+export interface TemplateResponse {
   totalPages: number;
   totalElements: number;
   size: number;
-  content: DocumentEntity[];
+  content: TemplateEntity[];
   number: number;
   sort: {
     empty: boolean;
@@ -41,85 +37,59 @@ export interface DocumentResponse {
 @Injectable({
   providedIn: 'root',
 })
-export class DocumentService {
-  private apiUrl = `${environment.apiUrl}/api/documents`;
+export class TemplateService {
+  private apiUrl = `${environment.apiUrl}/api/templates`;
 
   constructor(private httpClient: HttpClient) {
     console.log(`API URL: ${this.apiUrl}`);
   }
 
-  getDocuments(
+  getTemplates(
     page: number,
     size: number,
     sortColumns: string,
     sortDirections: string,
     searchBy: string
-  ): Observable<DocumentResponse> {
+  ): Observable<TemplateResponse> {
     return this.httpClient
-      .get<DocumentResponse>(
+      .get<TemplateResponse>(
         `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
       )
       .pipe(catchError(this.handleError));
   }
 
-  addDocument(document: DocumentEntity): Observable<DocumentEntity> {
-    const formData = this.buildFormData(document);
-
+  addTemplate(template: TemplateEntity): Observable<TemplateEntity> {
     return this.httpClient
-      .post<DocumentEntity>(this.apiUrl, formData)
+      .post<TemplateEntity>(this.apiUrl, template)
       .pipe(catchError(this.handleError));
   }
 
-  updateDocument(document: DocumentEntity): Observable<DocumentEntity> {
-    const formData = this.buildFormData(document);
-
+  updateTemplate(template: TemplateEntity): Observable<TemplateEntity> {
     return this.httpClient
-      .put<DocumentEntity>(`${this.apiUrl}/${document.id}`, formData)
+      .put<TemplateEntity>(`${this.apiUrl}/${template.id}`, template)
       .pipe(catchError(this.handleError));
   }
 
-  getDocument(id: number): Observable<DocumentEntity> {
+  getTemplate(id: number): Observable<TemplateEntity> {
     return this.httpClient
-      .get<DocumentEntity>(`${this.apiUrl}/${id}`)
+      .get<TemplateEntity>(`${this.apiUrl}/${id}`)
       .pipe(catchError(this.handleError));
   }
 
-  deleteDocument(documentId: number): Observable<void> {
+  deleteTemplate(templateId: number): Observable<void> {
     return this.httpClient
-      .delete<void>(`${this.apiUrl}/${documentId}`)
+      .delete<void>(`${this.apiUrl}/${templateId}`)
       .pipe(catchError(this.handleError));
-  }
-
-  private buildFormData(document: DocumentEntity): FormData {
-    const formData = new FormData();
-    formData.append('id', document.id.toString());
-    formData.append('title', document.title);
-    if (document.description) {
-      formData.append('description', document.description);
-    }
-    if (document.templateId) {
-      formData.append('templateId', document.templateId.toString());
-    }
-    if (document.file) {
-      formData.append('file', document.file);
-    }
-    return formData;
   }
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string[] = ['An unknown error occurred!'];
     if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred.
-      errorMessage = [`Client-side error: ${error.error.message}`];
-    } else if (
-      error.status === 400 &&
-      error.error &&
-      typeof error.error === 'object'
-    ) {
-      // Handle validation errors for 400 Bad Request
+      errorMessage = [`Error: ${error.error.message}`];
+    } else if (error.error && typeof error.error === 'object') {
       const validationErrors = error.error;
       errorMessage = Object.entries(validationErrors).map(
-        ([field, msg]) => `${field}: ${msg}`
+        ([field, msg]) => `${msg}`
       );
     } else {
       errorMessage = [

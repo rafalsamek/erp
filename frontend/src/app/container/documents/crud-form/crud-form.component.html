@@ -57,6 +57,29 @@
               class="form-control"
             />
           </div>
+          <div class="form-group">
+            <label for="template">Template</label>
+            <select
+              id="template"
+              formControlName="template"
+              class="form-control"
+            >
+              <option *ngFor="let template of templates" [value]="template.id">
+                {{ template.title }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                form.get('template')?.touched && form.get('template')?.invalid
+              "
+            >
+              <small
+                class="text-danger"
+                *ngIf="form.get('template')?.errors?.['required']"
+                >Template is required.</small
+              >
+            </div>
+          </div>
         </form>
         <div *ngIf="mode === 'delete'" class="alert alert-warning">
           Are you sure you want to delete the document titled
