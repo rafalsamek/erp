@@ -1,3 +1,5 @@
+USE erp;
+
 INSERT INTO categories (name, description) VALUES ('Reklamacje', 'pisma wysyłane w sprawie reklamacji');
 INSERT INTO categories (name, description) VALUES ('Klienci', 'pisma wysyłane do klientów');
 INSERT INTO categories (name, description) VALUES ('Administracyjne', 'pisma wewnętrzne administracyjne');

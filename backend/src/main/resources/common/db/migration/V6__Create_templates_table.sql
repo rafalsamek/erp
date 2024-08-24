@@ -1,3 +1,5 @@
+USE erp;
+
 CREATE TABLE templates (
                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
                           title VARCHAR(255) NOT NULL,

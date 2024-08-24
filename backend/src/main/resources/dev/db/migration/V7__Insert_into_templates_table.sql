@@ -1,3 +1,5 @@
+USE erp;
+
 INSERT INTO templates (title, description) VALUES ('Wniosek o ustanowienie kuratora dla osoby nieznanej z miejsca pobytu, SR-KRO', 'Wniosek o ustanowienie kuratora dla osoby nieznanej z miejsca pobytu, skierowany do Sądu Rejonowego dla Krakowa-Krowodrzy');
 INSERT INTO templates (title, description) VALUES ('Pozew o zapłatę, SR-KRO, 2 fa-vat,', 'Pozew o zapłatę do Sądu Rejonowego dla Krakowa-Krowodrzy, dotyczący dwóch faktur VAT');
 INSERT INTO templates (title, description) VALUES ('Wniosek o zwolnienie od kosztów sądowych, Krowodrza,', 'Wniosek o zwolnienie od kosztów sądowych, skierowany do Sądu Rejonowego dla Krakowa-Krowodrzy');

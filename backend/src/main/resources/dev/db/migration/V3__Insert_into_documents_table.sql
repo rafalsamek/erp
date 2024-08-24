@@ -1,3 +1,5 @@
+USE erp;
+
 INSERT INTO documents (title, description) VALUES ('Wniosek o odpis aktu urodzenia', 'wniosek o uzyskanie odpisu aktu urodzenia w celu realizacji dokumentacji administracyjnej');
 INSERT INTO documents (title, description) VALUES ('Wniosek o wydanie zaświadczenia o zameldowaniu', 'wniosek o wydanie zaświadczenia potwierdzającego zameldowanie w danym miejscu');
 INSERT INTO documents (title, description) VALUES ('Wniosek o przyznanie zasiłku rodzinnego', 'wniosek o przyznanie zasiłku rodzinnego na podstawie dochodów gospodarstwa domowego');

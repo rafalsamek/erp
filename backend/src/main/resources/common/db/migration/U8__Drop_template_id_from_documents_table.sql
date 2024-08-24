@@ -1,3 +1,5 @@
+USE erp;
+
 ALTER TABLE documents
     DROP FOREIGN KEY fk_template_id;
 
