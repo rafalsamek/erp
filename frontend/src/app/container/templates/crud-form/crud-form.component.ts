@@ -40,6 +40,7 @@ export class CrudFormComponent implements OnInit, OnChanges {
       id: [0, Validators.required],
       title: ['', Validators.required],
       description: [''],
+      file: [null],
     });
   }
 
@@ -48,7 +49,7 @@ export class CrudFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['template'] && !changes['template'].firstChange) {
+    if (changes['template'] && !changes['template'].currentValue) {
       this.initializeForm();
     }
     if (changes['errorMessage'] && changes['errorMessage'].currentValue) {
@@ -65,12 +66,14 @@ export class CrudFormComponent implements OnInit, OnChanges {
         id: this.template.id,
         title: this.template.title,
         description: this.template.description || '',
+        file: null,
       });
     } else {
       this.form.reset({
         id: 0,
         title: '',
         description: '',
+        file: null,
       });
     }
 
@@ -90,6 +93,14 @@ export class CrudFormComponent implements OnInit, OnChanges {
     this.showModal = false;
     this.close.emit();
   }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input && input.files && input.files.length > 0) {
+      const file = input.files?.[0];
+      this.form.patchValue({ file: file });
+      this.form.get('file')?.updateValueAndValidity();
+    }
+  }
 
   onSubmit() {
     if (this.mode === 'delete' && this.template) {
@@ -99,8 +110,9 @@ export class CrudFormComponent implements OnInit, OnChanges {
 
     if (this.form.valid) {
       const formValue = this.form.value;
-      const templateToSave = {
+      const templateToSave: TemplateEntity = {
         ...formValue,
+        file: formValue.file,
       };
       this.save.emit(templateToSave);
     } else {
