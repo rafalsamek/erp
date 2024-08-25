@@ -12,7 +12,7 @@ import java.time.Instant;
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "INT UNSIGNED")
     private Long id;
 
     @Column(nullable = false, length = 255)

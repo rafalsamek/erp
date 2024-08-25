@@ -29,7 +29,7 @@ public record TemplateRequest(
                 return hasFile() ? file.getContentType() : null;
         }
 
-        public long getFileSize() {
+        public Long getFileSize() {
                 return hasFile() ? file.getSize() : 0;
         }
 

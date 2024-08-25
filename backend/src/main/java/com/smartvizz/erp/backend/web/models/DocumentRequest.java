@@ -19,7 +19,7 @@ public record DocumentRequest(
         MultipartFile file,
 
         @Min(value = 1, message = "Template ID must be greater than 0")
-                Long templateId
+        Long templateId
 ) {
         public boolean hasFile() {
                 return file != null && !file.isEmpty();
@@ -33,7 +33,7 @@ public record DocumentRequest(
                 return hasFile() ? file.getContentType() : null;
         }
 
-        public long getFileSize() {
+        public Long getFileSize() {
                 return hasFile() ? file.getSize() : 0;
         }
 

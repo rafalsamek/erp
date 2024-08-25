@@ -11,7 +11,7 @@ import java.time.Instant;
 public class DocumentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false, columnDefinition = "BIGINT UNSIGNED")
     private Long id;
 
     @Column(nullable = false, length = 255)
@@ -29,11 +29,11 @@ public class DocumentEntity {
     @Column(nullable = true, length = 100)
     private String fileType;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "BIGINT UNSIGNED")
     private Long fileSize;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "template_id", nullable = true)
+    @JoinColumn(name = "template_id", nullable = true, columnDefinition = "BIGINT UNSIGNED")
     private TemplateEntity template;
 
     @CreationTimestamp

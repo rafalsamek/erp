@@ -11,7 +11,7 @@ import java.time.Instant;
 public class TemplateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false, columnDefinition = "BIGINT UNSIGNED")
     private Long id;
 
     @Column(nullable = false, length = 255)
@@ -29,7 +29,7 @@ public class TemplateEntity {
     @Column(nullable = true, length = 100)
     private String fileType;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "BIGINT UNSIGNED")
     private Long fileSize;
 
     @CreationTimestamp
