@@ -4,4 +4,5 @@ export interface TemplateEntity {
   description?: string;
   createdAt?: string;
   updatedAt?: string;
+  file?: File;
 }

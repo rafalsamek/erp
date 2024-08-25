@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { TemplateEntity } from './template-entity.model';
@@ -59,14 +63,18 @@ export class TemplateService {
   }
 
   addTemplate(template: TemplateEntity): Observable<TemplateEntity> {
+    const formData = this.buildFormData(template);
+
     return this.httpClient
-      .post<TemplateEntity>(this.apiUrl, template)
+      .post<TemplateEntity>(this.apiUrl, formData)
       .pipe(catchError(this.handleError));
   }
 
   updateTemplate(template: TemplateEntity): Observable<TemplateEntity> {
+    const formData = this.buildFormData(template);
+
     return this.httpClient
-      .put<TemplateEntity>(`${this.apiUrl}/${template.id}`, template)
+      .put<TemplateEntity>(`${this.apiUrl}/${template.id}`, formData)
       .pipe(catchError(this.handleError));
   }
 
@@ -82,16 +90,33 @@ export class TemplateService {
       .pipe(catchError(this.handleError));
   }
 
+  private buildFormData(template: TemplateEntity): FormData {
+    const formData = new FormData();
+    formData.append('id', template.id.toString());
+    formData.append('title', template.title);
+    if (template.description) {
+      formData.append('description', template.description);
+    }
+    if (template.file) {
+      formData.append('file', template.file);
+    }
+    return formData;
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string[] = ['An unknown error occurred!'];
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred.
-      errorMessage = [`Error: ${error.error.message}`];
-    } else if (error.error && typeof error.error === 'object') {
-      // Handle validation errors
+      errorMessage = [`Client-side error: ${error.error.message}`];
+    } else if (
+      error.status === 400 &&
+      error.error &&
+      typeof error.error === 'object'
+    ) {
+      // Handle validation errors for 400 Bad Request
       const validationErrors = error.error;
       errorMessage = Object.entries(validationErrors).map(
-        ([field, msg]) => `${msg}`
+        ([field, msg]) => `${field}: ${msg}`
       );
     } else {
       errorMessage = [
