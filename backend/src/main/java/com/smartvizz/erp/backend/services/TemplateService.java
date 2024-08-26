@@ -5,6 +5,7 @@ import com.smartvizz.erp.backend.data.repositories.TemplateRepository;
 import com.smartvizz.erp.backend.data.specifications.TemplateSpecifications;
 import com.smartvizz.erp.backend.web.models.TemplateRequest;
 import com.smartvizz.erp.backend.web.models.TemplateResponse;
+import com.smartvizz.erp.backend.web.models.PageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,9 +19,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class TemplateService {
+
     private final TemplateRepository templateRepository;
     private static final Logger logger = LoggerFactory.getLogger(TemplateService.class);
     private final String uploadDir = "uploads/templates";
@@ -29,7 +32,7 @@ public class TemplateService {
         this.templateRepository = templateRepository;
     }
 
-    public Page<TemplateResponse> fetchAll(
+    public PageDTO<TemplateResponse> fetchAll(
             int page,
             int size,
             String[] sortColumns,
@@ -37,50 +40,73 @@ public class TemplateService {
             String searchBy
     ) {
         logger.debug("sortColumns: " + Arrays.toString(sortColumns) + ", sortDirections: " + Arrays.toString(sortDirections));
-        ArrayList<Sort.Order> sortOrders = new ArrayList<>();
 
+        // Validate page and size inputs
+        page = Math.max(page, 0);
+        size = Math.max(size, 1);
+
+        // Create sort orders from the provided columns and directions
+        List<Sort.Order> sortOrders = new ArrayList<>();
         for (int i = 0; i < sortColumns.length; i++) {
             String sortColumn = sortColumns[i];
             Sort.Direction sortDirection =
-                    sortDirections.length > i && sortDirections[i].equalsIgnoreCase("desc")
+                    (sortDirections.length > i && sortDirections[i].equalsIgnoreCase("desc"))
                             ? Sort.Direction.DESC
                             : Sort.Direction.ASC;
-
             sortOrders.add(new Sort.Order(sortDirection, sortColumn));
         }
 
+        // Create Pageable instance
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrders));
 
-        return templateRepository.findAll(TemplateSpecifications.searchTemplate(searchBy), pageable)
-                .map(TemplateResponse::new);
+        // Fetch and map entities to DTOs
+        Page<TemplateEntity> templatePage = templateRepository.findAll(TemplateSpecifications.searchTemplate(searchBy), pageable);
+        List<TemplateResponse> templateResponses = templatePage.map(TemplateResponse::new).getContent();
+
+        // Create and return PageDTO
+        return new PageDTO<>(
+                templateResponses,
+                templatePage.getNumber(),
+                templatePage.getSize(),
+                templatePage.getTotalElements(),
+                templatePage.getTotalPages()
+        );
     }
 
-    public TemplateResponse fetchOne(Long id) {
-             return templateRepository.findById(id)
-                     .map(TemplateResponse::new)
-                     .orElseThrow(NotFoundException::new);
-         }
+        public TemplateResponse fetchOne (Long id){
+            return templateRepository.findById(id)
+                    .map(TemplateResponse::new)
+                    .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
+        }
 
 
-    public TemplateResponse create(TemplateRequest request) {
-        TemplateEntity templateEntity = new TemplateEntity(request.title(), request.description());
+        public TemplateResponse create (TemplateRequest request){
+            TemplateEntity templateEntity = new TemplateEntity(
+                    request.title(),
+                    request.description()
+            );
 
-        return getTemplateResponse(request, templateEntity);
-    }
+            return getTemplateResponse(request, templateEntity);
+        }
 
-    public TemplateResponse update(Long id, TemplateRequest request) {
-        TemplateEntity templateEntity = templateRepository.getReferenceById(id);
-        templateEntity.setTitle(request.title());
-        templateEntity.setDescription(request.description());
-        
+        public TemplateResponse update (Long id, TemplateRequest request){
+            TemplateEntity templateEntity = templateRepository.findById(id)
+                    .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
 
-        return getTemplateResponse(request, templateEntity);
-    }
+            templateEntity.setTitle(request.title());
+            templateEntity.setDescription(request.description());
 
 
-    public void delete(Long id) {
-        templateRepository.deleteById(id);
-    }
+            return getTemplateResponse(request, templateEntity);
+        }
+
+
+        public void delete (Long id){
+            if (!templateRepository.existsById(id)) {
+                throw new NotFoundException("Template not found with id: " + id);
+            }
+            templateRepository.deleteById(id);
+        }
 
     private TemplateResponse getTemplateResponse(TemplateRequest request, TemplateEntity templateEntity) {
         if (request.hasFile()) {

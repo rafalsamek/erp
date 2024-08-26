@@ -7,6 +7,7 @@ import com.smartvizz.erp.backend.data.repositories.TemplateRepository;
 import com.smartvizz.erp.backend.data.specifications.DocumentSpecifications;
 import com.smartvizz.erp.backend.web.models.DocumentRequest;
 import com.smartvizz.erp.backend.web.models.DocumentResponse;
+import com.smartvizz.erp.backend.web.models.PageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,9 +21,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class DocumentService {
+    
     private final DocumentRepository documentRepository;
     private final TemplateRepository templateRepository;
     private static final Logger logger = LoggerFactory.getLogger(DocumentService.class);
@@ -33,7 +36,7 @@ public class DocumentService {
         this.templateRepository = templateRepository;
     }
 
-    public Page<DocumentResponse> fetchAll(
+    public PageDTO<DocumentResponse> fetchAll(
             int page,
             int size,
             String[] sortColumns,
@@ -41,28 +44,44 @@ public class DocumentService {
             String searchBy
     ) {
         logger.debug("sortColumns: " + Arrays.toString(sortColumns) + ", sortDirections: " + Arrays.toString(sortDirections));
-        ArrayList<Sort.Order> sortOrders = new ArrayList<>();
 
+        // Validate page and size inputs
+        page = Math.max(page, 0);
+        size = Math.max(size, 1);
+
+
+        // Create sort orders from the provided columns and directions
+        List<Sort.Order> sortOrders = new ArrayList<>();
         for (int i = 0; i < sortColumns.length; i++) {
             String sortColumn = sortColumns[i];
             Sort.Direction sortDirection =
-                    sortDirections.length > i && sortDirections[i].equalsIgnoreCase("desc")
+                    (sortDirections.length > i && sortDirections[i].equalsIgnoreCase("desc"))
                             ? Sort.Direction.DESC
                             : Sort.Direction.ASC;
-
             sortOrders.add(new Sort.Order(sortDirection, sortColumn));
         }
-
+        
+        // Create Pageable instance
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrders));
+        
+        // Fetch and map entities to DTOs
+        Page<DocumentEntity> documentPage = documentRepository.findAll(DocumentSpecifications.searchDocument(searchBy), pageable);
+        List<DocumentResponse> documentResponses = documentPage.map(DocumentResponse::new).getContent();
 
-        return documentRepository.findAll(DocumentSpecifications.searchDocument(searchBy), pageable)
-                .map(DocumentResponse::new);
+        // Create and return PageDTO
+        return new PageDTO<>(
+                documentResponses,
+                documentPage.getNumber(),
+                documentPage.getSize(),
+                documentPage.getTotalElements(),
+                documentPage.getTotalPages()
+        );
     }
 
     public DocumentResponse fetchOne(Long id) {
         return documentRepository.findById(id)
                 .map(DocumentResponse::new)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException("Document not found with id: " + id));
     }
 
     public DocumentResponse create(DocumentRequest request) {
@@ -73,7 +92,11 @@ public class DocumentService {
                     .orElseThrow(() -> new NotFoundException("Template not found with id: " + request.templateId()));
         }
 
-        DocumentEntity documentEntity = new DocumentEntity(request.title(), request.description(), templateEntity);
+        DocumentEntity documentEntity = new DocumentEntity(
+                request.title(),
+                request.description(),
+                templateEntity
+        );
 
         return getDocumentResponse(request, documentEntity);
     }
@@ -97,6 +120,9 @@ public class DocumentService {
     }
 
     public void delete(Long id) {
+        if (!documentRepository.existsById(id)) {
+            throw new NotFoundException("Document not found with id: " + id);
+        }
         documentRepository.deleteById(id);
     }
 

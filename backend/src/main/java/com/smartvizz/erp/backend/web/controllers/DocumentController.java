@@ -3,6 +3,7 @@ package com.smartvizz.erp.backend.web.controllers;
 import com.smartvizz.erp.backend.services.DocumentService;
 import com.smartvizz.erp.backend.web.models.DocumentRequest;
 import com.smartvizz.erp.backend.web.models.DocumentResponse;
+import com.smartvizz.erp.backend.web.models.PageDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/documents")
 @CrossOrigin(origins = "http://localhost:8888")
 public class DocumentController {
+
     private final DocumentService documentService;
 
     public DocumentController(DocumentService documentService) {
@@ -20,14 +22,14 @@ public class DocumentController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DocumentResponse>> list(
+    public ResponseEntity<PageDTO<DocumentResponse>> list(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "25") int size,
             @RequestParam(defaultValue = "updatedAt,title") String[] sortColumns,
             @RequestParam(defaultValue = "asc,asc") String[] sortDirections,
             @RequestParam(defaultValue = "") String searchBy
     ) {
-        Page<DocumentResponse> documents = documentService.fetchAll(page, size, sortColumns, sortDirections, searchBy);
+        PageDTO<DocumentResponse> documents = documentService.fetchAll(page, size, sortColumns, sortDirections, searchBy);
 
         return ResponseEntity.ok(documents);
     }
@@ -48,14 +50,12 @@ public class DocumentController {
     @PutMapping(value = "{id}", consumes = {"multipart/form-data"})
     public ResponseEntity<DocumentResponse> update(@PathVariable Long id, @Valid @ModelAttribute DocumentRequest request) {
         DocumentResponse updatedDocument = documentService.update(id, request);
-
         return ResponseEntity.ok(updatedDocument);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         documentService.delete(id);
-
         return ResponseEntity.noContent().build();
     }
 }
