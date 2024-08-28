@@ -1,7 +1,9 @@
 package com.smartvizz.erp.backend.services;
 
+import com.smartvizz.erp.backend.data.entities.CategoryEntity;
 import com.smartvizz.erp.backend.data.entities.DocumentEntity;
 import com.smartvizz.erp.backend.data.entities.TemplateEntity;
+import com.smartvizz.erp.backend.data.repositories.CategoryRepository;
 import com.smartvizz.erp.backend.data.repositories.DocumentRepository;
 import com.smartvizz.erp.backend.data.repositories.TemplateRepository;
 import com.smartvizz.erp.backend.data.specifications.DocumentSpecifications;
@@ -22,18 +24,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DocumentService {
-    
+
     private final DocumentRepository documentRepository;
     private final TemplateRepository templateRepository;
+    private final CategoryRepository categoryRepository;
     private static final Logger logger = LoggerFactory.getLogger(DocumentService.class);
     private final String uploadDir = "uploads/documents";
 
-    public DocumentService(DocumentRepository documentRepository, TemplateRepository templateRepository) {
+    public DocumentService(DocumentRepository documentRepository, TemplateRepository templateRepository, CategoryRepository categoryRepository) {
         this.documentRepository = documentRepository;
         this.templateRepository = templateRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public PageDTO<DocumentResponse> fetchAll(
@@ -49,7 +55,6 @@ public class DocumentService {
         page = Math.max(page, 0);
         size = Math.max(size, 1);
 
-
         // Create sort orders from the provided columns and directions
         List<Sort.Order> sortOrders = new ArrayList<>();
         for (int i = 0; i < sortColumns.length; i++) {
@@ -60,10 +65,10 @@ public class DocumentService {
                             : Sort.Direction.ASC;
             sortOrders.add(new Sort.Order(sortDirection, sortColumn));
         }
-        
+
         // Create Pageable instance
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrders));
-        
+
         // Fetch and map entities to DTOs
         Page<DocumentEntity> documentPage = documentRepository.findAll(DocumentSpecifications.searchDocument(searchBy), pageable);
         List<DocumentResponse> documentResponses = documentPage.map(DocumentResponse::new).getContent();
@@ -98,6 +103,15 @@ public class DocumentService {
                 templateEntity
         );
 
+        // Handle categories
+        if (request.categoryIds() != null) {
+            List<CategoryEntity> categories = request.categoryIds().stream()
+                    .map(categoryId -> categoryRepository.findById(categoryId)
+                            .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
+                    .collect(Collectors.toList());
+            documentEntity.setCategories(new ArrayList<>(categories));
+        }
+
         return getDocumentResponse(request, documentEntity);
     }
 
@@ -115,6 +129,15 @@ public class DocumentService {
         documentEntity.setTitle(request.title());
         documentEntity.setDescription(request.description());
         documentEntity.setTemplate(templateEntity);
+
+        // Handle categories
+        if (request.categoryIds() != null) {
+            List<CategoryEntity> categories = request.categoryIds().stream()
+                    .map(categoryId -> categoryRepository.findById(categoryId)
+                            .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
+                    .collect(Collectors.toList());
+            documentEntity.setCategories(new ArrayList<>(categories));
+        }
 
         return getDocumentResponse(request, documentEntity);
     }

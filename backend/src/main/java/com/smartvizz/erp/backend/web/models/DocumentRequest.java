@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public record DocumentRequest(
         @NotNull(message = "Title is required")
@@ -19,7 +20,9 @@ public record DocumentRequest(
         MultipartFile file,
 
         @Min(value = 1, message = "Template ID must be greater than 0")
-        Long templateId
+        Long templateId,
+
+        List<Long> categoryIds
 ) {
         public boolean hasFile() {
                 return file != null && !file.isEmpty();
@@ -38,6 +41,6 @@ public record DocumentRequest(
         }
 
         public InputStream getFileInputStream() throws IOException {
-            return hasFile() ? file.getInputStream() : null;
+                return hasFile() ? file.getInputStream() : null;
         }
 }
