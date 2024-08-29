@@ -5,10 +5,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
-
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,17 +30,12 @@ public class CategoryEntity {
     @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Instant updatedAt;
 
+    @ManyToMany(mappedBy = "categories")
+    private List<DocumentEntity> documents = new ArrayList<>();
+
+    // Getters and Setters
     public Long getId() {
         return id;
-    }
-
-    public CategoryEntity(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public CategoryEntity() {
-
     }
 
     public void setId(Long id) {
@@ -76,5 +72,22 @@ public class CategoryEntity {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<DocumentEntity> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<DocumentEntity> documents) {
+        this.documents = documents;
+    }
+
+    // Constructors
+    public CategoryEntity(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public CategoryEntity() {
     }
 }
