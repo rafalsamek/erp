@@ -1,5 +1,8 @@
 package com.smartvizz.erp.backend.data.specifications;
+
 import com.smartvizz.erp.backend.data.entities.CategoryEntity;
+import com.smartvizz.erp.backend.data.entities.DocumentEntity;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -14,29 +17,30 @@ public class CategorySpecifications {
     public static Specification<CategoryEntity> searchCategory(String searchBy) {
         return (root, query, builder) -> {
             if (searchBy == null || searchBy.isEmpty()) {
-                // Return an empty predicate list if searchBy is null or empty
                 return builder.conjunction();
             }
-            List<Predicate> predicateList = new ArrayList<>();
 
-            predicateList.add(
-                    builder.equal(builder.toString(root.get("id")), searchBy)
-            );
-            predicateList.add(
+            List<Predicate> predicates = new ArrayList<>();
+
+            // Add predicates for CategoryEntity fields
+            predicates.add(
                     builder.like(builder.lower(root.get("name")), "%" + searchBy.toLowerCase() + "%")
             );
-            predicateList.add(
+            predicates.add(
                     builder.like(builder.lower(root.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
-            predicateList.add(
-                    builder.like(builder.toString(root.get("createdAt")), "%" + searchBy + "%")
+
+            // Join with DocumentEntity and add predicates for DocumentEntity fields
+            Join<CategoryEntity, DocumentEntity> documentJoin = root.join("documents");
+            predicates.add(
+                    builder.like(builder.lower(documentJoin.get("title")), "%" + searchBy.toLowerCase() + "%")
             );
-            predicateList.add(
-                    builder.like(builder.toString(root.get("updatedAt")), "%" + searchBy + "%")
+            predicates.add(
+                    builder.like(builder.lower(documentJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
 
-            return builder.or(predicateList.toArray(new Predicate[]{}));
+            // Combine all predicates using OR
+            return builder.or(predicates.toArray(new Predicate[0]));
         };
     }
-
 }
