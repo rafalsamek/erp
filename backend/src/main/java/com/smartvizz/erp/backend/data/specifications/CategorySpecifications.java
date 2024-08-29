@@ -2,6 +2,7 @@ package com.smartvizz.erp.backend.data.specifications;
 
 import com.smartvizz.erp.backend.data.entities.CategoryEntity;
 import com.smartvizz.erp.backend.data.entities.DocumentEntity;
+import com.smartvizz.erp.backend.data.entities.TemplateEntity;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,6 +40,14 @@ public class CategorySpecifications {
                     builder.like(builder.lower(documentJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
 
+        // Join with TemplateEntity and add predicates for TemplateEntity fields
+        Join<CategoryEntity, TemplateEntity> templateJoin = root.join("templates");
+        predicates.add(
+                builder.like(builder.lower(templateJoin.get("title")), "%" + searchBy.toLowerCase() + "%")
+        );
+        predicates.add(
+                builder.like(builder.lower(templateJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
+        );
             // Combine all predicates using OR
             return builder.or(predicates.toArray(new Predicate[0]));
         };

@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "templates")
@@ -31,6 +33,15 @@ public class TemplateEntity {
 
     @Column(nullable = true, columnDefinition = "BIGINT UNSIGNED")
     private Long fileSize;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "templates_categories",
+            joinColumns = @JoinColumn(name = "template_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<CategoryEntity> categories = new ArrayList<>();
+
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
@@ -104,6 +115,14 @@ public class TemplateEntity {
 
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public List<CategoryEntity> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<CategoryEntity> categories) {
+        this.categories = categories;
     }
 
     public Instant getCreatedAt() {

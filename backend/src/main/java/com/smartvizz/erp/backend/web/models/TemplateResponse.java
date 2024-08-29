@@ -3,6 +3,8 @@ package com.smartvizz.erp.backend.web.models;
 
 import com.smartvizz.erp.backend.data.entities.TemplateEntity;
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public record TemplateResponse (
         Long id,
@@ -12,6 +14,7 @@ public record TemplateResponse (
         String filePath,
         String fileType,
         Long fileSize,
+        List<CategoryResponse> categories, // Added field for categories
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -24,6 +27,9 @@ public record TemplateResponse (
                 entity.getFilePath(),
                 entity.getFileType(),
                 entity.getFileSize(),
+                entity.getCategories() != null ? entity.getCategories().stream()
+                        .map(CategoryResponse::new)
+                        .collect(Collectors.toList()) : null,
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

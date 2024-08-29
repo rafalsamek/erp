@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public record TemplateRequest(
         @NotNull(message = "Title is required")
@@ -15,7 +16,9 @@ public record TemplateRequest(
         @Size(max = 1000, message = "Description must be up to 1000 characters")
         String description,
 
-        MultipartFile file
+        MultipartFile file,
+
+        List<Long> categoryIds
 ) {
         public boolean hasFile() {
                 return file != null && !file.isEmpty();

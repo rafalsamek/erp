@@ -1,7 +1,9 @@
 package com.smartvizz.erp.backend.services;
 
+import com.smartvizz.erp.backend.data.entities.CategoryEntity;
 import com.smartvizz.erp.backend.data.entities.TemplateEntity;
 import com.smartvizz.erp.backend.data.repositories.TemplateRepository;
+import com.smartvizz.erp.backend.data.repositories.CategoryRepository;
 import com.smartvizz.erp.backend.data.specifications.TemplateSpecifications;
 import com.smartvizz.erp.backend.web.models.TemplateRequest;
 import com.smartvizz.erp.backend.web.models.TemplateResponse;
@@ -20,16 +22,20 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TemplateService {
 
     private final TemplateRepository templateRepository;
+    private final CategoryRepository categoryRepository;
     private static final Logger logger = LoggerFactory.getLogger(TemplateService.class);
     private final String uploadDir = "uploads/templates";
 
-    public TemplateService(TemplateRepository templateRepository) {
+    public TemplateService(TemplateRepository templateRepository, CategoryRepository categoryRepository) {
         this.templateRepository = templateRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public PageDTO<TemplateResponse> fetchAll(
@@ -85,6 +91,14 @@ public class TemplateService {
                     request.title(),
                     request.description()
             );
+            // Handle categories
+            if (request.categoryIds() != null) {
+                List<CategoryEntity> categories = request.categoryIds().stream()
+                        .map(categoryId -> categoryRepository.findById(categoryId)
+                                .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
+                        .collect(Collectors.toList());
+                templateEntity.setCategories(new ArrayList<>(categories));
+            }
 
             return getTemplateResponse(request, templateEntity);
         }
@@ -96,6 +110,14 @@ public class TemplateService {
             templateEntity.setTitle(request.title());
             templateEntity.setDescription(request.description());
 
+            // Handle categories
+            if (request.categoryIds() != null) {
+                List<CategoryEntity> categories = request.categoryIds().stream()
+                        .map(categoryId -> categoryRepository.findById(categoryId)
+                                .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
+                        .collect(Collectors.toList());
+                templateEntity.setCategories(new ArrayList<>(categories));
+            }
 
             return getTemplateResponse(request, templateEntity);
         }

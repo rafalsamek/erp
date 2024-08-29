@@ -33,6 +33,10 @@ public class CategoryEntity {
     @ManyToMany(mappedBy = "categories")
     private List<DocumentEntity> documents = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "categories")
+    private List<TemplateEntity> templates = new ArrayList<>();
+
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -80,6 +84,15 @@ public class CategoryEntity {
 
     public void setDocuments(List<DocumentEntity> documents) {
         this.documents = documents;
+    }
+
+
+    public List<TemplateEntity> getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(List<TemplateEntity> templates) {
+        this.templates = templates;
     }
 
     // Constructors
