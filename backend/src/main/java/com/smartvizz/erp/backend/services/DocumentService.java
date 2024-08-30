@@ -24,8 +24,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class DocumentService {
@@ -103,15 +101,6 @@ public class DocumentService {
                 templateEntity
         );
 
-        // Handle categories
-        if (request.categoryIds() != null) {
-            List<CategoryEntity> categories = request.categoryIds().stream()
-                    .map(categoryId -> categoryRepository.findById(categoryId)
-                            .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
-                    .collect(Collectors.toList());
-            documentEntity.setCategories(new ArrayList<>(categories));
-        }
-
         return getDocumentResponse(request, documentEntity);
     }
 
@@ -130,15 +119,6 @@ public class DocumentService {
         documentEntity.setDescription(request.description());
         documentEntity.setTemplate(templateEntity);
 
-        // Handle categories
-        if (request.categoryIds() != null) {
-            List<CategoryEntity> categories = request.categoryIds().stream()
-                    .map(categoryId -> categoryRepository.findById(categoryId)
-                            .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
-                    .collect(Collectors.toList());
-            documentEntity.setCategories(new ArrayList<>(categories));
-        }
-
         return getDocumentResponse(request, documentEntity);
     }
 
@@ -156,6 +136,14 @@ public class DocumentService {
             documentEntity.setFileName(request.getFileName());
             documentEntity.setFileType(request.getFileType());
             documentEntity.setFileSize(request.getFileSize());
+        }
+
+        if (request.categoryIds() != null) {
+            List<CategoryEntity> categories = request.categoryIds().stream()
+                    .map(categoryId -> categoryRepository.findById(categoryId)
+                            .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
+                    .toList();
+            documentEntity.setCategories(new ArrayList<>(categories));
         }
 
         DocumentEntity updatedDocument = documentRepository.save(documentEntity);

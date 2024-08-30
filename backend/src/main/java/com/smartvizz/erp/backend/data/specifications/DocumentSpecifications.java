@@ -19,10 +19,8 @@ public class DocumentSpecifications {
             if (searchBy == null || searchBy.isEmpty()) {
                 return builder.conjunction();
             }
-
             List<Predicate> predicateList = new ArrayList<>();
 
-            // Existing search criteria
             predicateList.add(
                     builder.equal(builder.toString(root.get("id")), searchBy)
             );
@@ -39,7 +37,6 @@ public class DocumentSpecifications {
                     builder.like(builder.toString(root.get("updatedAt")), "%" + searchBy + "%")
             );
 
-            // Join with TemplateEntity
             Join<?, ?> templateJoin = root.join("template");
             predicateList.add(
                     builder.like(builder.lower(templateJoin.get("title")), "%" + searchBy.toLowerCase() + "%")
@@ -48,7 +45,6 @@ public class DocumentSpecifications {
                     builder.like(builder.lower(templateJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
 
-            // Join with CategoryEntity
             Join<DocumentEntity, CategoryEntity> categoryJoin = root.join("categories");
             predicateList.add(
                     builder.like(builder.lower(categoryJoin.get("name")), "%" + searchBy.toLowerCase() + "%")
@@ -60,5 +56,4 @@ public class DocumentSpecifications {
             return builder.or(predicateList.toArray(new Predicate[0]));
         };
     }
-
 }

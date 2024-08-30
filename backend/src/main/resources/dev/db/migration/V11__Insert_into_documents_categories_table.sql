@@ -1,7 +1,5 @@
 USE erp;
 
--- Dodawanie powiązań między dokumentami a kategoriami
-
 -- Dokument 1
 INSERT INTO documents_categories (document_id, category_id) VALUES (1, 1);
 INSERT INTO documents_categories (document_id, category_id) VALUES (1, 2);

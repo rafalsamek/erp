@@ -5,16 +5,9 @@ meta {
 }
 
 put {
-  url: {{baseUrl}}/api/templates/64
+  url: {{baseUrl}}/api/templates/65
   body: multipartForm
   auth: none
-}
-
-body:json {
-  {
-    "title": "komornikUpdate",
-    "description": "Prośba o doręczenie korespondencji"
-  }
 }
 
 body:multipart-form {
@@ -25,4 +18,5 @@ body:multipart-form {
   categoryIds: 7
   categoryIds: 10
   categoryIds: 5
+  descritpion: Prośba o doręczenie korespondencji
 }

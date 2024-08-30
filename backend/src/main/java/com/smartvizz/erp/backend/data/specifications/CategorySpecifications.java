@@ -23,7 +23,6 @@ public class CategorySpecifications {
 
             List<Predicate> predicates = new ArrayList<>();
 
-            // Add predicates for CategoryEntity fields
             predicates.add(
                     builder.like(builder.lower(root.get("name")), "%" + searchBy.toLowerCase() + "%")
             );
@@ -31,7 +30,6 @@ public class CategorySpecifications {
                     builder.like(builder.lower(root.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
 
-            // Join with DocumentEntity and add predicates for DocumentEntity fields
             Join<CategoryEntity, DocumentEntity> documentJoin = root.join("documents");
             predicates.add(
                     builder.like(builder.lower(documentJoin.get("title")), "%" + searchBy.toLowerCase() + "%")
@@ -40,15 +38,14 @@ public class CategorySpecifications {
                     builder.like(builder.lower(documentJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
 
-        // Join with TemplateEntity and add predicates for TemplateEntity fields
-        Join<CategoryEntity, TemplateEntity> templateJoin = root.join("templates");
-        predicates.add(
-                builder.like(builder.lower(templateJoin.get("title")), "%" + searchBy.toLowerCase() + "%")
-        );
-        predicates.add(
-                builder.like(builder.lower(templateJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
-        );
-            // Combine all predicates using OR
+            Join<CategoryEntity, TemplateEntity> templateJoin = root.join("templates");
+            predicates.add(
+                    builder.like(builder.lower(templateJoin.get("title")), "%" + searchBy.toLowerCase() + "%")
+            );
+            predicates.add(
+                    builder.like(builder.lower(templateJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
+            );
+
             return builder.or(predicates.toArray(new Predicate[0]));
         };
     }

@@ -22,8 +22,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TemplateService {
@@ -85,20 +83,11 @@ public class TemplateService {
                     .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
         }
 
-
         public TemplateResponse create (TemplateRequest request){
             TemplateEntity templateEntity = new TemplateEntity(
                     request.title(),
                     request.description()
             );
-            // Handle categories
-            if (request.categoryIds() != null) {
-                List<CategoryEntity> categories = request.categoryIds().stream()
-                        .map(categoryId -> categoryRepository.findById(categoryId)
-                                .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
-                        .collect(Collectors.toList());
-                templateEntity.setCategories(new ArrayList<>(categories));
-            }
 
             return getTemplateResponse(request, templateEntity);
         }
@@ -110,18 +99,8 @@ public class TemplateService {
             templateEntity.setTitle(request.title());
             templateEntity.setDescription(request.description());
 
-            // Handle categories
-            if (request.categoryIds() != null) {
-                List<CategoryEntity> categories = request.categoryIds().stream()
-                        .map(categoryId -> categoryRepository.findById(categoryId)
-                                .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
-                        .collect(Collectors.toList());
-                templateEntity.setCategories(new ArrayList<>(categories));
-            }
-
             return getTemplateResponse(request, templateEntity);
         }
-
 
         public void delete (Long id){
             if (!templateRepository.existsById(id)) {
@@ -137,6 +116,14 @@ public class TemplateService {
             templateEntity.setFileName(request.getFileName());
             templateEntity.setFileType(request.getFileType());
             templateEntity.setFileSize(request.getFileSize());
+        }
+
+        if (request.categoryIds() != null) {
+            List<CategoryEntity> categories = request.categoryIds().stream()
+                    .map(categoryId -> categoryRepository.findById(categoryId)
+                            .orElseThrow(() -> new NotFoundException("Category not found with id: " + categoryId)))
+                    .toList();
+            templateEntity.setCategories(new ArrayList<>(categories));
         }
 
         TemplateEntity updatedTemplate = templateRepository.save(templateEntity);

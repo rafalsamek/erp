@@ -1,6 +1,5 @@
 package com.smartvizz.erp.backend.data.specifications;
 
-import com.smartvizz.erp.backend.data.entities.DocumentEntity;
 import com.smartvizz.erp.backend.data.entities.TemplateEntity;
 import com.smartvizz.erp.backend.data.entities.CategoryEntity;
 import jakarta.persistence.criteria.Join;
@@ -18,9 +17,9 @@ public class TemplateSpecifications {
     public static Specification<TemplateEntity> searchTemplate(String searchBy) {
         return (root, query, builder) -> {
             if (searchBy == null || searchBy.isEmpty()) {
-                // Return an empty predicate list if searchBy is null or empty
                 return builder.conjunction();
             }
+
             List<Predicate> predicateList = new ArrayList<>();
 
             predicateList.add(
@@ -39,8 +38,7 @@ public class TemplateSpecifications {
                     builder.like(builder.toString(root.get("updatedAt")), "%" + searchBy + "%")
             );
 
-            // Join with CategoryEntity
-            Join<DocumentEntity, CategoryEntity> categoryJoin = root.join("categories");
+            Join<TemplateEntity, CategoryEntity> categoryJoin = root.join("categories");
             predicateList.add(
                     builder.like(builder.lower(categoryJoin.get("name")), "%" + searchBy.toLowerCase() + "%")
             );
@@ -48,9 +46,7 @@ public class TemplateSpecifications {
                     builder.like(builder.lower(categoryJoin.get("description")), "%" + searchBy.toLowerCase() + "%")
             );
 
-
             return builder.or(predicateList.toArray(new Predicate[]{}));
         };
     }
-
 }

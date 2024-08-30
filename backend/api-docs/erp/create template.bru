@@ -10,13 +10,6 @@ post {
   auth: none
 }
 
-body:json {
-  {
-    "title": "komornik",
-    "description": "Prośba o doręczenie korespondencji"
-  }
-}
-
 body:multipart-form {
   file: @file(C:\Users\ewa48\Documents\raz dwa trzy.docx)
   title: test
@@ -24,4 +17,5 @@ body:multipart-form {
   categoryIds: 2
   categoryIds: 5
   categoryIds: 12
+  description: Prośba o doręczenie korespondencji
 }
