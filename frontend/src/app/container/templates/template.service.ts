@@ -100,6 +100,12 @@ export class TemplateService {
     if (template.file) {
       formData.append('file', template.file);
     }
+    if (template.categoryIds && template.categoryIds.length > 0) {
+      template.categoryIds.forEach((categoryId) => {
+        formData.append('categoryIds', categoryId.toString());
+      });
+    }
+
     return formData;
   }
 

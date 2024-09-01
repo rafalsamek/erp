@@ -16,6 +16,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TemplateEntity } from '../template-entity.model';
+import { CategoryEntity } from '../category-entity.model';
+import { CategoryService } from '../category.service';
 
 @Component({
   selector: 'templates-crud-form',
@@ -34,23 +36,29 @@ export class CrudFormComponent implements OnInit, OnChanges {
   @Output() delete = new EventEmitter<TemplateEntity>();
 
   form: FormGroup;
+  categories: CategoryEntity[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private categoryService: CategoryService
+  ) {
     this.form = this.fb.group({
       id: [0, Validators.required],
       title: ['', Validators.required],
       description: [''],
       file: [null],
+      categories: [[], Validators.required],
     });
   }
 
   ngOnInit() {
     this.initializeForm();
+    this.loadCategories();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['template'] && !changes['template'].currentValue) {
-      this.initializeForm();
+    if (changes['template'] && changes['template'].currentValue) {
+      this.patchFormWithTemplate();
     }
     if (changes['errorMessage'] && changes['errorMessage'].currentValue) {
       console.log(
@@ -67,6 +75,8 @@ export class CrudFormComponent implements OnInit, OnChanges {
         title: this.template.title,
         description: this.template.description || '',
         file: null,
+        categories:
+          this.template.categories?.map((category) => category.id) || [],
       });
     } else {
       this.form.reset({
@@ -74,6 +84,7 @@ export class CrudFormComponent implements OnInit, OnChanges {
         title: '',
         description: '',
         file: null,
+        categories: [],
       });
     }
 
@@ -81,6 +92,29 @@ export class CrudFormComponent implements OnInit, OnChanges {
       this.form.disable();
     } else {
       this.form.enable();
+    }
+  }
+
+  loadCategories() {
+    this.categoryService.getCategories().subscribe({
+      next: (response) => {
+        this.categories = response.content;
+        this.patchFormWithTemplate();
+      },
+      error: (err) => console.error('Failed to load categories', err),
+    });
+  }
+
+  patchFormWithTemplate() {
+    if (this.template) {
+      this.form.patchValue({
+        id: this.template.id,
+        title: this.template.title,
+        description: this.template.description || '',
+        file: null,
+        categories:
+          this.template.categories?.map((category) => category.id) || [],
+      });
     }
   }
 
@@ -93,6 +127,7 @@ export class CrudFormComponent implements OnInit, OnChanges {
     this.showModal = false;
     this.close.emit();
   }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input && input.files && input.files.length > 0) {
@@ -111,7 +146,10 @@ export class CrudFormComponent implements OnInit, OnChanges {
     if (this.form.valid) {
       const formValue = this.form.value;
       const templateToSave: TemplateEntity = {
-        ...formValue,
+        id: formValue.id,
+        title: formValue.title,
+        description: formValue.description || '',
+        categoryIds: formValue.categories,
         file: formValue.file,
       };
       this.save.emit(templateToSave);
