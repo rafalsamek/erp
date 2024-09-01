@@ -80,6 +80,33 @@
               >
             </div>
           </div>
+
+          <!-- New Category Selection Field -->
+          <div class="form-group">
+            <label for="categories">Categories</label>
+            <select
+              id="categories"
+              formControlName="categories"
+              class="form-control"
+              multiple
+            >
+              <option *ngFor="let category of categories" [value]="category.id">
+                {{ category.name }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                form.get('categories')?.touched &&
+                form.get('categories')?.invalid
+              "
+            >
+              <small
+                class="text-danger"
+                *ngIf="form.get('categories')?.errors?.['required']"
+                >At least one category is required.</small
+              >
+            </div>
+          </div>
         </form>
         <div *ngIf="mode === 'delete'" class="alert alert-warning">
           Are you sure you want to delete the document titled

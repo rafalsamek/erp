@@ -103,6 +103,12 @@ export class DocumentService {
     if (document.file) {
       formData.append('file', document.file);
     }
+    if (document.categoryIds && document.categoryIds.length > 0) {
+      document.categoryIds.forEach((categoryId) => {
+        formData.append('categoryIds', categoryId.toString());
+      });
+    }
+
     return formData;
   }
 

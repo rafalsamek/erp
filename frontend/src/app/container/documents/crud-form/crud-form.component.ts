@@ -18,6 +18,8 @@ import { CommonModule } from '@angular/common';
 import { DocumentEntity } from '../document-entity.model';
 import { TemplateEntity } from '../template-entity.model';
 import { TemplateService } from '../template.service';
+import { CategoryEntity } from '../category-entity.model';
+import { CategoryService } from '../category.service';
 
 @Component({
   selector: 'documents-crud-form',
@@ -37,10 +39,12 @@ export class CrudFormComponent implements OnInit, OnChanges {
 
   form: FormGroup;
   templates: TemplateEntity[] = [];
+  categories: CategoryEntity[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private templateService: TemplateService
+    private templateService: TemplateService,
+    private categoryService: CategoryService
   ) {
     this.form = this.fb.group({
       id: [0, Validators.required],
@@ -48,11 +52,13 @@ export class CrudFormComponent implements OnInit, OnChanges {
       description: [''],
       file: [null],
       template: [null, Validators.required],
+      categories: [[], Validators.required],
     });
   }
 
   ngOnInit() {
     this.loadTemplates();
+    this.loadCategories();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -81,6 +87,15 @@ export class CrudFormComponent implements OnInit, OnChanges {
     });
   }
 
+  loadCategories() {
+    this.categoryService.getCategories().subscribe({
+      next: (response) => {
+        this.categories = response.content;
+      },
+      error: (err) => console.error('Failed to load categories', err),
+    });
+  }
+
   patchFormWithDocument() {
     if (this.document) {
       this.form.patchValue({
@@ -89,6 +104,8 @@ export class CrudFormComponent implements OnInit, OnChanges {
         description: this.document.description || '',
         file: null,
         template: this.document.template?.id || null,
+        categories:
+          this.document.categories?.map((category) => category.id) || [],
       });
     } else {
       this.form.reset({
@@ -97,6 +114,7 @@ export class CrudFormComponent implements OnInit, OnChanges {
         description: '',
         file: null,
         template: null,
+        categories: [],
       });
     }
 
@@ -139,6 +157,7 @@ export class CrudFormComponent implements OnInit, OnChanges {
         title: formValue.title,
         description: formValue.description || '',
         templateId: formValue.template,
+        categoryIds: formValue.categories,
         file: formValue.file,
       };
       this.save.emit(documentToSave);
