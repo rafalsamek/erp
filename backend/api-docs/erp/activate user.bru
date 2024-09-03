@@ -1,0 +1,13 @@
+meta {
+  name: activate user
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/auth/activate
+  params {
+    code: "<activation_code>"
+  }
+  auth: none
+}
