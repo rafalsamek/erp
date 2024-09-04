@@ -1,13 +1,15 @@
 meta {
   name: activate user
   type: http
-  seq: 18
+  seq: 20
 }
 
 get {
-  url: {{baseUrl}}/api/auth/activate
-  params {
-    code: "<activation_code>"
-  }
+  url: {{baseUrl}}/api/auth/activate?code=c1b9abaf-50af-4b2f-8618-0db6d58f84db
+  body: none
   auth: none
+}
+
+params:query {
+  code: c1b9abaf-50af-4b2f-8618-0db6d58f84db
 }

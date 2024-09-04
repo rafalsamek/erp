@@ -1,18 +1,38 @@
+app:
+  baseUrl: ''
 spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE}
+
   datasource:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     url: ${SPRING_DATASOURCE_URL}
+
   jpa:
     hibernate:
       ddl-auto: validate
+
   flyway:
     enabled: true
     baseline-on-migrate: true
     locations: classpath:common/db/migration
+
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+
+  mail:
+    host: smtp.your-email-provider.com
+    port: 587
+    username: your-email@example.com
+    password: your-email-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+jwt:
+  secret: ''

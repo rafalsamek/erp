@@ -1,3 +1,5 @@
+app:
+  baseUrl: http://localhost:8880
 spring:
   jpa:
     hibernate:
@@ -9,3 +11,6 @@ spring:
 logging:
   level:
     com.smartvizz.erp.backend: DEBUG
+jwt:
+  secret: G2RsbDddUnJfXG8i4FqKMvMm1C9eJ8VRg9YWZlNfY4=
+  expiration: 3600000  #1 hour in milliseconds
