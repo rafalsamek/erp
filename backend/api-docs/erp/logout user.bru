@@ -6,9 +6,10 @@ meta {
 
 post {
   url: {{baseUrl}}/api/auth/logout
+  body: none
   auth: bearer
 }
 
 auth:bearer {
-  token: "{{token}}"
+  token: {{token}}
 }

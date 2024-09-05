@@ -7,7 +7,11 @@ meta {
 get {
   url: {{baseUrl}}/api/categories?sortColumns=description&sortDirections=asc
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 params:query {

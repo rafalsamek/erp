@@ -36,3 +36,4 @@ spring:
             enable: true
 jwt:
   secret: ''
+  expiration: '3600000'

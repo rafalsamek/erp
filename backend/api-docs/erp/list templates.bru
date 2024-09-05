@@ -7,7 +7,11 @@ meta {
 get {
   url: {{baseUrl}}/api/templates?sortColumns=id&sortDirections=desc
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 params:query {
@@ -15,8 +19,4 @@ params:query {
   sortDirections: desc
   ~searchBy: odsetkami
   ~page: 1
-}
-
-vars:pre-request {
-  ~: 
 }
