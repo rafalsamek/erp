@@ -62,16 +62,16 @@ public class UserService {
                         %s/api/auth/activate?code=%s""",
                 user.getUsername(), baseUrl, user.getActivationCode());
 
-//        try {
-//            MimeMessage mail = mailSender.createMimeMessage();
-//            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-//            helper.setTo(user.getEmail());
-//            helper.setSubject(subject);
-//            helper.setText(message, true);
-//            mailSender.send(mail);
-//        } catch (MessagingException e) {
-//            logger.error("Failed to send activation email to user: {}", user.getEmail(), e);
-//        }
+        try {
+            MimeMessage mail = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+            helper.setTo(user.getEmail());
+            helper.setSubject(subject);
+            helper.setText(message, true);
+            mailSender.send(mail);
+        } catch (MessagingException e) {
+            logger.error("Failed to send activation email to user: {}", user.getEmail(), e);
+        }
     }
 
     public boolean activateUser(String code) {

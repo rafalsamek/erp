@@ -1,17 +1,18 @@
 app:
-  baseUrl: ''
+  baseUrl: ${APP_BASE_URL:''}  # Dynamic base URL, with empty string as default
+
 spring:
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE}
+    active: ${SPRING_PROFILES_ACTIVE}  # Active profile, sourced from the environment
 
   datasource:
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}  # MySQL username from the environment
+    password: ${SPRING_DATASOURCE_PASSWORD}  # MySQL password from the environment
+    url: ${SPRING_DATASOURCE_URL}  # MySQL URL from the environment
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: validate  # Hibernate DDL auto setting
 
   flyway:
     enabled: true
@@ -20,20 +21,21 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: ${SERVLET_MULTIPART_MAX_FILE_SIZE}
+      max-request-size: ${SERVLET_MULTIPART_MAX_REQUEST_SIZE}
 
   mail:
-    host: smtp.your-email-provider.com
-    port: 587
-    username: your-email@example.com
-    password: your-email-password
+    host: ${MAIL_HOST}  # Mail server host from environment
+    port: ${MAIL_PORT}  # Mail server port from environment
+    username: ${MAIL_USERNAME}  # Mail server username from environment
+    password: ${MAIL_PASSWORD}  # Mail server password from environment
     properties:
       mail:
         smtp:
-          auth: true
+          auth: ${MAIL_SMTP_AUTH}  # SMTP auth from environment
           starttls:
-            enable: true
+            enable: ${MAIL_SMTP_STARTTLS_ENABLE}  # SMTP STARTTLS enable from environment
+
 jwt:
-  secret: ''
-  expiration: '3600000'
+  secret: ${JWT_SECRET}  # JWT secret key from environment
+  expiration: ${JWT_EXPIRATION:3600000}  # JWT expiration time in milliseconds from environment, defaulting to 1 hour
