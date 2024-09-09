@@ -28,6 +28,9 @@ public class UserService {
     @Value("${app.baseUrl}")
     private String baseUrl;
 
+    @Value("${spring.mail.username}")
+    private String mailUsername;
+
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
         this.userRepository = userRepository;
@@ -64,10 +67,11 @@ public class UserService {
 
         try {
             MimeMessage mail = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+            MimeMessageHelper helper = new MimeMessageHelper(mail, false);
+            helper.setFrom(mailUsername);
             helper.setTo(user.getEmail());
             helper.setSubject(subject);
-            helper.setText(message, true);
+            helper.setText(message, false);
             mailSender.send(mail);
         } catch (MessagingException e) {
             logger.error("Failed to send activation email to user: {}", user.getEmail(), e);

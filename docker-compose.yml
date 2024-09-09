@@ -74,6 +74,15 @@ services:
     networks:
       - network
 
+  mailhog:
+    image: mailhog/mailhog
+    container_name: erp_mailhog
+    ports:
+      - "8025:8025"  # Web interface
+      - "1025:1025"  # SMTP port
+    networks:
+      - network
+
 #  nginx:
 #    container_name: erp_nginx
 #    build:
