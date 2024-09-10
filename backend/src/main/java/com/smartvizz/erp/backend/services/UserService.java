@@ -2,6 +2,9 @@ package com.smartvizz.erp.backend.services;
 
 import com.smartvizz.erp.backend.data.entities.UserEntity;
 import com.smartvizz.erp.backend.data.repositories.UserRepository;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +18,8 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -39,6 +44,9 @@ public class UserService {
     }
 
     public UserEntity registerUser(String username, String email, String password) {
+        // Validate username and email
+        validateUserDetails(username, email);
+
         String encodedPassword = passwordEncoder.encode(password);
         String activationCode = UUID.randomUUID().toString();
 
@@ -53,6 +61,25 @@ public class UserService {
         sendActivationEmail(user);
 
         return user;
+    }
+
+    private void validateUserDetails(String username, String email) {
+        Map<String, String> errors = new LinkedHashMap<>();
+
+        // Check for uniqueness of username
+        if (userRepository.existsByUsername(username)) {
+            errors.put("username", "Username is already taken");
+        }
+
+        // Check for uniqueness of email
+        if (userRepository.existsByEmail(email)) {
+            errors.put("email", "Email is already registered");
+        }
+
+        // If there are errors, throw BadRequestException
+        if (!errors.isEmpty()) {
+            throw new BadRequestException(errors);
+        }
     }
 
     private void sendActivationEmail(UserEntity user) {

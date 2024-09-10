@@ -1,6 +1,7 @@
 package com.smartvizz.erp.backend.web.controllers;
 
 import com.smartvizz.erp.backend.services.NotFoundException;
+import com.smartvizz.erp.backend.services.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -36,5 +37,11 @@ public class ErrorHandlerController {
         Map<String, String> errors = new HashMap<>();
         errors.put("message", "Invalid request payload: " + ex.getLocalizedMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, String>> handleBadRequest(BadRequestException ex) {
+        return new ResponseEntity<>(ex.getErrors(), HttpStatus.BAD_REQUEST);
     }
 }
