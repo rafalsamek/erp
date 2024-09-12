@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
+  HttpHeaders,
   HttpParams,
 } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { DocumentEntity } from './document-entity.model';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from '../../auth.service';
 
 export interface DocumentResponse {
   totalPages: number;
@@ -44,9 +46,15 @@ export interface DocumentResponse {
 export class DocumentService {
   private apiUrl = `${environment.apiUrl}/api/documents`;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private authService: AuthService) {
     console.log(`API URL: ${this.apiUrl}`);
   }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
 
   getDocuments(
     page: number,
@@ -55,38 +63,44 @@ export class DocumentService {
     sortDirections: string,
     searchBy: string
   ): Observable<DocumentResponse> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
       .get<DocumentResponse>(
-        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
+        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`,
+        { headers }
       )
       .pipe(catchError(this.handleError));
   }
 
   addDocument(document: DocumentEntity): Observable<DocumentEntity> {
     const formData = this.buildFormData(document);
+    const headers = this.getAuthHeaders();
 
     return this.httpClient
-      .post<DocumentEntity>(this.apiUrl, formData)
+      .post<DocumentEntity>(this.apiUrl, formData, { headers })
       .pipe(catchError(this.handleError));
   }
 
   updateDocument(document: DocumentEntity): Observable<DocumentEntity> {
+    const headers = this.getAuthHeaders();
     const formData = this.buildFormData(document);
 
     return this.httpClient
-      .put<DocumentEntity>(`${this.apiUrl}/${document.id}`, formData)
+      .put<DocumentEntity>(`${this.apiUrl}/${document.id}`, formData, { headers })
       .pipe(catchError(this.handleError));
   }
 
   getDocument(id: number): Observable<DocumentEntity> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .get<DocumentEntity>(`${this.apiUrl}/${id}`)
+      .get<DocumentEntity>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
   deleteDocument(documentId: number): Observable<void> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .delete<void>(`${this.apiUrl}/${documentId}`)
+      .delete<void>(`${this.apiUrl}/${documentId}`, { headers })
       .pipe(catchError(this.handleError));
   }
 

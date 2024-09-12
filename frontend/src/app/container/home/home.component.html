@@ -1,1 +1,70 @@
-<p>home works!</p>
+<div *ngIf="!isLoggedIn" class="form-container">
+  <!-- Login Section -->
+  <div class="crud-header">
+    <h2>Login</h2>
+  </div>
+
+  <!-- Message for Login -->
+  <div *ngIf="message && formType === 'login'" [ngClass]="{'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}" style="white-space: pre-line;">
+    {{ message }}
+  </div>
+
+  <form (ngSubmit)="login()">
+    <div class="form-group">
+      <label for="loginUsername">Username:</label>
+      <input id="loginUsername" [(ngModel)]="loginData.username" name="loginUsername" />
+    </div>
+
+    <div class="form-group">
+      <label for="loginPassword">Password:</label>
+      <input id="loginPassword" type="password" [(ngModel)]="loginData.password" name="loginPassword" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+
+  <!-- Registration Section -->
+  <div class="crud-header">
+    <h2>Register</h2>
+  </div>
+
+  <!-- Message for Registration -->
+  <div *ngIf="message && formType === 'register'" [ngClass]="{'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}" style="white-space: pre-line;">
+    {{ message }}
+  </div>
+
+  <form (ngSubmit)="register()">
+    <div class="form-group">
+      <label for="regUsername">Username:</label>
+      <input id="regUsername" [(ngModel)]="registerData.username" name="regUsername" />
+      <div *ngIf="validationErrors.username" class="text-danger">{{ validationErrors.username }}</div> <!-- Display validation error for username -->
+    </div>
+
+    <div class="form-group">
+      <label for="regEmail">Email:</label>
+      <input id="regEmail" type="email" [(ngModel)]="registerData.email" name="regEmail" />
+      <div *ngIf="validationErrors.email" class="text-danger">{{ validationErrors.email }}</div> <!-- Display validation error for email -->
+    </div>
+
+    <div class="form-group">
+      <label for="regPassword">Password:</label>
+      <input id="regPassword" type="password" [(ngModel)]="registerData.password" name="regPassword" />
+      <div *ngIf="validationErrors.password" class="text-danger">{{ validationErrors.password }}</div> <!-- Display validation error for password -->
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</div>
+
+<div *ngIf="isLoggedIn" class="form-container">
+  <div class="crud-header">
+    <h2>Welcome, {{ loginData.username }}!</h2>
+  </div>
+
+  <!-- General Message -->
+  <div *ngIf="message" [ngClass]="{'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}" style="white-space: pre-line;">
+    {{ message }}
+  </div>
+
+  <button class="btn btn-primary" (click)="logout()">Logout</button>
+</div>

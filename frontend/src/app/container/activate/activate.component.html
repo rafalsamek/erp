@@ -1,0 +1,3 @@
+<div *ngIf="message" [ngClass]="{'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}">
+  {{ message }}
+</div>

@@ -1,5 +1,6 @@
 app:
   baseUrl: ${APP_BASE_URL:''}  # Dynamic base URL, with empty string as default
+  frontendUrl: ${APP_FRONTEND_URL:''}  # Dynamic frontend URL, with empty string as default
 
 spring:
   profiles:

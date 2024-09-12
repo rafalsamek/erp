@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders  } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { TemplateEntity } from './template-entity.model';
+import { AuthService } from '../../auth.service';
 
 export interface TemplateResponse {
   totalPages: number;
@@ -40,8 +41,13 @@ export interface TemplateResponse {
 export class TemplateService {
   private apiUrl = `${environment.apiUrl}/api/templates`;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private authService: AuthService) {
     console.log(`API URL: ${this.apiUrl}`);
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   getTemplates(
@@ -51,34 +57,40 @@ export class TemplateService {
     sortDirections: string,
     searchBy: string
   ): Observable<TemplateResponse> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
       .get<TemplateResponse>(
-        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
+        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`,
+        { headers }
       )
       .pipe(catchError(this.handleError));
   }
 
   addTemplate(template: TemplateEntity): Observable<TemplateEntity> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .post<TemplateEntity>(this.apiUrl, template)
+      .post<TemplateEntity>(this.apiUrl, template, { headers })
       .pipe(catchError(this.handleError));
   }
 
   updateTemplate(template: TemplateEntity): Observable<TemplateEntity> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .put<TemplateEntity>(`${this.apiUrl}/${template.id}`, template)
+      .put<TemplateEntity>(`${this.apiUrl}/${template.id}`, template, { headers })
       .pipe(catchError(this.handleError));
   }
 
   getTemplate(id: number): Observable<TemplateEntity> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .get<TemplateEntity>(`${this.apiUrl}/${id}`)
+      .get<TemplateEntity>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
   deleteTemplate(templateId: number): Observable<void> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .delete<void>(`${this.apiUrl}/${templateId}`)
+      .delete<void>(`${this.apiUrl}/${templateId}`, { headers })
       .pipe(catchError(this.handleError));
   }
 

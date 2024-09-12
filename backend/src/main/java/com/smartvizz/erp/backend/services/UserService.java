@@ -2,10 +2,7 @@ package com.smartvizz.erp.backend.services;
 
 import com.smartvizz.erp.backend.data.entities.UserEntity;
 import com.smartvizz.erp.backend.data.repositories.UserRepository;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.smartvizz.erp.backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,20 +24,25 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
+    private final JwtUtil jwtUtil;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Value("${app.baseUrl}")
     private String baseUrl;
 
+    @Value("${app.frontendUrl}")
+    private String frontendUrl;
+
+
     @Value("${spring.mail.username}")
     private String mailUsername;
 
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JavaMailSender mailSender, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailSender = mailSender;
+        this.jwtUtil = jwtUtil;
     }
 
     public UserEntity registerUser(String username, String email, String password) {
@@ -84,13 +86,26 @@ public class UserService {
 
     private void sendActivationEmail(UserEntity user) {
         String subject = "Account Activation";
+
+        // Generate a JWT token for automatic login after activation
+        String loginToken = jwtUtil.generateToken(user.getUsername());
+
+        // Build the activation link with the token
+        String activationLink = String.format(
+                "%s/activate?code=%s&token=%s",
+                frontendUrl,
+                user.getActivationCode(),
+                loginToken
+        );
+
         String message = String.format(
                 """
-                        Hello %s,\s
-                        
-                         Please activate your account by clicking the link below:
-                        %s/api/auth/activate?code=%s""",
-                user.getUsername(), baseUrl, user.getActivationCode());
+                Hello %s,\s
+                
+                Please activate your account by clicking the link below:
+                %s
+                """,
+                user.getUsername(), activationLink);
 
         try {
             MimeMessage mail = mailSender.createMimeMessage();
@@ -115,5 +130,10 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public UserEntity findByActivationCode(String activationCode) {
+        return userRepository.findByActivationCode(activationCode)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid activation code"));
     }
 }
