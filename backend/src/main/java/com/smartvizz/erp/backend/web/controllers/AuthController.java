@@ -120,6 +120,11 @@ public class AuthController {
         return ResponseEntity.badRequest().body("Invalid token.");
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<String> status() {
+        return ResponseEntity.ok("OK");
+    }
+
     // Helper function to extract JWT from Authorization header
     private String extractJwtFromRequest(String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import {interval, Observable, switchMap, throwError} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 
@@ -15,6 +15,7 @@ export class AuthService {
   constructor(private httpClient: HttpClient) {
     this.token = localStorage.getItem('token'); // Check if token exists in localStorage
     this.username = localStorage.getItem('username'); // Check if username exists in localStorage
+    this.autoLogout();
   }
 
   isAuthenticated(): boolean {
@@ -100,6 +101,57 @@ export class AuthService {
       );
     } else {
       return throwError('No token found, logout failed');
+    }
+  }
+
+  autoLogout(): void {
+    interval(10000) // Call every 10 seconds
+      .pipe(
+        tap(() => {
+          console.log('Calling checkStatus...');
+        }),
+        switchMap(() => this.checkStatus().pipe(
+          catchError((error) => {
+            console.error('Error in checkStatus:', error);
+            console.log('Token invalid');
+            // Handle the error, logout if token is invalid
+            if (this.token) {
+              this.token = null;
+              localStorage.removeItem('token');
+              window.location.reload(); // Reload the page after logout
+              console.log('Logging out');
+            }
+            return [];
+          })
+        ))
+      )
+      .subscribe({
+        next: () => {
+          console.log('Check status executed without error');
+        },
+        error: (err) => {
+          console.error('Unexpected error in autoLogout stream:', err);
+        }
+      });
+  }
+
+  checkStatus(): Observable<any> {
+    const token = this.getToken();
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.get(`${this.baseUrl}/status`, { headers, responseType: 'text' }).pipe(
+        tap((response) => {
+          if (response === 'OK') {
+            console.log('Token is valid');
+          }
+        }),
+        catchError((error) => {
+          console.error('Token is invalid or expired:', error);
+          return throwError(error);
+        })
+      );
+    } else {
+      return throwError('No token found');
     }
   }
 }
