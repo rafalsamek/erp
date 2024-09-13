@@ -16,7 +16,7 @@ public record DocumentResponse (
         Long fileSize,
         TemplateResponse template,
         List<CategoryResponse> categories,
-        UserResponse user,// Added field for categories
+        UserResponse user,
         Instant createdAt,
         Instant updatedAt
 ) {

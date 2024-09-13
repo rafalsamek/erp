@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Optional;
 
 public interface TemplateRepository extends JpaRepository<TemplateEntity, Long>, JpaSpecificationExecutor<TemplateEntity> {
-Optional<TemplateEntity> findByIdAndUser(Integer id, UserEntity user);
+Optional<TemplateEntity> findByIdAndUser(Long id, UserEntity user);
 }

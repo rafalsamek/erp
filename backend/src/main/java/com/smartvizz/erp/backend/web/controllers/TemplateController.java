@@ -46,7 +46,7 @@ public class TemplateController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<TemplateResponse> get(@PathVariable Integer id, @AuthenticationPrincipal User user) {
+    public ResponseEntity<TemplateResponse> get(@PathVariable Long id, @AuthenticationPrincipal User user) {
         TemplateResponse template = templateService.fetchOne(id, user);
         
         return ResponseEntity.ok(template);
@@ -64,7 +64,7 @@ public class TemplateController {
 
     @PutMapping(value = "{id}", consumes = {"multipart/form-data"})
     public ResponseEntity<TemplateResponse> update(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @Valid @ModelAttribute TemplateRequest request,
             @AuthenticationPrincipal User user
             ) {
@@ -74,7 +74,7 @@ public class TemplateController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id, @AuthenticationPrincipal User user) {
+    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
         templateService.delete(id, user);
 
         return ResponseEntity.noContent().build();

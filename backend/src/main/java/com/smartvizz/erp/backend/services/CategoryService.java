@@ -83,7 +83,7 @@ public class CategoryService {
         );
     }
 
-    public CategoryResponse fetchOne(long id, User user) {
+    public CategoryResponse fetchOne(Long id, User user) {
         // Fetch UserEntity based on the authenticated user
         UserEntity userEntity = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
@@ -108,7 +108,7 @@ public class CategoryService {
         return new CategoryResponse(savedCategory);
     }
 
-    public CategoryResponse update(long id, CategoryRequest request, User user) {
+    public CategoryResponse update(Long id, CategoryRequest request, User user) {
         UserEntity userEntity = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
 
@@ -123,7 +123,7 @@ public class CategoryService {
         return new CategoryResponse(updatedCategory);
     }
 
-    public void delete(long id, User user) {
+    public void delete(Long id, User user) {
         UserEntity userEntity = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
 

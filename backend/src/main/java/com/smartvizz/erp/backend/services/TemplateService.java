@@ -94,7 +94,7 @@ public class TemplateService {
         );
     }
 
-        public TemplateResponse fetchOne (Integer id, User user){
+        public TemplateResponse fetchOne (Long id, User user){
             // Fetch UserEntity based on the authenticated user
             UserEntity userEntity = userRepository.findByUsername(user.getUsername())
                     .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
@@ -118,7 +118,7 @@ public class TemplateService {
             return getTemplateResponse(request, templateEntity);
         }
 
-        public TemplateResponse update (Integer id, TemplateRequest request, User user){
+        public TemplateResponse update (Long id, TemplateRequest request, User user){
             UserEntity userEntity = userRepository.findByUsername(user.getUsername())
                     .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
 
@@ -132,7 +132,7 @@ public class TemplateService {
             return getTemplateResponse(request, templateEntity);
         }
 
-        public void delete (Integer id, User user){
+        public void delete (Long id, User user){
             UserEntity userEntity = userRepository.findByUsername(user.getUsername())
                     .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
 

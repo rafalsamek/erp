@@ -14,7 +14,7 @@ public record TemplateResponse (
         String filePath,
         String fileType,
         Long fileSize,
-        List<CategoryResponse> categories, // Added field for categories
+        List<CategoryResponse> categories,
         UserResponse user,
         Instant createdAt,
         Instant updatedAt
