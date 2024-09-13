@@ -12,12 +12,12 @@ post {
 
 body:json {
   {
-    "username": "john_doe",
-    "password": "password123"
+    "username": "demo",
+    "password": "pass123"
   }
 }
 
 script:post-response {
   bru.setEnvVar("token",res.body.token)
-
+  
 }

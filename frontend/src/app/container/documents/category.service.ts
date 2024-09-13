@@ -50,7 +50,6 @@ export class CategoryService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-
   getCategories(
     page: number = 0,
     size: number = 2147483647,

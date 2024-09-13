@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { CategoryEntity } from './category-entity.model';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from '../../auth.service';
 
 export interface CategoryResponse {
   totalPages: number;
@@ -40,8 +41,13 @@ export interface CategoryResponse {
 export class CategoryService {
   private apiUrl = `${environment.apiUrl}/api/categories`;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private authService: AuthService) {
     console.log(`API URL: ${this.apiUrl}`);
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   getCategories(
@@ -51,34 +57,40 @@ export class CategoryService {
     sortDirections: string = 'asc',
     searchBy: string = ''
   ): Observable<CategoryResponse> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
       .get<CategoryResponse>(
-        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`
+        `${this.apiUrl}?page=${page}&size=${size}&sortColumns=${sortColumns}&sortDirections=${sortDirections}&searchBy=${searchBy}`,
+        { headers }
       )
       .pipe(catchError(this.handleError));
   }
 
   addCategory(category: CategoryEntity): Observable<CategoryEntity> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .post<CategoryEntity>(this.apiUrl, category)
+      .post<CategoryEntity>(this.apiUrl, category, { headers })
       .pipe(catchError(this.handleError));
   }
 
   updateCategory(category: CategoryEntity): Observable<CategoryEntity> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .put<CategoryEntity>(`${this.apiUrl}/${category.id}`, category)
+      .put<CategoryEntity>(`${this.apiUrl}/${category.id}`, category, { headers })
       .pipe(catchError(this.handleError));
   }
 
   getCategory(id: number): Observable<CategoryEntity> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .get<CategoryEntity>(`${this.apiUrl}/${id}`)
+      .get<CategoryEntity>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
   deleteCategory(categoryId: number): Observable<void> {
+    const headers = this.getAuthHeaders();
     return this.httpClient
-      .delete<void>(`${this.apiUrl}/${categoryId}`)
+      .delete<void>(`${this.apiUrl}/${categoryId}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
