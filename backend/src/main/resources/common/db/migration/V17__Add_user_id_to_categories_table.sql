@@ -1,4 +1,4 @@
-USE expenses;
+USE erp;
 
 ALTER TABLE categories
 ADD COLUMN user_id BIGINT UNSIGNED NOT NULL DEFAULT 1 AFTER description,

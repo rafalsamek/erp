@@ -1,7 +1,7 @@
-USE expenses;
+USE erp;
 
-ALTER TABLE expenses
-    DROP FOREIGN KEY fk_user_expense;
+ALTER TABLE documents
+    DROP FOREIGN KEY fk_user_document;
 
-ALTER TABLE expenses
+ALTER TABLE documents
     DROP COLUMN user_id;
