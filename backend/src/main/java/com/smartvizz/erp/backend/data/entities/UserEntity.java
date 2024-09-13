@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -34,6 +36,16 @@ public class UserEntity {
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DocumentEntity> documents = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TemplateEntity> templates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CategoryEntity> categories = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -97,6 +109,31 @@ public class UserEntity {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+
+    public List<DocumentEntity> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<DocumentEntity> documents) {
+        this.documents = documents;
+    }
+
+    public List<TemplateEntity> getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(List<TemplateEntity> templates) {
+        this.templates = templates;
+    }
+
+    public List<CategoryEntity> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<CategoryEntity> categories) {
+        this.categories = categories;
     }
 }
 

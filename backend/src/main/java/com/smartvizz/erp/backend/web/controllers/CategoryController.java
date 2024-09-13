@@ -7,11 +7,13 @@ import com.smartvizz.erp.backend.web.models.PageDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/categories")
-@CrossOrigin(origins = "http://localhost:8888")
+@CrossOrigin(origins = {"http://localhost:8888", "http://localhost:4200"})
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -26,33 +28,53 @@ public class CategoryController {
             @RequestParam(defaultValue = "25") int size,
             @RequestParam(defaultValue = "id") String[] sortColumns,
             @RequestParam(defaultValue = "asc") String[] sortDirections,
-            @RequestParam(defaultValue = "") String searchBy
+            @RequestParam(defaultValue = "") String searchBy,
+            @AuthenticationPrincipal User user
     ) {
-        PageDTO<CategoryResponse> categories = categoryService.fetchAll(page, size, sortColumns, sortDirections, searchBy);
+        PageDTO<CategoryResponse> categories = categoryService.fetchAll(
+                page,
+                size,
+                sortColumns,
+                sortDirections,
+                searchBy,
+                user
+        );
+
         return ResponseEntity.ok(categories);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CategoryResponse> get(@PathVariable Long id) {
-        CategoryResponse category = categoryService.fetchOne(id);
+    public ResponseEntity<CategoryResponse> get(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        CategoryResponse category = categoryService.fetchOne(id, user);
+
         return ResponseEntity.ok(category);
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> create(@Valid @RequestBody CategoryRequest request) {
-        CategoryResponse createdCategory = categoryService.create(request);
+    public ResponseEntity<CategoryResponse> create(
+            @Valid @RequestBody CategoryRequest request,
+            @AuthenticationPrincipal User user
+            ) {
+        CategoryResponse createdCategory = categoryService.create(request, user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CategoryResponse> update(@PathVariable Long id, @Valid @RequestBody CategoryRequest request) {
-        CategoryResponse updatedCategory = categoryService.update(id, request);
+    public ResponseEntity<CategoryResponse> update(
+            @PathVariable Long id,
+            @Valid @RequestBody CategoryRequest request,
+            @AuthenticationPrincipal User user
+            ) {
+        CategoryResponse updatedCategory = categoryService.update(id, request, user);
+
         return ResponseEntity.ok(updatedCategory);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        categoryService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        categoryService.delete(id, user);
+        
         return ResponseEntity.noContent().build();
     }
 }

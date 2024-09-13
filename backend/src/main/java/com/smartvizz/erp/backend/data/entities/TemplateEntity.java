@@ -42,6 +42,9 @@ public class TemplateEntity {
     )
     private List<CategoryEntity> categories = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private UserEntity user;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
@@ -53,9 +56,10 @@ public class TemplateEntity {
 
 
 
-    public TemplateEntity(String title, String description) {
+    public TemplateEntity(String title, String description, UserEntity user) {
         this.title = title;
         this.description = description;
+        this.user = user;
     }
 
     public TemplateEntity() {
@@ -115,6 +119,13 @@ public class TemplateEntity {
 
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
+    }
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public List<CategoryEntity> getCategories() {

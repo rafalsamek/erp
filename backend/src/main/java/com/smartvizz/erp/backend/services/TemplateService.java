@@ -2,8 +2,11 @@ package com.smartvizz.erp.backend.services;
 
 import com.smartvizz.erp.backend.data.entities.CategoryEntity;
 import com.smartvizz.erp.backend.data.entities.TemplateEntity;
+import com.smartvizz.erp.backend.data.entities.UserEntity;
 import com.smartvizz.erp.backend.data.repositories.TemplateRepository;
 import com.smartvizz.erp.backend.data.repositories.CategoryRepository;
+import com.smartvizz.erp.backend.data.repositories.UserRepository;
+import com.smartvizz.erp.backend.data.specifications.CategorySpecifications;
 import com.smartvizz.erp.backend.data.specifications.TemplateSpecifications;
 import com.smartvizz.erp.backend.web.models.TemplateRequest;
 import com.smartvizz.erp.backend.web.models.TemplateResponse;
@@ -14,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
@@ -28,12 +33,14 @@ public class TemplateService {
 
     private final TemplateRepository templateRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
     private static final Logger logger = LoggerFactory.getLogger(TemplateService.class);
     private final String uploadDir = "uploads/templates";
 
-    public TemplateService(TemplateRepository templateRepository, CategoryRepository categoryRepository) {
+    public TemplateService(TemplateRepository templateRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
         this.templateRepository = templateRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     public PageDTO<TemplateResponse> fetchAll(
@@ -41,9 +48,14 @@ public class TemplateService {
             int size,
             String[] sortColumns,
             String[] sortDirections,
-            String searchBy
+            String searchBy,
+            User user
     ) {
         logger.debug("sortColumns: " + Arrays.toString(sortColumns) + ", sortDirections: " + Arrays.toString(sortDirections));
+
+        // Fetch UserEntity based on the authenticated user
+        UserEntity userEntity = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
 
         // Validate page and size inputs
         page = Math.max(page, 0);
@@ -63,8 +75,13 @@ public class TemplateService {
         // Create Pageable instance
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrders));
 
-        // Fetch and map entities to DTOs
-        Page<TemplateEntity> templatePage = templateRepository.findAll(TemplateSpecifications.searchTemplate(searchBy), pageable);
+        // Combine user filtering and search specification
+        Specification<TemplateEntity> spec = Specification.where(TemplateSpecifications.searchTemplate(searchBy))
+                .and(TemplateSpecifications.byUser(userEntity));
+
+
+        // Fetch templates filtered by user and map entities to DTOs
+        Page<TemplateEntity> templatePage = templateRepository.findAll(spec, pageable);
         List<TemplateResponse> templateResponses = templatePage.map(TemplateResponse::new).getContent();
 
         // Create and return PageDTO
@@ -77,36 +94,52 @@ public class TemplateService {
         );
     }
 
-        public TemplateResponse fetchOne (Long id){
-            return templateRepository.findById(id)
+        public TemplateResponse fetchOne (Integer id, User user){
+            // Fetch UserEntity based on the authenticated user
+            UserEntity userEntity = userRepository.findByUsername(user.getUsername())
+                    .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
+
+            // Fetch the template filtered by user
+            return templateRepository.findByIdAndUser(id, userEntity)
                     .map(TemplateResponse::new)
                     .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
         }
 
-        public TemplateResponse create (TemplateRequest request){
+        public TemplateResponse create (TemplateRequest request, User user){
+            UserEntity userEntity = userRepository.findByUsername(user.getUsername())
+                    .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
+
             TemplateEntity templateEntity = new TemplateEntity(
                     request.title(),
-                    request.description()
+                    request.description(),
+                    userEntity
             );
 
             return getTemplateResponse(request, templateEntity);
         }
 
-        public TemplateResponse update (Long id, TemplateRequest request){
-            TemplateEntity templateEntity = templateRepository.findById(id)
+        public TemplateResponse update (Integer id, TemplateRequest request, User user){
+            UserEntity userEntity = userRepository.findByUsername(user.getUsername())
+                    .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
+
+            TemplateEntity templateEntity = templateRepository.findByIdAndUser(id, userEntity)
                     .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
 
             templateEntity.setTitle(request.title());
             templateEntity.setDescription(request.description());
+            templateEntity.setUser(userEntity);
 
             return getTemplateResponse(request, templateEntity);
         }
 
-        public void delete (Long id){
-            if (!templateRepository.existsById(id)) {
-                throw new NotFoundException("Template not found with id: " + id);
-            }
-            templateRepository.deleteById(id);
+        public void delete (Integer id, User user){
+            UserEntity userEntity = userRepository.findByUsername(user.getUsername())
+                    .orElseThrow(() -> new NotFoundException("User not found with username: " + user.getUsername()));
+
+            TemplateEntity templateEntity = templateRepository.findByIdAndUser(id, userEntity)
+                    .orElseThrow(() -> new NotFoundException("Template not found with id: " + id));
+
+            templateRepository.delete(templateEntity);
         }
 
     private TemplateResponse getTemplateResponse(TemplateRequest request, TemplateEntity templateEntity) {

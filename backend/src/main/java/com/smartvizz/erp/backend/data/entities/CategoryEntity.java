@@ -22,6 +22,10 @@ public class CategoryEntity {
     @Column(nullable = true, length = 1000)
     private String description;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private UserEntity user;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;
@@ -62,6 +66,14 @@ public class CategoryEntity {
         this.description = description;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -96,11 +108,11 @@ public class CategoryEntity {
     }
 
     // Constructors
-    public CategoryEntity(String name, String description) {
+    public CategoryEntity(String name, String description, UserEntity user) {
         this.name = name;
         this.description = description;
+        this.user = user;
     }
 
-    public CategoryEntity() {
-    }
+    public CategoryEntity() {}
 }

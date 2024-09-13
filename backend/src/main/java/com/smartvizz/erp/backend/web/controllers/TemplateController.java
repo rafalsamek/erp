@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,34 +29,54 @@ public class TemplateController {
             @RequestParam(defaultValue = "25") int size,
             @RequestParam(defaultValue = "updatedAt,title") String[] sortColumns,
             @RequestParam(defaultValue = "asc,asc") String[] sortDirections,
-            @RequestParam(defaultValue = "") String searchBy
+            @RequestParam(defaultValue = "") String searchBy,
+            @AuthenticationPrincipal User user
     ) {
-        PageDTO<TemplateResponse> templates = templateService.fetchAll(page, size, sortColumns, sortDirections, searchBy);
+        PageDTO<TemplateResponse> templates = templateService.fetchAll(
+                page,
+                size,
+                sortColumns,
+                sortDirections,
+                searchBy,
+                user
+        );
+
 
         return ResponseEntity.ok(templates);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<TemplateResponse> get(@PathVariable Long id) {
-        TemplateResponse template = templateService.fetchOne(id);
+    public ResponseEntity<TemplateResponse> get(@PathVariable Integer id, @AuthenticationPrincipal User user) {
+        TemplateResponse template = templateService.fetchOne(id, user);
+        
         return ResponseEntity.ok(template);
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<TemplateResponse> create(@Valid @ModelAttribute TemplateRequest request) {
-        TemplateResponse createdTemplate = templateService.create(request);
+    public ResponseEntity<TemplateResponse> create(
+            @Valid @ModelAttribute TemplateRequest request,
+            @AuthenticationPrincipal User user
+            ) {
+        TemplateResponse createdTemplate = templateService.create(request, user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTemplate);
     }
 
     @PutMapping(value = "{id}", consumes = {"multipart/form-data"})
-    public ResponseEntity<TemplateResponse> update(@PathVariable Long id, @Valid @ModelAttribute TemplateRequest request) {
-        TemplateResponse updatedTemplate = templateService.update(id, request);
+    public ResponseEntity<TemplateResponse> update(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute TemplateRequest request,
+            @AuthenticationPrincipal User user
+            ) {
+        TemplateResponse updatedTemplate = templateService.update(id, request, user);
+
         return ResponseEntity.ok(updatedTemplate);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        templateService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Integer id, @AuthenticationPrincipal User user) {
+        templateService.delete(id, user);
+
         return ResponseEntity.noContent().build();
     }
 }

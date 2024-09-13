@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,35 +29,54 @@ public class DocumentController {
             @RequestParam(defaultValue = "25") int size,
             @RequestParam(defaultValue = "updatedAt,title") String[] sortColumns,
             @RequestParam(defaultValue = "asc,asc") String[] sortDirections,
-            @RequestParam(defaultValue = "") String searchBy
+            @RequestParam(defaultValue = "") String searchBy,
+            @AuthenticationPrincipal User user
     ) {
-        PageDTO<DocumentResponse> documents = documentService.fetchAll(page, size, sortColumns, sortDirections, searchBy);
+        PageDTO<DocumentResponse> documents = documentService.fetchAll(
+                page,
+                size,
+                sortColumns,
+                sortDirections,
+                searchBy,
+                user
+        );
+
 
         return ResponseEntity.ok(documents);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<DocumentResponse> get(@PathVariable Long id) {
-        DocumentResponse document = documentService.fetchOne(id);
+    public ResponseEntity<DocumentResponse> get(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        DocumentResponse document = documentService.fetchOne(id, user);
 
         return ResponseEntity.ok(document);
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<DocumentResponse> create(@Valid @ModelAttribute DocumentRequest request) {
-        DocumentResponse createdDocument = documentService.create(request);
+    public ResponseEntity<DocumentResponse> create(
+            @Valid @ModelAttribute DocumentRequest request,
+            @AuthenticationPrincipal User user
+    ) {
+        DocumentResponse createdDocument = documentService.create(request, user);
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDocument);
     }
 
     @PutMapping(value = "{id}", consumes = {"multipart/form-data"})
-    public ResponseEntity<DocumentResponse> update(@PathVariable Long id, @Valid @ModelAttribute DocumentRequest request) {
-        DocumentResponse updatedDocument = documentService.update(id, request);
+    public ResponseEntity<DocumentResponse> update(
+            @PathVariable Long id,
+            @Valid @ModelAttribute DocumentRequest request,
+            @AuthenticationPrincipal User user
+            ) {
+        DocumentResponse updatedDocument = documentService.update(id, request, user);
+        
         return ResponseEntity.ok(updatedDocument);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        documentService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        documentService.delete(id, user);
+        
         return ResponseEntity.noContent().build();
     }
 }

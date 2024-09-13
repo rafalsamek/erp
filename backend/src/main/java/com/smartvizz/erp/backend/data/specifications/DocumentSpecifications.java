@@ -2,6 +2,7 @@ package com.smartvizz.erp.backend.data.specifications;
 
 import com.smartvizz.erp.backend.data.entities.DocumentEntity;
 import com.smartvizz.erp.backend.data.entities.CategoryEntity; // Ensure the import
+import com.smartvizz.erp.backend.data.entities.UserEntity;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -56,4 +57,8 @@ public class DocumentSpecifications {
             return builder.or(predicateList.toArray(new Predicate[0]));
         };
     }
+    public static Specification<DocumentEntity> byUser(UserEntity userEntity) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), userEntity);
+    }
+
 }

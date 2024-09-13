@@ -46,6 +46,10 @@ public class DocumentEntity {
     )
     private List<CategoryEntity> categories = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private UserEntity user;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;
@@ -54,10 +58,11 @@ public class DocumentEntity {
     @Column(nullable = false, columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Instant updatedAt;
 
-    public DocumentEntity(String title, String description, TemplateEntity template) {
+    public DocumentEntity(String title, String description, TemplateEntity template, UserEntity user) {
         this.title = title;
         this.description = description;
         this.template = template;
+        this.user = user;
     }
 
     public DocumentEntity() {
@@ -116,6 +121,14 @@ public class DocumentEntity {
         return fileSize;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+    
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }

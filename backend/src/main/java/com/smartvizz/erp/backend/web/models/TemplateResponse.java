@@ -15,6 +15,7 @@ public record TemplateResponse (
         String fileType,
         Long fileSize,
         List<CategoryResponse> categories, // Added field for categories
+        UserResponse user,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -30,6 +31,7 @@ public record TemplateResponse (
                 entity.getCategories() != null ? entity.getCategories().stream()
                         .map(CategoryResponse::new)
                         .collect(Collectors.toList()) : null,
+                new UserResponse(entity.getUser()),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
