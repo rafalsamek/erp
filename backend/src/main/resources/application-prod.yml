@@ -1,10 +1,5 @@
-app:
-  baseUrl: http://localhost:8880
 spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
     locations: classpath:common/db/migration,classpath:dev/db/migration
-logging:
-  level:
-    com.smartvizz.erp.backend: DEBUG

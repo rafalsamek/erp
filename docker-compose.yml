@@ -44,7 +44,7 @@ services:
     build:
       context: .
       dockerfile: ./.docker/mysql/Dockerfile
-    restart: always
+  #  restart: always
     ports:
       - "3306:3306"
     hostname: mysql
