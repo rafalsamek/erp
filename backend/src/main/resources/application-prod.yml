@@ -2,4 +2,4 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
-    locations: classpath:common/db/migration,classpath:dev/db/migration
+    locations: classpath:common/db/migration,classpath:prod/db/migration
