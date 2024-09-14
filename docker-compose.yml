@@ -7,7 +7,7 @@ services:
       context: ./backend
       dockerfile: ../.docker/backend/Dockerfile
     ports:
-      - "8880:8080"
+      - "8881:8080"
     depends_on:
       - mysql
     env_file:
@@ -28,7 +28,7 @@ services:
       context: ./frontend
       dockerfile: ../.docker/frontend/Dockerfile
     ports:
-      - "8888:4200"
+      - "8889:4200"
     command: npm start
     depends_on:
       - backend
@@ -46,7 +46,7 @@ services:
       dockerfile: ./.docker/mysql/Dockerfile
   #  restart: always
     ports:
-      - "3306:3306"
+      - "3307:3306"
     hostname: mysql
     env_file:
       - .env
@@ -65,7 +65,7 @@ services:
     depends_on:
       - mysql
     ports:
-      - "8081:80"
+      - "8082:80"
     env_file:
       - .env
     environment:
@@ -78,8 +78,8 @@ services:
     image: mailhog/mailhog
     container_name: erp_mailhog
     ports:
-      - "8025:8025"  # Web interface
-      - "1025:1025"  # SMTP port
+      - "8026:8025"  # Web interface
+      - "1026:1025"  # SMTP port
     networks:
       - network
 
