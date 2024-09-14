@@ -1,0 +1,11 @@
+https://github.com/ewaslota/erp
+
+- Staging Frontend: http://162.55.215.13:8889
+- Staging Backend(API): http://162.55.215.13:8881/api
+- Staging phpMyAdmin: http://162.55.215.13:8082
+- Staging Mailhog: http://162.55.215.13:8026
+
+- Production Frontend: https://erp.smartvizz.com
+- Production Backend(API): https://erp.smartvizz.com/api
+- Production phpMyAdmin: https://erp.smartvizz.com/phpmyadmin
+- Production Mailhog: https://erp.smartvizz.com/mailhog
