@@ -51,7 +51,7 @@ export class CrudFormComponent implements OnInit, OnChanges {
       title: ['', Validators.required],
       description: [''],
       file: [null],
-      template: [null, Validators.required],
+      template: [null],
       categories: [[], Validators.required],
     });
   }
