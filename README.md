@@ -102,25 +102,40 @@ This project requires the following environment:
 
 2. Once the services are up, you can access the following services:
 
-### Local Service URLs
+### Local Links (development)
 
 - **Frontend**: [http://localhost:8889](http://localhost:8889)
 - **Backend (API)**: [http://localhost:8881/api](http://localhost:8881/api)
-- **phpMyAdmin**: [http://localhost:8082](http://localhost:8082)
+- **phpMyAdmin**: [http://localhost:8882](http://localhost:8882)
 - **Mailhog**: [http://localhost:8026](http://localhost:8026)
 - **MySQL**: `localhost:3307` (You can connect via phpMyAdmin or any MySQL client)
-    - **Username**: `erp`
-    - **Password**: `pass123`
-    - **Database**: `erp`
+   - **Username**: `erp`
+   - **Password**: `pass123`
+   - **Database**: `expenses`
 
 ### Staging Links
 
 The following are the staging links for the services:
 
 - **Staging Frontend**: [http://162.55.215.13:8889](http://162.55.215.13:8889)
-- **Staging Backend (API)**: [http://162.55.215.13:8881/api](http://162.55.215.13:8881)
-- **Staging phpMyAdmin**: [http://162.55.215.13:8082](http://162.55.215.13:8082)
+- **Staging Backend (API)**: [http://162.55.215.13:8881/api](http://162.55.215.13:8881/api)
+- **Staging phpMyAdmin**: [http://162.55.215.13:8882](http://162.55.215.13:8882)
 - **Staging Mailhog**: [http://162.55.215.13:8026](http://162.55.215.13:8026)
+
+### Production Links
+
+The following are the production links for the services:
+
+- **Production Frontend**: [https://erp.smartvizz.com](https://erp.smartvizz.com)
+- **Production Backend (API)**: [https://erp.smartvizz.com/api](https://erp.smartvizz.com/api)
+- **Production phpMyAdmin**: [https://erp.smartvizz.com/phpmyadmin](https://erp.smartvizz.com/phpmyadmin)
+
+### Demo User (each environment: Development, Staging and Production)
+
+For each environment development, staging and production environments, you can use the following demo credentials to log in:
+
+- **Username**: `demo`
+- **Password**: `pass123`
 
 ### Backend API Documentation
 
