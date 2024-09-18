@@ -2,12 +2,12 @@ version: '3.8'
 
 services:
   backend:
-    container_name: erp_backend
+    container_name: erp_prod_backend
     build:
       context: ./backend
       dockerfile: ../.docker/backend/Dockerfile
     ports:
-      - "8881:8080"
+      - "8891:8080"
     depends_on:
       - mysql
     env_file:
@@ -23,12 +23,12 @@ services:
       - network
 
   frontend:
-    container_name: erp_frontend
+    container_name: erp_prod_frontend
     build:
       context: ./frontend
       dockerfile: ../.docker/frontend/Dockerfile
     ports:
-      - "8889:4200"
+      - "8899:4200"
     command: npm start
     depends_on:
       - backend
@@ -40,32 +40,32 @@ services:
       - network
 
   mysql:
-    container_name: erp_mysql
+    container_name: erp_prod_mysql
     build:
       context: .
       dockerfile: ./.docker/mysql/Dockerfile
   #  restart: always
     ports:
-      - "3307:3306"
+      - "3317:3306"
     hostname: mysql
     env_file:
       - .env
     volumes:
-      - erp_db_data:/var/lib/mysql
+      - erp_prod_db_data:/var/lib/mysql
       - ./.docker/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./.docker/mysql/dump:/docker-entrypoint-initdb.d
     networks:
       - network
 
   phpmyadmin:
-    container_name: erp_phpmyadmin
+    container_name: erp_prod_phpmyadmin
     build:
       context: .
       dockerfile: ./.docker/phpmyadmin/Dockerfile
     depends_on:
       - mysql
     ports:
-      - "8082:80"
+      - "8092:80"
     env_file:
       - .env
     environment:
@@ -76,15 +76,15 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    container_name: erp_mailhog
+    container_name: erp_prod_mailhog
     ports:
-      - "8026:8025"  # Web interface
-      - "1026:1025"  # SMTP port
+      - "8036:8025"  # Web interface
+      - "1036:1025"  # SMTP port
     networks:
       - network
 
 #  nginx:
-#    container_name: erp_nginx
+#    container_name: erp_prod_nginx
 #    build:
 #      context: .
 #      dockerfile: ./.docker/nginx/Dockerfile
@@ -102,7 +102,7 @@ services:
 #      - network
 
 #  certbot:
-#    container_name: erp_certbot
+#    container_name: erp_prod_certbot
 #    build:
 #      context: .
 #      dockerfile: ./.docker/certbot/Dockerfile
@@ -120,5 +120,5 @@ networks:
 
 volumes:
   node_modules:
-  erp_db_data:
-    name: erp_db_data
+  erp_prod_db_data:
+    name: erp_prod_db_data

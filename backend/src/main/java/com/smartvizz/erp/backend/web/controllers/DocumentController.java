@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = {
         "http://localhost:8889",
         "http://localhost:4200",
-        "http://162.55.215.13:8889",
+        "http://162.55.215.13:8899",
         "http://162.55.215.13:4200"
 })
 public class DocumentController {
