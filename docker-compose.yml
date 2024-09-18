@@ -20,7 +20,7 @@ services:
     volumes:
       - ./backend/src:/app/src  # Mount only the source directory
     networks:
-      - network
+      - erp_stag_network
 
   frontend:
     container_name: erp_frontend
@@ -35,9 +35,9 @@ services:
     volumes:
       - ./frontend:/app
       - ./.env:/app/.env
-      - node_modules:/app/node_modules
+      - erp_stag_node_modules:/app/node_modules
     networks:
-      - network
+      - erp_stag_network
 
   mysql:
     container_name: erp_mysql
@@ -51,11 +51,11 @@ services:
     env_file:
       - .env
     volumes:
-      - erp_db_data:/var/lib/mysql
+      - erp_stag_db_data:/var/lib/mysql
       - ./.docker/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./.docker/mysql/dump:/docker-entrypoint-initdb.d
     networks:
-      - network
+      - erp_stag_network
 
   phpmyadmin:
     container_name: erp_phpmyadmin
@@ -72,7 +72,7 @@ services:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
-      - network
+      - erp_stag_network
 
   mailhog:
     image: mailhog/mailhog
@@ -81,7 +81,7 @@ services:
       - "8026:8025"  # Web interface
       - "1026:1025"  # SMTP port
     networks:
-      - network
+      - erp_stag_network
 
 #  nginx:
 #    container_name: erp_nginx
@@ -99,7 +99,7 @@ services:
 #      - backend
 #      - frontend
 #    networks:
-#      - network
+#      - erp_stag_network
 
 #  certbot:
 #    container_name: erp_certbot
@@ -113,12 +113,12 @@ services:
 #    depends_on:
 #      - nginx
 #    networks:
-#      - network
+#      - erp_stag_network
 
 networks:
-  network:
+  erp_stag_network:
 
 volumes:
-  node_modules:
-  erp_db_data:
-    name: erp_db_data
+  erp_stag_node_modules:
+  erp_stag_db_data:
+    name: erp_stag_db_data
