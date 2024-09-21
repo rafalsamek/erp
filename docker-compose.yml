@@ -20,7 +20,7 @@ services:
     volumes:
       - ./backend/src:/app/src  # Mount only the source directory
     networks:
-      - network
+      - erp_prod_network
 
   frontend:
     container_name: erp_prod_frontend
@@ -35,9 +35,9 @@ services:
     volumes:
       - ./frontend:/app
       - ./.env:/app/.env
-      - node_modules:/app/node_modules
+      - erp_prod_node_modules:/app/node_modules
     networks:
-      - network
+      - erp_prod_network
 
   mysql:
     container_name: erp_prod_mysql
@@ -55,7 +55,7 @@ services:
       - ./.docker/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./.docker/mysql/dump:/docker-entrypoint-initdb.d
     networks:
-      - network
+      - erp_prod_network
 
   phpmyadmin:
     container_name: erp_prod_phpmyadmin
@@ -72,7 +72,7 @@ services:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
-      - network
+      - erp_prod_network
 
   mailhog:
     image: mailhog/mailhog
@@ -81,7 +81,7 @@ services:
       - "8036:8025"  # Web interface
       - "1036:1025"  # SMTP port
     networks:
-      - network
+      - erp_prod_network
 
 #  nginx:
 #    container_name: erp_prod_nginx
@@ -99,7 +99,7 @@ services:
 #      - backend
 #      - frontend
 #    networks:
-#      - network
+#      - erp_prod_network
 
 #  certbot:
 #    container_name: erp_prod_certbot
@@ -113,12 +113,12 @@ services:
 #    depends_on:
 #      - nginx
 #    networks:
-#      - network
+#      - erp_prod_network
 
 networks:
-  network:
+  erp_prod_network:
 
 volumes:
-  node_modules:
+  erp_prod_node_modules:
   erp_prod_db_data:
     name: erp_prod_db_data
