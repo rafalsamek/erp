@@ -12,6 +12,13 @@ COMMON_YAML="src/main/resources/application.yml"
 PROFILE_YAML=""
 if [ "$SPRING_PROFILES_ACTIVE" == "dev" ]; then
     PROFILE_YAML="src/main/resources/application-dev.yml"
+elif [ "$SPRING_PROFILES_ACTIVE" == "stag" ]; then
+    PROFILE_YAML="src/main/resources/application-stag.yml"
+elif [ "$SPRING_PROFILES_ACTIVE" == "prod" ]; then
+    PROFILE_YAML="src/main/resources/application-prod.yml"
+else
+    echo "Invalid SPRING_PROFILES_ACTIVE value. Please set it to 'dev', 'stag', or 'prod'."
+    exit 1
 fi
 
 # Read common configurations

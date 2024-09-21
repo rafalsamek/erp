@@ -29,6 +29,8 @@ services:
       dockerfile: ../.docker/frontend/Dockerfile
     ports:
       - "8899:4200"
+    environment:
+      - HOST=erp.smartvizz.com
     command: npm start
     depends_on:
       - backend
@@ -83,37 +85,38 @@ services:
     networks:
       - erp_prod_network
 
-#  nginx:
-#    container_name: erp_prod_nginx
-#    build:
-#      context: .
-#      dockerfile: ./.docker/nginx/Dockerfile
-#    volumes:
-#      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
-#      - ./.docker/certbot/conf:/etc/letsencrypt
-#      - ./.docker/certbot/www:/var/www/certbot
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    depends_on:
-#      - backend
-#      - frontend
-#    networks:
-#      - erp_prod_network
+  nginx:
+    container_name: erp_prod_nginx
+    build:
+      context: .
+      dockerfile: ./.docker/nginx/Dockerfile
+    volumes:
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./.docker/certbot/conf:/etc/letsencrypt
+      - ./.docker/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - erp_prod_network
 
-#  certbot:
-#    container_name: erp_prod_certbot
-#    build:
-#      context: .
-#      dockerfile: ./.docker/certbot/Dockerfile
-#    volumes:
-#      - ./.docker/certbot/conf:/etc/letsencrypt
-#      - ./.docker/certbot/www:/var/www/certbot
-#    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-#    depends_on:
-#      - nginx
-#    networks:
-#      - erp_prod_network
+  certbot:
+    container_name: erp_prod_certbot
+    build:
+      context: .
+      dockerfile: ./.docker/certbot/Dockerfile
+    volumes:
+      - ./.docker/certbot/conf:/etc/letsencrypt
+      - ./.docker/certbot/www:/var/www/certbot
+      - ./.docker/certbot/init-certbot.sh:/usr/local/bin/init-certbot.sh
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    depends_on:
+      - nginx
+    networks:
+      - erp_prod_network
 
 networks:
   erp_prod_network:

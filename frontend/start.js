@@ -21,7 +21,7 @@ const envConfigMap = {
 const angularConfig = envConfigMap[env] || 'development';
 
 // Serve the Angular project with the appropriate configuration
-const command = `ng serve --host 0.0.0.0 --configuration ${angularConfig}`;
+const command = `ng serve --host 0.0.0.0 --disable-host-check --configuration ${angularConfig}`;
 
 const server = exec(command);
 
