@@ -64,6 +64,8 @@ services:
     build:
       context: .
       dockerfile: ./.docker/phpmyadmin/Dockerfile
+      args:
+        PMA_ABSOLUTE_URI: "https://erp.smartvizz.com/phpm yadmin/"
     depends_on:
       - mysql
     ports:
@@ -73,15 +75,6 @@ services:
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    networks:
-      - erp_prod_network
-
-  mailhog:
-    image: mailhog/mailhog
-    container_name: erp_prod_mailhog
-    ports:
-      - "8036:8025"  # Web interface
-      - "1036:1025"  # SMTP port
     networks:
       - erp_prod_network
 
