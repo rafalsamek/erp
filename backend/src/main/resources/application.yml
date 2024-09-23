@@ -36,6 +36,7 @@ spring:
           auth: ${MAIL_SMTP_AUTH}  # SMTP auth from environment
           starttls:
             enable: ${MAIL_SMTP_STARTTLS_ENABLE}  # SMTP STARTTLS enable from environment
+      from: ${MAIL_FROM}
 
 jwt:
   secret: ${JWT_SECRET}  # JWT secret key from environment
