@@ -21,6 +21,7 @@ services:
       - ./backend/src:/app/src  # Mount only the source directory
     networks:
       - erp_prod_network
+      - nginx_with_certbot_network
 
   frontend:
     container_name: erp_prod_frontend
@@ -40,13 +41,14 @@ services:
       - erp_prod_node_modules:/app/node_modules
     networks:
       - erp_prod_network
+      - nginx_with_certbot_network
 
   mysql:
     container_name: erp_prod_mysql
     build:
       context: .
       dockerfile: ./.docker/mysql/Dockerfile
-  #  restart: always
+    restart: always
     ports:
       - "3317:3306"
     hostname: mysql
@@ -58,6 +60,7 @@ services:
       - ./.docker/mysql/dump:/docker-entrypoint-initdb.d
     networks:
       - erp_prod_network
+      - nginx_with_certbot_network
 
   phpmyadmin:
     container_name: erp_prod_phpmyadmin
@@ -77,40 +80,43 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       - erp_prod_network
+      - nginx_with_certbot_network
 
-  nginx:
-    container_name: erp_prod_nginx
-    build:
-      context: .
-      dockerfile: ./.docker/nginx/Dockerfile
-    volumes:
-      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
-      - ./.docker/certbot/conf:/etc/letsencrypt
-      - ./.docker/certbot/www:/var/www/certbot
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - backend
-      - frontend
-    networks:
-      - erp_prod_network
-
-  certbot:
-    container_name: erp_prod_certbot
-    build:
-      context: .
-      dockerfile: ./.docker/certbot/Dockerfile
-    volumes:
-      - ./.docker/certbot/conf:/etc/letsencrypt
-      - ./.docker/certbot/www:/var/www/certbot
-    depends_on:
-      - nginx
-    networks:
-      - erp_prod_network
+#  nginx:
+#    container_name: erp_prod_nginx
+#    build:
+#      context: .
+#      dockerfile: ./.docker/nginx/Dockerfile
+#    volumes:
+#      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+#      - ./.docker/certbot/conf:/etc/letsencrypt
+#      - ./.docker/certbot/www:/var/www/certbot
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    depends_on:
+#      - backend
+#      - frontend
+#    networks:
+#      - erp_prod_network
+#
+#  certbot:
+#    container_name: erp_prod_certbot
+#    build:
+#      context: .
+#      dockerfile: ./.docker/certbot/Dockerfile
+#    volumes:
+#      - ./.docker/certbot/conf:/etc/letsencrypt
+#      - ./.docker/certbot/www:/var/www/certbot
+#    depends_on:
+#      - nginx
+#    networks:
+#      - erp_prod_network
 
 networks:
   erp_prod_network:
+  nginx_with_certbot_network:
+    external: true
 
 volumes:
   erp_prod_node_modules:
