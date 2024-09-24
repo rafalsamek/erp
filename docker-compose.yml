@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    container_name: erp_prod_backend
+    container_name: erp_prod2_backend
     build:
       context: ./backend
       dockerfile: ../.docker/backend/Dockerfile
@@ -20,11 +20,11 @@ services:
     volumes:
       - ./backend/src:/app/src  # Mount only the source directory
     networks:
-      - erp_prod_network
+      - erp_prod2_network
       - nginx_with_certbot_network
 
   frontend:
-    container_name: erp_prod_frontend
+    container_name: erp_prod2_frontend
     build:
       context: ./frontend
       dockerfile: ../.docker/frontend/Dockerfile
@@ -38,13 +38,13 @@ services:
     volumes:
       - ./frontend:/app
       - ./.env:/app/.env
-      - erp_prod_node_modules:/app/node_modules
+      - erp_prod2_node_modules:/app/node_modules
     networks:
-      - erp_prod_network
+      - erp_prod2_network
       - nginx_with_certbot_network
 
   mysql:
-    container_name: erp_prod_mysql
+    container_name: erp_prod2_mysql
     build:
       context: .
       dockerfile: ./.docker/mysql/Dockerfile
@@ -55,15 +55,15 @@ services:
     env_file:
       - .env
     volumes:
-      - erp_prod_db_data:/var/lib/mysql
+      - erp_prod2_db_data:/var/lib/mysql
       - ./.docker/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./.docker/mysql/dump:/docker-entrypoint-initdb.d
     networks:
-      - erp_prod_network
+      - erp_prod2_network
       - nginx_with_certbot_network
 
   phpmyadmin:
-    container_name: erp_prod_phpmyadmin
+    container_name: erp_prod2_phpmyadmin
     build:
       context: .
       dockerfile: ./.docker/phpmyadmin/Dockerfile
@@ -79,11 +79,11 @@ services:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
-      - erp_prod_network
+      - erp_prod2_network
       - nginx_with_certbot_network
 
 #  nginx:
-#    container_name: erp_prod_nginx
+#    container_name: erp_prod2_nginx
 #    build:
 #      context: .
 #      dockerfile: ./.docker/nginx/Dockerfile
@@ -98,10 +98,10 @@ services:
 #      - backend
 #      - frontend
 #    networks:
-#      - erp_prod_network
+#      - erp_prod2_network
 #
 #  certbot:
-#    container_name: erp_prod_certbot
+#    container_name: erp_prod2_certbot
 #    build:
 #      context: .
 #      dockerfile: ./.docker/certbot/Dockerfile
@@ -111,14 +111,14 @@ services:
 #    depends_on:
 #      - nginx
 #    networks:
-#      - erp_prod_network
+#      - erp_prod2_network
 
 networks:
-  erp_prod_network:
+  erp_prod2_network:
   nginx_with_certbot_network:
     external: true
 
 volumes:
-  erp_prod_node_modules:
-  erp_prod_db_data:
-    name: erp_prod_db_data
+  erp_prod2_node_modules:
+  erp_prod2_db_data:
+    name: erp_prod2_db_data
