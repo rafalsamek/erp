@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    container_name: erp_backend
+    container_name: erp_stag_backend
     build:
       context: ./backend
       dockerfile: ../.docker/backend/Dockerfile
@@ -23,7 +23,7 @@ services:
       - erp_stag_network
 
   frontend:
-    container_name: erp_frontend
+    container_name: erp_stag_frontend
     build:
       context: ./frontend
       dockerfile: ../.docker/frontend/Dockerfile
@@ -40,7 +40,7 @@ services:
       - erp_stag_network
 
   mysql:
-    container_name: erp_mysql
+    container_name: erp_stag_mysql
     build:
       context: .
       dockerfile: ./.docker/mysql/Dockerfile
@@ -58,7 +58,7 @@ services:
       - erp_stag_network
 
   phpmyadmin:
-    container_name: erp_phpmyadmin
+    container_name: erp_stag_phpmyadmin
     build:
       context: .
       dockerfile: ./.docker/phpmyadmin/Dockerfile
@@ -76,7 +76,7 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    container_name: erp_mailhog
+    container_name: erp_stag_mailhog
     ports:
       - "8026:8025"  # Web interface
       - "1026:1025"  # SMTP port
@@ -84,7 +84,7 @@ services:
       - erp_stag_network
 
 #  nginx:
-#    container_name: erp_nginx
+#    container_name: erp_stag_nginx
 #    build:
 #      context: .
 #      dockerfile: ./.docker/nginx/Dockerfile
@@ -102,7 +102,7 @@ services:
 #      - erp_stag_network
 
 #  certbot:
-#    container_name: erp_certbot
+#    container_name: erp_stag_certbot
 #    build:
 #      context: .
 #      dockerfile: ./.docker/certbot/Dockerfile
